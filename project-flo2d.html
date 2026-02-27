@@ -1,0 +1,127 @@
+<!-- =========================
+FILE: project-flo2d.html
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2D Flood Modeling Using FLO-2D | Paola Romaguera</title>
+  <meta name="description" content="2D hydrodynamic flood modeling using FLO-2D within a GIS workflow to generate flood depth and extent maps." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-name">
+          <strong>Paola Romaguera</strong>
+          <span>Case Study</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="projects.html">Projects</a>
+        <a class="pill" href="resume.pdf">Resume</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+      </div>
+    </div>
+
+    <div class="card proj-detail">
+      <h1>2D Flood Modeling Using FLO-2D</h1>
+      <p class="lede">
+        Built two-dimensional hydrodynamic flood simulations to model river flooding using FLO-2D within a GIS workflow.
+        The model produced flood depth and extent outputs used to generate hazard maps for interpretation and planning.
+      </p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>Objective</h3>
+          <ul>
+            <li>Simulate river flooding behavior under specified hydrologic conditions.</li>
+            <li>Generate flood depth/extent maps suitable for hazard interpretation.</li>
+            <li>Convert model outputs into GIS layers that can support exposure analysis.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Approach</h3>
+          <ul>
+            <li>Prepare terrain and model grid inputs (DEM processing and conditioning).</li>
+            <li>Define hydrologic and boundary conditions required for simulation.</li>
+            <li>Run FLO-2D and post-process results into map-ready datasets.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:14px;">
+        <div class="panel">
+          <h3>Tools Used</h3>
+          <ul>
+            <li>FLO-2D (2D hydrodynamic modeling)</li>
+            <li>GIS platform for pre/post-processing (QGIS/ArcGIS)</li>
+            <li>DEM + supporting spatial layers</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>What I Owned (Leadership)</h3>
+          <ul>
+            <li>Built the model workflow and ensured GIS-ready outputs.</li>
+            <li>Standardized post-processing steps for consistent mapping.</li>
+            <li>Translated results into clear hazard visuals for stakeholders.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Workflow Snapshot</h3>
+        <p class="small">Replace with a diagram of your FLO-2D setup + output pipeline.</p>
+        <img src="assets/workflow-flo2d.png" alt="FLO-2D workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Results Gallery</h3>
+        <p class="small">Suggested visuals: depth map, extent map, model domain/setup screenshot.</p>
+        <div class="gallery">
+          <img src="assets/flo2d-depth.png" alt="Flood depth map output">
+          <img src="assets/flo2d-extent.png" alt="Flood extent map output">
+          <img src="assets/flo2d-domain.png" alt="Model domain and setup">
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>2D modeling provides spatially detailed flood depth patterns beyond simple extents.</li>
+          <li>GIS-integrated workflows make it easier to convert results into exposure-ready layers.</li>
+          <li>Clear depth/extent mapping improves communication of hazard patterns.</li>
+        </ul>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Data Privacy Note</h3>
+        <p class="small">
+          If sharing outputs publicly, use public/synthetic inputs or sanitize any sensitive site identifiers.
+        </p>
+      </div>
+
+      <div class="cta" style="margin-top:16px;">
+        <a class="pill" href="projects.html">← Back to Projects</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+    </div>
+
+  </div>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
