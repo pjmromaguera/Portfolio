@@ -1,0 +1,128 @@
+<!-- =========================
+FILE: project-methodology.html
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Climate Hazard Exposure Assessment Methodology | Paola Romaguera</title>
+  <meta name="description" content="Standardized methodology for assessing asset exposure to climate hazards under baseline and future projections using local and global datasets." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-name">
+          <strong>Paola Romaguera</strong>
+          <span>Case Study</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="projects.html">Projects</a>
+        <a class="pill" href="resume.pdf">Resume</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+      </div>
+    </div>
+
+    <div class="card proj-detail">
+      <h1>Climate Hazard Exposure Assessment Methodology</h1>
+      <p class="lede">
+        Developed a standardized methodology for assessing asset exposure to climate hazards under both current conditions and future projections.
+        The framework integrates local high-resolution datasets with global climate model outputs to enable consistent, scalable analysis across sectors.
+      </p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>Objective</h3>
+          <ul>
+            <li>Create a repeatable framework for baseline and future hazard exposure assessments.</li>
+            <li>Evaluate candidate datasets to identify best-fit inputs by resolution, reliability, and relevance.</li>
+            <li>Enable consistent outputs for diverse asset types and sectors.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Method Overview</h3>
+          <ul>
+            <li>Hazard selection: multi-hazard coverage (e.g., flood, rainfall extremes, landslide susceptibility).</li>
+            <li>Data evaluation: local vs global comparison, resolution checks, coverage, and assumptions review.</li>
+            <li>Exposure extraction: overlay assets with hazard layers and summarize into interpretable metrics.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:14px;">
+        <div class="panel">
+          <h3>Tools Used</h3>
+          <ul>
+            <li>Python (pandas/xarray/rasterio/geopandas) for processing and automation</li>
+            <li>QGIS/ArcGIS for review and cartographic outputs</li>
+            <li>Structured reporting outputs (maps + tables + charts)</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>What I Owned (Leadership)</h3>
+          <ul>
+            <li>Designed and standardized the methodology for repeatable delivery.</li>
+            <li>Set dataset selection criteria and documentation structure.</li>
+            <li>Supported cross-sector applications with consistent output definitions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Workflow Snapshot</h3>
+        <p class="small">Replace with a high-level diagram of your methodology steps.</p>
+        <img src="assets/workflow-methodology.png" alt="Methodology workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Results Gallery</h3>
+        <p class="small">Suggested visuals: dataset comparison table, example exposure map, scenario comparison chart.</p>
+        <div class="gallery">
+          <img src="assets/methodology-dataset-compare.png" alt="Dataset evaluation summary">
+          <img src="assets/methodology-exposure-map.png" alt="Example exposure map">
+          <img src="assets/methodology-scenario-chart.png" alt="Scenario comparison chart">
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Combining local and global datasets improves both detail and future-scenario relevance.</li>
+          <li>Documented selection criteria helps ensure defensible and consistent assessments.</li>
+          <li>Standard outputs enable faster scaling across sectors and geographies.</li>
+        </ul>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Data Privacy Note</h3>
+        <p class="small">
+          This case study is generalized and should only display public, synthetic, or sanitized examples.
+          No client-confidential information is included.
+        </p>
+      </div>
+
+      <div class="cta" style="margin-top:16px;">
+        <a class="pill" href="projects.html">← Back to Projects</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+    </div>
+
+  </div>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
