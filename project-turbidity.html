@@ -1,0 +1,127 @@
+<!-- =========================
+FILE: project-turbidity.html
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>River Turbidity Assessment (Remote Sensing, GEE) | Paola Romaguera</title>
+  <meta name="description" content="River turbidity assessment using Google Earth Engine and satellite remote sensing to identify sediment patterns and potential siltation zones." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-name">
+          <strong>Paola Romaguera</strong>
+          <span>Case Study</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="projects.html">Projects</a>
+        <a class="pill" href="resume.pdf">Resume</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+      </div>
+    </div>
+
+    <div class="card proj-detail">
+      <h1>River Turbidity Assessment Using Remote Sensing</h1>
+      <p class="lede">
+        Used Google Earth Engine (GEE) and satellite remote sensing to assess turbidity patterns in rivers around Metro Manila.
+        Outputs supported identification of potential siltation zones for planning and prioritization considerations.
+      </p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>Objective</h3>
+          <ul>
+            <li>Map turbidity indicators and sediment concentration patterns.</li>
+            <li>Identify potential hotspots consistent with siltation zones.</li>
+            <li>Summarize results in visuals suitable for planning discussions.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Approach</h3>
+          <ul>
+            <li>Process satellite imagery in GEE (cloud masking and compositing).</li>
+            <li>Derive turbidity indicators using spectral indices.</li>
+            <li>Analyze spatial patterns and time-series changes to flag hotspots.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:14px;">
+        <div class="panel">
+          <h3>Tools Used</h3>
+          <ul>
+            <li>Google Earth Engine</li>
+            <li>Satellite imagery (e.g., Sentinel-2 / Landsat)</li>
+            <li>Remote sensing indices + time-series summaries</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>What I Owned (Leadership)</h3>
+          <ul>
+            <li>Designed the analysis workflow and index selection for turbidity interpretation.</li>
+            <li>Built the processing pipeline in GEE to make results repeatable.</li>
+            <li>Translated outputs into maps/graphics suitable for non-technical audiences.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Workflow Snapshot</h3>
+        <p class="small">Replace with a diagram of your GEE processing steps.</p>
+        <img src="assets/workflow-turbidity.png" alt="Turbidity workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Results Gallery</h3>
+        <p class="small">Suggested visuals: turbidity map, hotspot map, time-series plot.</p>
+        <div class="gallery">
+          <img src="assets/turbidity-map.png" alt="Turbidity map output">
+          <img src="assets/turbidity-hotspots.png" alt="Potential siltation hotspots">
+          <img src="assets/turbidity-timeseries.png" alt="Turbidity time series">
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Remote sensing provides scalable turbidity monitoring over large river networks.</li>
+          <li>Hotspot mapping helps prioritize areas for further investigation and planning.</li>
+          <li>Time-series views support interpretation of seasonality and event-driven changes.</li>
+        </ul>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Data Privacy Note</h3>
+        <p class="small">
+          Use public imagery and non-sensitive outputs only. If you include examples, avoid any confidential operational details.
+        </p>
+      </div>
+
+      <div class="cta" style="margin-top:16px;">
+        <a class="pill" href="projects.html">← Back to Projects</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+    </div>
+
+  </div>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
