@@ -1,86 +1,129 @@
+<!-- =========================
+FILE: project-dashboard.html
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hazard Exposure Assessment Dashboard (Personal Project) | Paola Romaguera</title>
+  <meta name="description" content="Personal geospatial dashboard built to automate hazard exposure metrics and visualization for distributed asset portfolios (no client systems/data shared)." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
 
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-name">
+          <strong>Paola Romaguera</strong>
+          <span>Case Study</span>
+        </div>
+      </div>
 
-<!-- Hazard Exposure Assessment Dashboard (Personal Project) -->
-<a class="card project" href="project-dashboard.html">
-  <div class="cover">
-    <img src="assets/flood-cover.jpg" alt="Hazard Exposure Assessment Dashboard cover">
-  </div>
-  <div class="content">
-    <h3>Hazard Exposure Assessment Dashboard (Personal Project)</h3>
-    <p>Personal geospatial dashboard to automate exposure metrics and visualization for asset portfolios across the country—built to improve speed and consistency (no client systems/data shared).</p>
-    <div class="meta">
-      <span class="chip">Dashboard</span>
-      <span class="chip">Exposure metrics</span>
-      <span class="chip">GIS workflow</span>
+      <div class="nav-links">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="projects.html">Projects</a>
+        <a class="pill" href="resume.pdf">Resume</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+      </div>
     </div>
-    <div class="cta"><span class="small">Case study</span><span class="small">→</span></div>
-  </div>
-</a>
 
-<!-- Climate Hazard Exposure Assessment Methodology -->
-<a class="card project" href="project-methodology.html">
-  <div class="cover">
-    <img src="assets/rainfall-cover.jpg" alt="Climate Hazard Exposure Methodology cover">
-  </div>
-  <div class="content">
-    <h3>Climate Hazard Exposure Assessment Methodology</h3>
-    <p>Standardized approach for baseline and future climate projections, integrating local + global datasets and multi-hazard layers for scalable, cross-sector exposure analysis.</p>
-    <div class="meta">
-      <span class="chip">Methodology</span>
-      <span class="chip">Local + global data</span>
-      <span class="chip">Future scenarios</span>
-    </div>
-    <div class="cta"><span class="small">Case study</span><span class="small">→</span></div>
-  </div>
-</a>
+    <div class="card proj-detail">
+      <h1>Hazard Exposure Assessment Dashboard (Personal Project)</h1>
+      <p class="lede">
+        A personal workflow tool built to speed up and standardize hazard exposure assessments for geographically distributed asset portfolios.
+        This project is independent and does not include proprietary client systems or confidential data.
+      </p>
 
-<!-- River Turbidity Assessment Using Remote Sensing -->
-<a class="card project" href="project-turbidity.html">
-  <div class="cover">
-    <img src="assets/rs-cover.jpg" alt="River Turbidity Assessment cover">
-  </div>
-  <div class="content">
-    <h3>River Turbidity Assessment Using Remote Sensing</h3>
-    <p>Google Earth Engine workflow using satellite indices and time series to map turbidity patterns and identify potential siltation zones for planning and prioritization.</p>
-    <div class="meta">
-      <span class="chip">GEE</span>
-      <span class="chip">Remote sensing</span>
-      <span class="chip">Time series</span>
-    </div>
-    <div class="cta"><span class="small">Case study</span><span class="small">→</span></div>
-  </div>
-</a>
+      <div class="two-col">
+        <div class="panel">
+          <h3>Objective</h3>
+          <ul>
+            <li>Reduce manual steps in exposure assessment when asset counts range from tens to hundreds of sites.</li>
+            <li>Produce decision-ready outputs: quantitative exposure metrics + clear visual summaries.</li>
+            <li>Improve consistency across assessments by using a repeatable workflow.</li>
+          </ul>
+        </div>
 
-<!-- 2D Flood Modeling Using FLO-2D -->
-<a class="card project" href="project-flo2d.html">
-  <div class="cover">
-    <img src="assets/flood-cover.jpg" alt="2D Flood Modeling cover">
-  </div>
-  <div class="content">
-    <h3>2D Flood Modeling Using FLO-2D</h3>
-    <p>Built 2D hydrodynamic river flood simulations in a GIS workflow to produce flood depth and extent maps for hazard interpretation and planning applications.</p>
-    <div class="meta">
-      <span class="chip">FLO-2D</span>
-      <span class="chip">Hydrodynamic</span>
-      <span class="chip">Depth & extent</span>
-    </div>
-    <div class="cta"><span class="small">Case study</span><span class="small">→</span></div>
-  </div>
-</a>
+        <div class="panel">
+          <h3>Approach</h3>
+          <ul>
+            <li>Ingest asset locations and selected hazard layers.</li>
+            <li>Automate spatial overlays and summarization into exposure indicators.</li>
+            <li>Generate maps/charts to support interpretation of spatial risk patterns.</li>
+          </ul>
+        </div>
+      </div>
 
-<!-- Ocean Eddy Detection and Lifecycle Tracking (Freelance Project) -->
-<a class="card project" href="project-eddies.html">
-  <div class="cover">
-    <img src="assets/ocean-cover.jpg" alt="Ocean Eddy Detection cover">
-  </div>
-  <div class="content">
-    <h3>Ocean Eddy Detection and Lifecycle Tracking (Freelance)</h3>
-    <p>Processed multi-year NetCDF ocean datasets in Python to detect mesoscale eddies, extract physical parameters (e.g., temperature/flux indicators), and track lifecycle evolution.</p>
-    <div class="meta">
-      <span class="chip">NetCDF</span>
-      <span class="chip">Python</span>
-      <span class="chip">Feature tracking</span>
+      <div class="two-col" style="margin-top:14px;">
+        <div class="panel">
+          <h3>Tools Used</h3>
+          <ul>
+            <li>GIS + spatial analytics workflow</li>
+            <li>Python (optional for preprocessing/automation)</li>
+            <li>Map and chart outputs for reporting</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>What I Owned (Leadership)</h3>
+          <ul>
+            <li>Led workflow design and implemented a standardized assessment process.</li>
+            <li>Defined exposure metrics and output formats to reduce rework.</li>
+            <li>Built the project as a personal optimization initiative (no client delivery).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Workflow Snapshot</h3>
+        <p class="small">Replace with your own diagram/screenshot.</p>
+        <img src="assets/workflow-dashboard.png" alt="Dashboard workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Results Gallery</h3>
+        <p class="small">Replace placeholders with screenshots (dashboard, maps, charts).</p>
+        <div class="gallery">
+          <img src="assets/dashboard-overview.png" alt="Dashboard overview">
+          <img src="assets/dashboard-map.png" alt="Dashboard map output">
+          <img src="assets/dashboard-metrics.png" alt="Exposure metrics summary">
+        </div>
+        <div class="note">Tip: Use simple filenames so updates are painless (e.g., dashboard-map.png).</div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Exposure assessments become faster and more scalable for large, distributed portfolios.</li>
+          <li>Standardized outputs improve consistency across reporting and interpretation.</li>
+          <li>Clear visuals help communicate spatial patterns to non-technical stakeholders.</li>
+        </ul>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Data Privacy Note</h3>
+        <p class="small">
+          This case study is described at a high level. Any visuals shown should use public-domain, synthetic, or sanitized examples.
+          No proprietary client datasets or internal systems are included.
+        </p>
+      </div>
+
+      <div class="cta" style="margin-top:16px;">
+        <a class="pill" href="projects.html">← Back to Projects</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+      </div>
     </div>
-    <div class="cta"><span class="small">Case study</span><span class="small">→</span></div>
+
+    <div class="footer">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+    </div>
+
   </div>
-</a>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
