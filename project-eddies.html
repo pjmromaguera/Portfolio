@@ -1,0 +1,127 @@
+<!-- =========================
+FILE: project-eddies.html
+========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ocean Eddy Detection and Lifecycle Tracking (Freelance) | Paola Romaguera</title>
+  <meta name="description" content="Freelance ocean analytics project using Python to process multi-year NetCDF datasets, detect mesoscale eddies, extract physical parameters, and track eddy lifecycle." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true"></div>
+        <div class="brand-name">
+          <strong>Paola Romaguera</strong>
+          <span>Case Study</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a class="pill" href="index.html">Home</a>
+        <a class="pill" href="projects.html">Projects</a>
+        <a class="pill" href="resume.pdf">Resume</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+      </div>
+    </div>
+
+    <div class="card proj-detail">
+      <h1>Ocean Eddy Detection and Lifecycle Tracking (Freelance)</h1>
+      <p class="lede">
+        Processed multi-year oceanographic NetCDF datasets to detect mesoscale eddies and analyze sea surface anomalies.
+        Extracted eddy-relevant parameters (e.g., temperature structure and flux-related indicators) and tracked eddy lifecycles over time.
+      </p>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>Objective</h3>
+          <ul>
+            <li>Identify eddies and characterize associated ocean circulation anomalies.</li>
+            <li>Extract relevant physical parameters from gridded NetCDF datasets.</li>
+            <li>Track eddy lifecycle (formation, movement, dissipation) to support interpretation.</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Approach</h3>
+          <ul>
+            <li>Process and subset multi-year NetCDF data for the area/time of interest.</li>
+            <li>Apply a Python-based eddy detection library/workflow.</li>
+            <li>Track eddy features through time and summarize trajectories and persistence.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:14px;">
+        <div class="panel">
+          <h3>Tools Used</h3>
+          <ul>
+            <li>Python scientific stack (xarray, NumPy, etc.)</li>
+            <li>NetCDF gridded datasets</li>
+            <li>Specialized library for eddy detection / tracking</li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>What I Owned (Leadership)</h3>
+          <ul>
+            <li>End-to-end execution: data processing, feature detection, tracking, and summarization.</li>
+            <li>Defined parameters/outputs needed for eddy characterization.</li>
+            <li>Delivered structured outputs suitable for further interpretation by the client.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Workflow Snapshot</h3>
+        <p class="small">Replace with a simple diagram of your NetCDF → detection → tracking pipeline.</p>
+        <img src="assets/workflow-eddies.png" alt="Eddy workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Results Gallery</h3>
+        <p class="small">Suggested visuals: eddy tracks map, lifecycle plot, parameter summary chart.</p>
+        <div class="gallery">
+          <img src="assets/eddies-tracks.png" alt="Eddy tracks map">
+          <img src="assets/eddies-lifecycle.png" alt="Eddy lifecycle chart">
+          <img src="assets/eddies-params.png" alt="Parameter summary chart">
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Feature tracking enables analysis of persistence, movement paths, and evolution of anomalies.</li>
+          <li>NetCDF-based workflows scale well for multi-year gridded datasets.</li>
+          <li>Parameter extraction supports richer interpretation beyond “eddy/no eddy”.</li>
+        </ul>
+      </div>
+
+      <div class="panel" style="margin-top:14px;">
+        <h3>Data Privacy Note</h3>
+        <p class="small">
+          This case study avoids client-identifying details. If sharing visuals, use public datasets or anonymize sensitive regions and outputs.
+        </p>
+      </div>
+
+      <div class="cta" style="margin-top:16px;">
+        <a class="pill" href="projects.html">← Back to Projects</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+    </div>
+
+  </div>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
