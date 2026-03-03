@@ -301,11 +301,17 @@ a.project:hover{
 }
 .meta .chip{
   font-size:12px;
-  padding:7px 9px;
-  border-radius:999px;
-  background: rgba(255,255,255,.03);
-  border:1px solid var(--line);
+  padding:0;                 /* remove pill padding */
+  border-radius:0;           /* no pill shape */
+  background: transparent;   /* no button background */
+  border:none;               /* remove outline */
   color: var(--muted);
+}
+
+.meta .chip::before{
+  content:"#";
+  opacity:.6;
+  margin-right:2px;
 }
 
 .cta{
