@@ -1,11 +1,13 @@
 :root{
-  --bg:#0b1220;
-  --bg2:#0d1628;
-  --card:#0f1a2b;
-  --muted:#9fb0c3;
-  --text:#e8eef7;
-  --accent:#7dd3fc;
-  --accent2:#34d399;
+  --bg:#0b1020;          /* page background */
+  --card:#0f1a2b;        /* card background */
+  --muted:#a8b3c7;       /* secondary text */
+  --text:#eef2ff;        /* primary text */
+
+  /* NEW ACCENTS (change these two if you want a different vibe) */
+  --accent:#a78bfa;      /* violet */
+  --accent2:#22d3ee;     /* cyan */
+
   --line:rgba(255,255,255,.10);
   --shadow: 0 12px 40px rgba(0,0,0,.35);
   --radius:18px;
