@@ -148,8 +148,7 @@ a:hover{ opacity:.92; }
 }
 .avatar{
   width:72px; height:72px;
-  border-radius:16px;
-  overflow:hidden;
+    overflow:hidden;
   border:1px solid var(--line);
   background: rgba(255,255,255,.04);
   display:flex;
