@@ -540,6 +540,44 @@ hr.sep{
   padding-top:10px;
   border-top:1px solid rgba(255,255,255,.05);
 }
+
+.table-wrap{
+  overflow-x:auto;
+  margin-top:12px;
+}
+
+.dataset-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(255,255,255,.03);
+}
+
+.dataset-table th{
+  text-align:left;
+  padding:14px;
+  background:rgba(255,255,255,.04);
+  border-bottom:1px solid var(--line);
+  font-weight:600;
+}
+
+.dataset-table td{
+  padding:14px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  color:var(--muted);
+}
+
+.dataset-table tr:last-child td{
+  border-bottom:none;
+}
+
+.dataset-table tr:hover{
+  background:rgba(255,255,255,.03);
+}
+
 /* FOOTER */
 .footer{
   margin-top:34px;
