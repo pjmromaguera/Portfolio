@@ -9,30 +9,9 @@
 </head>
 
 <body>
-  <!-- NAVIGATION -->
-<div class="nav">
-
-  <div class="brand">
-    <div class="brand-badge"></div>
-
-    <div class="brand-name">
-      <strong>Paola Romaguera</strong>
-      <span>Climate Risk • GIS • Remote Sensing</span>
-    </div>
-  </div>
-
-  <div class="nav-links">
-    <a class="pill" href="index.html">Home</a>
-    <a class="pill" href="projects.html">Projects</a>
-    <a class="pill" href="resume.pdf">Resume</a>
-    <a class="pill" href="https://www.linkedin.com/in/pjromaguera">LinkedIn</a>
-    <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-  </div>
-
-</div>
   <div class="container">
 
-    <!-- NAV -->
+    <!-- NAV (single, clean) -->
     <div class="nav">
       <div class="brand">
         <div class="brand-badge" aria-hidden="true"></div>
@@ -43,313 +22,306 @@
       </div>
 
       <div class="nav-links">
-        <!-- Removed dashboard.html (not part of your current pages) -->
-        <a class="pill" href="projects.html">Projects</a>
-        <a class="pill" href="resume.pdf">Resume (PDF)</a>
-        <a class="pill" href="https://www.linkedin.com/in/pjromaguera">LinkedIn</a>
+        <a class="pill" href="#top">Home</a>
+        <a class="pill" href="#featured">Featured</a>
+        <a class="pill" href="#research">Research</a>
+        <a class="pill" href="projects.html">All Projects</a>
+        <a class="pill" href="resume.pdf">Resume</a>
+        <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank">LinkedIn</a>
         <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
       </div>
     </div>
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="card hero-main">
-        <div class="kicker"><span class="dot"></span> Climate Risk & Geospatial Analytics Portfolio</div>
+    <!-- SNAP SECTIONS -->
+    <main class="snap">
 
-        <h1>Climate Risk &amp; Geospatial Analytics</h1>
+      <!-- SECTION 1: HERO -->
+      <section class="snap-section" id="top">
+        <div class="hero">
+          <div class="card hero-main">
+            <div class="kicker"><span class="dot"></span> Climate Risk &amp; Geospatial Analytics Portfolio</div>
 
-        <p class="sub">
-          I develop decision-ready insights from climate hazards and geospatial data—combining scenario-driven risk modeling,
-          remote sensing, and workflow automation to support planning, investment, and policy.
-        </p>
+            <h1>Climate Risk &amp; Geospatial Analytics</h1>
 
-        <div class="tags">
-          <span class="tag">Physical climate risk</span>
-          <span class="tag">Flood &amp; rainfall analytics</span>
-          <span class="tag">2D flood modelling</span>
-          <span class="tag">Landslide / slope stability</span>
-          <span class="tag">Seismic analysis</span>
-          <span class="tag">Exposure &amp; vulnerability</span>
-          <span class="tag">Remote sensing indices</span>
-          <span class="tag">Python • QGIS • GEE • ArcGIS • MATLAB</span>
-        </div>
+            <p class="sub">
+              I develop decision-ready insights from climate hazards and geospatial data—combining scenario-driven risk modeling,
+              remote sensing, and workflow automation to support planning, investment, and policy.
+            </p>
 
-        <hr class="sep" />
-
-        <p class="small">
-          Each case study highlights the objective, approach, tools used, and outputs (maps/charts)—without sharing proprietary code or client data.
-        </p>
-
-        <div class="cta" style="margin-top:14px;">
-          <a class="pill primary" href="projects.html">Explore Projects</a>
-          <span class="small">Based in PH • Open to climate / geospatial / data analytics roles</span>
-        </div>
-      </div>
-
-      <div class="card hero-side">
-        <div class="profile">
-          <div class="avatar">
-            <!-- Optional: replace with your image -->
-            <!-- <img src="assets/headshot.jpg" alt="Headshot of Paola Romaguera"> -->
-            headshot
-          </div>
-          <div class="profile-meta">
-            <strong>Paola Jayme M. Romaguera</strong>
-            <span>Spatial Analyst • Climate Risk Consultant</span>
-          </div>
-        </div>
-
-        <div class="quicklist">
-          <h3>What I deliver</h3>
-          <ul>
-            <li>Asset-level hazard exposure metrics and maps</li>
-            <li>Scenario-driven risk comparisons (e.g., RCP/SSP)</li>
-            <li>Remote-sensing indicators to support interpretation</li>
-            <li>Executive-ready visuals and clear narratives</li>
-          </ul>
-        </div>
-
-        <div class="quicklist">
-          <h3>Tools</h3>
-          <ul>
-            <li>Python (NumPy, pandas, xarray, rasterio, geopandas)</li>
-            <li>QGIS / ArcGIS • Google Earth Engine</li>
-            <li>Docs &amp; decks for non-technical stakeholders</li>
-            <li>Git/GitHub (versioning + reproducibility)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- FEATURED PROJECTS -->
-    <div class="section">
-      <h2>Featured case studies</h2>
-
-      <div class="grid">
-
-        <!-- 1) Dashboard (Personal Project) -->
-        <a class="card project" href="projects-dashboard.html">
-          <div class="cover">
-            <!-- Keep your existing image name if you already uploaded it -->
-            <img src="assets/app-cover.png" alt="Hazard Exposure Assessment Dashboard cover image">
-          </div>
-          <div class="content">
-            <h3>Hazard Exposure Assessment Dashboard</h3>
-            <p>Personal geospatial dashboard to automate exposure metrics and visualization for large, distributed asset portfolios.</p>
-            <div class="meta">
-              <span class="chip">Dashboard</span>
-              <span class="chip">GIS</span>
-              <span class="chip">Exposure metrics</span>
+            <div class="tags">
+              <span class="tag">Physical climate risk</span>
+              <span class="tag">Flood &amp; rainfall analytics</span>
+              <span class="tag">2D flood modelling</span>
+              <span class="tag">Landslide / slope stability</span>
+              <span class="tag">Seismic analysis</span>
+              <span class="tag">Exposure &amp; vulnerability</span>
+              <span class="tag">Remote sensing indices</span>
+              <span class="tag">Python • QGIS • GEE • ArcGIS • MATLAB</span>
             </div>
-            <div class="cta">
-              <span class="small">Read case study</span>
-              <span class="small">→</span>
+
+            <hr class="sep" />
+
+            <p class="small">
+              Each case study highlights the objective, approach, tools used, and outputs (maps/charts)—without sharing proprietary code or client data.
+            </p>
+
+            <div class="cta" style="margin-top:14px;">
+              <a class="pill primary" href="#featured">View featured work</a>
+              <span class="small">Based in PH • Open to climate / geospatial / data analytics roles</span>
             </div>
           </div>
-        </a>
 
-        <!-- 2) Methodology -->
-        <a class="card project" href="project-methodology.html">
-          <div class="cover">
-            <img src="assets/rainfall-cover.jpg" alt="Climate Hazard Exposure Assessment Methodology cover image">
-          </div>
-          <div class="content">
-            <h3>Hazard Exposure Assessment Methodology</h3>
-            <p>Standardized framework integrating local and global datasets to assess exposure under current and future scenarios.</p>
-            <div class="meta">
-              <span class="chip">Methodology</span>
-              <span class="chip">Local + global data</span>
-              <span class="chip">Future scenarios</span>
+          <div class="card hero-side">
+            <div class="profile">
+              <div class="avatar">
+                <!-- Optional: replace with your image -->
+                <!-- <img src="assets/headshot.jpg" alt="Headshot of Paola Romaguera"> -->
+                headshot
+              </div>
+              <div class="profile-meta">
+                <strong>Paola Jayme M. Romaguera</strong>
+                <span>Spatial Analyst • Climate Risk Consultant</span>
+              </div>
             </div>
-            <div class="cta">
-              <span class="small">Read case study</span>
-              <span class="small">→</span>
-            </div>
-          </div>
-        </a>
 
-        <!-- 3) Turbidity (Remote sensing) -->
-        <a class="card project" href="project-turbidity.html">
-          <div class="cover">
-            <img src="assets/turbidity.png" alt="River turbidity assessment cover image">
-          </div>
-          <div class="content">
-            <h3>River Turbidity Assessment</h3>
-            <p>Used Google Earth Engine and satellite imagery to map turbidity patterns and identify potential siltation zones.</p>
-            <div class="meta">
-              <span class="chip">GEE</span>
-              <span class="chip">Remote sensing</span>
-              <span class="chip">Time series</span>
+            <div class="quicklist">
+              <h3>What I deliver</h3>
+              <ul>
+                <li>Asset-level hazard exposure metrics and maps</li>
+                <li>Scenario-driven risk comparisons (e.g., RCP/SSP)</li>
+                <li>Remote-sensing indicators to support interpretation</li>
+                <li>Executive-ready visuals and clear narratives</li>
+              </ul>
             </div>
-            <div class="cta">
-              <span class="small">Read case study</span>
-              <span class="small">→</span>
+
+            <div class="quicklist">
+              <h3>Tools</h3>
+              <ul>
+                <li>Python (NumPy, pandas, xarray, rasterio, geopandas)</li>
+                <li>QGIS / ArcGIS • Google Earth Engine</li>
+                <li>Docs &amp; decks for non-technical stakeholders</li>
+                <li>Git/GitHub (versioning + reproducibility)</li>
+              </ul>
             </div>
           </div>
-        </a>
-
-        <!-- 4) FLO-2D -->
-        <a class="card project" href="project-flo2d.html">
-          <div class="cover">
-            <img src="assets/Flood Modelling.png" alt="2D flood modeling cover image">
-          </div>
-          <div class="content">
-            <h3>2D Flood Modeling (FLO-2D)</h3>
-            <p>Hydrodynamic flood simulations producing flood depth and extent maps for hazard interpretation and planning.</p>
-            <div class="meta">
-              <span class="chip">FLO-2D</span>
-              <span class="chip">Hydrodynamic</span>
-              <span class="chip">Depth &amp; extent</span>
-            </div>
-            <div class="cta">
-              <span class="small">Read case study</span>
-              <span class="small">→</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- 5) Eddies -->
-        <a class="card project" href="project-eddies.html">
-          <div class="cover">
-            <img src="assets/eddies.png" alt="Ocean eddy detection cover image">
-          </div>
-          <div class="content">
-            <h3>Ocean Eddy Detection (Freelance)</h3>
-            <p>Processed multi-year NetCDF datasets in Python to detect mesoscale eddies, extract parameters, and track lifecycle evolution.</p>
-            <div class="meta">
-              <span class="chip">Python</span>
-              <span class="chip">NetCDF</span>
-              <span class="chip">Feature tracking</span>
-            </div>
-            <div class="cta">
-              <span class="small">Read case study</span>
-              <span class="small">→</span>
-            </div>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-<!-- RESEARCH & PUBLICATIONS -->
-<div class="section">
-  <h2>Research & Publications</h2>
-
-  <div class="grid">
-
-    <!-- AGU Multi-hazard -->
-    <div class="card project">
-
-      <div class="content">
-
-        <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
-
-        <p>
-          Contributed to the development of a geospatial framework to analyze interactions between multiple hazards,
-          including cascading and compounding effects where one hazard can trigger or amplify another.
-          The framework supports spatial visualization and improved understanding of hazard interdependencies
-          for disaster risk assessment and resilience planning.
-        </p>
-
-        <div class="meta">
-          <span class="chip">AGU Fall Meeting</span>
-          <span class="chip">2020</span>
-          <span class="chip">Conference presentation</span>
-          <span class="chip">Multi-hazard risk</span>
         </div>
+      </section>
 
-        <div class="cta">
+      <!-- SECTION 2: FEATURED PROJECTS -->
+      <section class="snap-section" id="featured">
+        <div class="section reveal">
+          <h2>Featured case studies</h2>
 
-          <a class="pill"
-             href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract"
-             target="_blank">
-             View abstract ↗
-          </a>
+          <div class="grid">
 
-          <a class="pill primary"
-             href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF"
-             target="_blank">
-             View poster ↗
-          </a>
+            <!-- 1) Dashboard (Personal Project) -->
+            <a class="card project" href="project-dashboard.html">
+              <div class="cover">
+                <img src="assets/app-cover.png" alt="Hazard Exposure Assessment Dashboard cover image">
+              </div>
+              <div class="content">
+                <h3>Hazard Exposure Assessment Dashboard</h3>
+                <p>Personal geospatial dashboard to automate exposure metrics and visualization for large, distributed asset portfolios.</p>
 
+                <div class="proj-meta">
+                  <span class="kw"><em>Dashboard</em></span>
+                  <span class="kw"><em>GIS</em></span>
+                  <span class="kw"><em>Exposure metrics</em></span>
+                </div>
+
+                <div class="cta">
+                  <span class="small">Read case study</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 2) Methodology -->
+            <a class="card project" href="project-methodology.html">
+              <div class="cover">
+                <img src="assets/rainfall-cover.jpg" alt="Climate hazard exposure assessment methodology cover image">
+              </div>
+              <div class="content">
+                <h3>Hazard Exposure Assessment Methodology</h3>
+                <p>Standardized framework integrating local and global datasets to assess exposure under current and future scenarios.</p>
+
+                <div class="proj-meta">
+                  <span class="kw"><em>Methodology</em></span>
+                  <span class="kw"><em>Local + global data</em></span>
+                  <span class="kw"><em>Future scenarios</em></span>
+                </div>
+
+                <div class="cta">
+                  <span class="small">Read case study</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 3) Turbidity -->
+            <a class="card project" href="project-turbidity.html">
+              <div class="cover">
+                <img src="assets/turbidity.png" alt="River turbidity assessment cover image">
+              </div>
+              <div class="content">
+                <h3>River Turbidity Assessment</h3>
+                <p>Used Google Earth Engine and satellite imagery to map turbidity patterns and identify potential siltation zones.</p>
+
+                <div class="proj-meta">
+                  <span class="kw"><em>GEE</em></span>
+                  <span class="kw"><em>Remote sensing</em></span>
+                  <span class="kw"><em>Time series</em></span>
+                </div>
+
+                <div class="cta">
+                  <span class="small">Read case study</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 4) FLO-2D -->
+            <a class="card project" href="project-flo2d.html">
+              <div class="cover">
+                <img src="assets/Flood Modelling.png" alt="2D flood modeling cover image">
+              </div>
+              <div class="content">
+                <h3>2D Flood Modeling (FLO-2D)</h3>
+                <p>Hydrodynamic flood simulations producing flood depth and extent maps for hazard interpretation and planning.</p>
+
+                <div class="proj-meta">
+                  <span class="kw"><em>FLO-2D</em></span>
+                  <span class="kw"><em>Hydrodynamic</em></span>
+                  <span class="kw"><em>Depth &amp; extent</em></span>
+                </div>
+
+                <div class="cta">
+                  <span class="small">Read case study</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- 5) Eddies -->
+            <a class="card project" href="project-eddies.html">
+              <div class="cover">
+                <img src="assets/eddies.png" alt="Ocean eddy detection cover image">
+              </div>
+              <div class="content">
+                <h3>Ocean Eddy Detection (Freelance)</h3>
+                <p>Processed multi-year NetCDF datasets in Python to detect mesoscale eddies, extract parameters, and track lifecycle evolution.</p>
+
+                <div class="proj-meta">
+                  <span class="kw"><em>Python</em></span>
+                  <span class="kw"><em>NetCDF</em></span>
+                  <span class="kw"><em>Feature tracking</em></span>
+                </div>
+
+                <div class="cta">
+                  <span class="small">Read case study</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+          </div>
+
+          <div class="cta" style="margin-top:16px;">
+            <a class="pill" href="projects.html">View all projects</a>
+            <a class="pill primary" href="#research">Go to research</a>
+          </div>
         </div>
+      </section>
 
-      </div>
+      <!-- SECTION 3: RESEARCH -->
+      <section class="snap-section" id="research">
+        <div class="section reveal">
+          <h2>Research &amp; Publications</h2>
 
-    </div>
+          <div class="grid">
 
+            <!-- AGU -->
+            <div class="card project research-card">
+              <div class="content">
+                <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
+                <p>
+                  Contributed to the development of a geospatial framework to analyze interactions between multiple hazards,
+                  including cascading and compounding effects where one hazard can trigger or amplify another. The framework supports
+                  spatial visualization and improved understanding of hazard interdependencies for disaster risk assessment and resilience planning.
+                </p>
 
-    <!-- GeoCon HVSR -->
-    <div class="card project">
+                <div class="research-meta">
+                  <span class="venue"><em>AGU Fall Meeting</em> • 2020</span>
+                  <span class="kw"><em>Multi-hazard risk</em></span>
+                  <span class="kw"><em>Disaster risk analysis</em></span>
+                </div>
 
-      <div class="content">
+                <div class="research-actions">
+                  <a class="pill" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank">View abstract ↗</a>
+                  <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank">View poster ↗</a>
+                </div>
+              </div>
+            </div>
 
-        <h3>Enhancing Shear Wave Velocity (Vs30) Mapping using HVSR Inversion</h3>
+            <!-- GeoCon -->
+            <div class="card project research-card">
+              <div class="content">
+                <h3>Enhancing Shear Wave Velocity (Vs30) Mapping using HVSR Inversion</h3>
+                <p>
+                  Poster presenter at GeoCon 2023 for a study applying HVSR inversion using the MATLAB-based HVSRInv software
+                  to estimate shear-wave velocity profiles and Vs30, a critical parameter in seismic hazard and site amplification analysis.
+                  An elitist genetic algorithm was used to estimate subsurface layer properties from HVSR data, and results were validated
+                  against Refraction Microtremor survey measurements.
+                </p>
 
-        <p>
-          Poster presenter at GeoCon 2023 for a study applying HVSR inversion using the MATLAB-based HVSRInv software
-          to estimate shear-wave velocity profiles and Vs30, a critical parameter in seismic hazard analysis.
-          An elitist genetic algorithm was used to estimate subsurface layer properties, with results validated
-          against Refraction Microtremor survey measurements.
-        </p>
+                <div class="research-meta">
+                  <span class="venue"><em>GeoCon</em> • 2023 • Poster Presenter</span>
+                  <span class="kw"><em>Seismic hazard</em></span>
+                  <span class="kw"><em>HVSR inversion</em></span>
+                  <span class="kw"><em>MATLAB</em></span>
+                </div>
 
-        <div class="meta">
-          <span class="chip">GeoCon 2023</span>
-          <span class="chip">Poster Presenter</span>
-          <span class="chip">Seismic hazard</span>
-          <span class="chip">MATLAB</span>
+                <div class="research-actions">
+                  <a class="pill primary" href="assets/GeoCon 2023 Abstract Volume - Posters.pdf" target="_blank">View poster ↗</a>
+                  <a class="pill" href="assets/GeoCon 2023 Abstract Volume - Posters.pdf" target="_blank">View abstract ↗</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Benham Rise -->
+            <div class="card project research-card">
+              <div class="content">
+                <h3>Characterization of Volcanic Features within the Benham Plateau</h3>
+                <p>
+                  Conducted remote sensing and geospatial analysis to identify and characterize volcanic features within the Benham Rise,
+                  supporting interpretation of submarine volcanic structures and contributing to understanding the geological evolution of the region.
+                </p>
+
+                <div class="research-meta">
+                  <span class="venue"><em>University of the Philippines</em> • 2019</span>
+                  <span class="kw"><em>Remote sensing</em></span>
+                  <span class="kw"><em>Marine geophysics</em></span>
+                  <span class="kw"><em>Geomorphology</em></span>
+                </div>
+
+                <div class="research-actions">
+                  <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank">View publication ↗</a>
+                  <a class="pill" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank">View abstract ↗</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="cta" style="margin-top:16px;">
+            <a class="pill" href="#featured">← Back to featured</a>
+            <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+          </div>
         </div>
+      </section>
 
-        <div class="cta">
+    </main>
 
-          <a class="pill primary"
-             href="assets/GeoCon 2023 Abstract Volume - Posters.pdf"
-             target="_blank">
-             View poster ↗
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- Benham Rise -->
-    <div class="card project">
-
-      <div class="content">
-
-        <h3>Characterization of Volcanic Features within the Benham Plateau</h3>
-
-        <p>
-          Conducted remote sensing and geospatial analysis to identify volcanic features within the Benham Rise,
-          contributing to interpretation of submarine volcanic structures and the geological evolution of the region.
-        </p>
-
-        <div class="meta">
-          <span class="chip">Undergraduate thesis</span>
-          <span class="chip">University of the Philippines</span>
-          <span class="chip">Remote sensing</span>
-          <span class="chip">Marine geophysics</span>
-        </div>
-
-        <div class="cta">
-
-          <a class="pill primary"
-             href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise"
-             target="_blank">
-             View publication ↗
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
     <!-- FOOTER -->
     <div class="footer">
       <span>© <span id="y"></span> Paola Romaguera</span>
@@ -363,7 +335,15 @@
   </div>
 
   <script>
+    // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.18 });
+    revealEls.forEach(el => io.observe(el));
   </script>
 </body>
 </html>
