@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
+
 <body>
   <div class="container">
 
@@ -345,5 +346,19 @@
     }, { threshold: 0.18 });
     revealEls.forEach(el => io.observe(el));
   </script>
+
+  <script>
+  // Reveal animation when a section enters the viewport
+  const revealEls = document.querySelectorAll('.reveal');
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('is-visible');
+    });
+  }, { threshold: 0.18 });
+
+  revealEls.forEach(el => io.observe(el));
+</script>
+  
 </body>
 </html>
