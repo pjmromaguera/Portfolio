@@ -1,141 +1,384 @@
-<!-- =========================
-FILE: project-dashboard.html
-========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hazard Exposure Assessment Dashboard (Personal Project) | Paola Romaguera</title>
-  <meta name="description" content="Personal geospatial dashboard built to automate hazard exposure metrics and visualization for distributed asset portfolios (no client systems/data shared)." />
+  <title>Hazard Exposure Assessment Dashboard | Paola Jayme Romaguera</title>
+  <meta name="description" content="Personal Streamlit geospatial dashboard to automate hazard exposure metrics and visualization for distributed asset portfolios (no client systems/data shared)." />
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Page-specific polish (keeps style.css as the base) -->
+  <style>
+    /* layout */
+    body .container{ max-width:none; padding:0; }
+    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
+
+    /* sticky nav like main page */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+      margin: 0;
+    }
+
+    /* scene */
+    .case{
+      position: relative;
+      padding: 70px 0 44px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .case::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(1200px 520px at 25% 15%, rgba(34,211,238,.14), transparent 55%),
+        radial-gradient(900px 520px at 70% 65%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+      pointer-events:none;
+      z-index:0;
+    }
+    .case > *{ position:relative; z-index:1; }
+
+    /* hero */
+    .case-hero{
+      border:1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      overflow:hidden;
+    }
+    .crumb{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .crumb a{ color: var(--muted); }
+    .crumb a:hover{ color: var(--text); }
+    .crumb .sep{ color: rgba(255,255,255,.25); }
+
+    .micro{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 12px;
+    }
+    .micro .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
+
+    .case-title{
+      margin: 0 0 10px;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.6px;
+    }
+    .case-lede{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 85ch;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top: 14px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:12px;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .chip em{ font-style: italic; }
+
+    .case-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+
+    /* grids */
+    .grid2{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 980px){
+      .grid2{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 640px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      grid-column: span 6;
+      border:1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      overflow:hidden;
+    }
+    .panel h3{
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .panel ul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+    .panel li{ margin: 7px 0; }
+
+    /* wide blocks */
+    .panel.wide{ grid-column: span 12; }
+    .panel .small{ margin: 0 0 10px; }
+
+    /* media */
+    .figure{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+    }
+    .figure img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    /* gallery */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 980px){
+      .gallery{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px){
+      .gallery{ grid-template-columns: 1fr; }
+    }
+    .gitem{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+    }
+    .gitem img{
+      width:100%;
+      height:240px;
+      object-fit: cover;
+      display:block;
+    }
+    .gcap{
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+
+    /* footer spacing */
+    .footer{ margin: 0; padding: 26px 0 38px; }
+  </style>
 </head>
+
 <body>
   <div class="container">
 
-    <div class="nav">
-      <div class="brand">
-        <div class="brand-badge" aria-hidden="true"></div>
-        <div class="brand-name">
-          <strong>Paola Romaguera</strong>
-          <span>Case Study</span>
-        </div>
-      </div>
-
-      <div class="nav-links">
-        <a class="pill" href="index.html">Home</a>
-        <a class="pill" href="projects.html">Projects</a>
-        <a class="pill" href="resume.pdf">Resume</a>
-        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-      </div>
-    </div>
-
-    <div class="card proj-detail">
-      <h1>Hazard Exposure Assessment Dashboard (Personal Project)</h1>
-      <p class="lede">
-        A personal workflow tool built to speed up and standardize hazard exposure assessments for geographically distributed asset portfolios.
-        This project is independent and does not include proprietary client systems or confidential data.
-      </p>
-
-      <div class="two-col">
-        <div class="panel">
-          <h3>Objective</h3>
-          <ul>
-            <li>Reduce manual steps in exposure assessment when asset counts range from tens to hundreds of sites.</li>
-            <li>Produce decision-ready outputs: quantitative exposure metrics + clear visual summaries.</li>
-            <li>Improve consistency across assessments by using a repeatable workflow.</li>
-          </ul>
+    <!-- NAV -->
+    <header class="nav" role="navigation">
+      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-name">
+            <strong>Paola Jayme Romaguera</strong>
+            <span>Case Study</span>
+          </div>
         </div>
 
-        <div class="panel">
-          <h3>Approach</h3>
-          <ul>
-            <li>Ingest asset locations and selected hazard layers.</li>
-            <li>Automate spatial overlays and summarization into exposure indicators.</li>
-            <li>Generate maps/charts to support interpretation of spatial risk patterns.</li>
-          </ul>
-        </div>
+        <nav class="nav-links" aria-label="Primary">
+          <a class="pill" href="index.html">Home</a>
+          <a class="pill" href="projects.html">Projects</a>
+          <a class="pill" href="resume.pdf">Resume</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+        </nav>
       </div>
+    </header>
 
-      <div class="two-col" style="margin-top:14px;">
-        <div class="panel">
-          <h3>Tools Used</h3>
-          <ul>
-            <li>GIS + spatial analytics workflow</li>
-            <li>Python (optional for preprocessing/automation)</li>
-            <li>Map and chart outputs for reporting</li>
-          </ul>
-        </div>
+    <!-- BODY -->
+    <main class="case">
+      <div class="wide">
 
-        <div class="panel">
-          <h3>What I Owned (Leadership)</h3>
-          <ul>
-            <li>Led workflow design and implemented a standardized assessment process.</li>
-            <li>Defined exposure metrics and output formats to reduce rework.</li>
-            <li>Built the project as a personal optimization initiative (no client delivery).</li>
-          </ul>
-        </div>
+        <!-- HERO -->
+        <section class="case-hero">
+          <div class="crumb">
+            <a href="projects.html">Projects</a>
+            <span class="sep">•</span>
+            <span class="small">Hazard Exposure Assessment Dashboard</span>
+          </div>
+
+          <div class="micro"><span class="dot"></span> Personal mini-app • Streamlit • GIS automation</div>
+
+          <h1 class="case-title">Hazard Exposure Assessment Dashboard</h1>
+          <p class="case-lede">
+            A personal workflow tool to speed up and standardize hazard exposure assessments for geographically distributed asset portfolios.
+            This case study is independent and uses only public-domain, synthetic, or sanitized examples.
+          </p>
+
+          <div class="chips" aria-label="Tags">
+            <span class="chip"><em>Dashboard</em></span>
+            <span class="chip"><em>Exposure metrics</em></span>
+            <span class="chip"><em>Spatial overlays</em></span>
+            <span class="chip"><em>Maps + charts</em></span>
+            <span class="chip"><em>Streamlit</em></span>
+          </div>
+
+          <div class="case-actions">
+            <a class="pill" href="projects.html">← Back to Projects</a>
+            <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+            <span class="small">No proprietary code or client data shared</span>
+          </div>
+        </section>
+
+        <!-- GRID: Objective / Approach / Tools / Role -->
+        <section class="grid2" aria-label="Case study details">
+          <div class="panel">
+            <h3>Objective</h3>
+            <ul>
+              <li>Reduce manual steps when assessing tens to hundreds of sites.</li>
+              <li>Produce decision-ready outputs: exposure metrics + clean visuals.</li>
+              <li>Improve consistency using a repeatable, standardized workflow.</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h3>Approach</h3>
+            <ul>
+              <li>Ingest asset locations and selected hazard layers.</li>
+              <li>Automate overlays and summarization into exposure indicators.</li>
+              <li>Generate maps/charts for interpretation and reporting.</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h3>Tools</h3>
+            <ul>
+              <li>Streamlit for the interface and modular workflow steps</li>
+              <li>GIS overlays + spatial joins for exposure extraction</li>
+              <li>Python (optional) for preprocessing and automation</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <h3>My role</h3>
+            <ul>
+              <li>Designed the end-to-end workflow and information architecture.</li>
+              <li>Defined exposure metrics and standardized output formats.</li>
+              <li>Built this as a personal optimization initiative (not client delivery).</li>
+            </ul>
+          </div>
+
+          <!-- Workflow Snapshot -->
+          <div class="panel wide">
+            <h3>Workflow snapshot</h3>
+            <p class="small">High-level view of the modules and output flow.</p>
+            <div class="figure">
+              <img src="assets/workflow-dashboard.png" alt="Dashboard workflow diagram">
+            </div>
+          </div>
+
+          <!-- Results Gallery -->
+          <div class="panel wide">
+            <h3>Results gallery</h3>
+            <p class="small">Example screenshots of inputs, run module, and results outputs.</p>
+
+            <div class="gallery">
+              <div class="gitem">
+                <img src="assets/app-input.png" alt="Dashboard input module">
+                <div class="gcap">Input module — load assets and parameters</div>
+              </div>
+              <div class="gitem">
+                <img src="assets/app-run.png" alt="Dashboard run module">
+                <div class="gcap">Run module — execute overlays + summarization</div>
+              </div>
+              <div class="gitem">
+                <img src="assets/app-results.png" alt="Dashboard results outputs">
+                <div class="gcap">Results — metrics tables, maps, and charts</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Takeaways -->
+          <div class="panel wide">
+            <h3>Key takeaways</h3>
+            <ul>
+              <li>Exposure assessments become faster and more scalable for large, distributed portfolios.</li>
+              <li>Standardized outputs improve consistency across reporting and interpretation.</li>
+              <li>Clear visuals support communication with non-technical stakeholders.</li>
+            </ul>
+          </div>
+
+          <!-- Privacy -->
+          <div class="panel wide">
+            <h3>Data privacy note</h3>
+            <p class="small">
+              This case study is described at a high level. Visuals should use public-domain, synthetic, or sanitized examples.
+              No proprietary client datasets, internal systems, or confidential information are included.
+            </p>
+          </div>
+        </section>
+
       </div>
+    </main>
 
-      <div class="panel" style="margin-top:14px;">
-        <h3>Workflow Snapshot</h3>
-        <p class="small">Replace with your own diagram/screenshot.</p>
-        <img src="assets/workflow-dashboard.png" alt="Dashboard workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <span>© <span id="y"></span> Paola Jayme Romaguera</span>
+        <span>
+          <a href="index.html">Home</a> •
+          <a href="projects.html">Projects</a> •
+          <a href="resume.pdf">Resume</a>
+        </span>
       </div>
-
-     <div class="panel" style="margin-top:14px;">
-  <h3>Results Gallery</h3>
-  <p class="small">Example screenshots of the dashboard workflow and outputs.</p>
-
-  <div class="gallery">
-
-    <div class="gallery-item">
-      <img src="assets/app-input.png" alt="Dashboard Input">
-    </div>
-
-    <div class="gallery-item">
-      <img src="assets/app-run.png" alt="Dashboard Run Module">
-    </div>
-
-    <div class="gallery-item">
-      <img src="assets/app-results.png" alt="Dashboard Results">
-    </div>
+    </footer>
 
   </div>
-</div>
-       
-      </div>
 
-      <div class="panel" style="margin-top:14px;">
-        <h3>Key Takeaways</h3>
-        <ul>
-          <li>Exposure assessments become faster and more scalable for large, distributed portfolios.</li>
-          <li>Standardized outputs improve consistency across reporting and interpretation.</li>
-          <li>Clear visuals help communicate spatial patterns to non-technical stakeholders.</li>
-        </ul>
-      </div>
-
-      <div class="panel" style="margin-top:14px;">
-        <h3>Data Privacy Note</h3>
-        <p class="small">
-          This case study is described at a high level. Any visuals shown should use public-domain, synthetic, or sanitized examples.
-          No proprietary client datasets or internal systems are included.
-        </p>
-      </div>
-
-      <div class="cta" style="margin-top:16px;">
-        <a class="pill" href="projects.html">← Back to Projects</a>
-        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
-      </div>
-    </div>
-
-    <div class="footer">
-      <span>© <span id="y"></span> Paola Romaguera</span>
-      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
-    </div>
-
-  </div>
-
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
