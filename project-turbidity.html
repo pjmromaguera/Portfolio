@@ -1,127 +1,596 @@
-<!-- =========================
-FILE: project-turbidity.html
-========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>River Turbidity Assessment (Remote Sensing, GEE) | Paola Romaguera</title>
-  <meta name="description" content="River turbidity assessment using Google Earth Engine and satellite remote sensing to identify sediment patterns and potential siltation zones." />
+  <title>River Turbidity Assessment (Remote Sensing) | Paola Jayme Romaguera</title>
+  <meta name="description" content="Mapped turbidity patterns using satellite imagery and Google Earth Engine to identify potential siltation zones and temporal trends (public/sanitized examples only)." />
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Full-bleed like index */
+    body .container{ max-width:none; padding:0; }
+    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
+
+    /* Nav: sticky like index */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+      margin: 0;
+    }
+
+    /* Chapters */
+    .chapter{
+      padding: 80px 0;
+      position: relative;
+      border-top: 1px solid rgba(255,255,255,.06);
+      overflow: hidden;
+    }
+    @media (max-width: 860px){ .chapter{ padding: 52px 0; } }
+
+    /* Subtle chapter ambience */
+    .chapter::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: var(--scene-bg,
+        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.10), transparent 55%),
+        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0))
+      );
+      pointer-events:none;
+      z-index:0;
+    }
+    .chapter > *{ position:relative; z-index:1; }
+
+    /* Hero panel */
+    .hero-panel{
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-copy{ padding: 28px; }
+
+    .crumbs{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .crumbs a{ color: var(--text); opacity:.9; }
+    .crumbs span{ opacity:.75; }
+
+    .micro{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size: 12px;
+      color: var(--muted);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 12px;
+    }
+    .micro .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
+
+    .super{
+      font-size: clamp(40px, 5.2vw, 68px);
+      line-height: 1.03;
+      letter-spacing: -0.9px;
+      margin: 0 0 12px;
+    }
+    .lede2{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      max-width: 78ch;
+      margin: 0 0 14px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 14px;
+    }
+    .tag{
+      font-size:14px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+
+    /* ===== Highlights grid (MOBILE FIX INCLUDED) ===== */
+    .detail-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 980px){
+      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 640px){
+      .detail-grid{ grid-template-columns: 1fr; }
+    }
+
+    .detail-card{
+      grid-column: span 6;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 22px;
+    }
+    .detail-card h3{
+      margin:0 0 12px;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .detail-card ul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+    .detail-card li{ margin: 10px 0; }
+    .detail-wide{ grid-column: span 12; }
+
+    /* IMPORTANT mobile fix: override spans when grid is 1 column */
+    @media (max-width: 640px){
+      .detail-card,
+      .detail-wide{
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* ===== Modules ===== */
+    .module-wrap{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .highlight{
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 28px;
+    }
+
+    .highlight-grid{
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 22px;
+      align-items: center;
+    }
+    @media (max-width: 980px){
+      .highlight-grid{ grid-template-columns: 1fr; }
+    }
+
+    .h-eyebrow{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 7px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .h-eyebrow .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
+
+    .h-title{
+      margin: 0 0 14px;
+      font-size: clamp(24px, 2.4vw, 34px);
+      letter-spacing: -.4px;
+      line-height: 1.12;
+    }
+    .h-desc{
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: clamp(15px, 1.15vw, 18px);
+      line-height: 1.8;
+      max-width: 66ch;
+    }
+    .h-points{
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    .h-points li{ margin: 10px 0; }
+
+    .h-media{
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(0,0,0,.18);
+      overflow: hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      position: relative;
+    }
+    .h-media img{
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: zoom-in;
+      transform: scale(1);
+      transition: transform .22s ease, filter .22s ease;
+      will-change: transform;
+      transform-origin: center;
+    }
+
+    /* Hover zoom */
+    @media (hover:hover){
+      .h-media:hover img{
+        transform: scale(1.06);
+        filter: saturate(1.05) contrast(1.03);
+      }
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(5,10,20,.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease;
+      padding: 18px;
+    }
+    .lightbox.show{
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox img{
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: 0 40px 120px rgba(0,0,0,.6);
+    }
+    .lightbox-close{
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+      opacity: .75;
+      transition: opacity .2s;
+      line-height: 1;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(0,0,0,.25);
+    }
+    .lightbox-close:hover{ opacity: 1; }
+
+    /* Reveal transitions */
+    .reveal{
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .8s ease, transform .8s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.in{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer{ margin: 0; padding: 26px 0 38px; }
+  </style>
 </head>
+
 <body>
   <div class="container">
 
-    <div class="nav">
-      <div class="brand">
-        <div class="brand-badge" aria-hidden="true"></div>
-        <div class="brand-name">
-          <strong>Paola Romaguera</strong>
-          <span>Case Study</span>
-        </div>
-      </div>
-
-      <div class="nav-links">
-        <a class="pill" href="index.html">Home</a>
-        <a class="pill" href="projects.html">Projects</a>
-        <a class="pill" href="resume.pdf">Resume</a>
-        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-      </div>
-    </div>
-
-    <div class="card proj-detail">
-      <h1>River Turbidity Assessment Using Remote Sensing</h1>
-      <p class="lede">
-        Used Google Earth Engine (GEE) and satellite remote sensing to assess turbidity patterns in rivers around Metro Manila.
-        Outputs supported identification of potential siltation zones for planning and prioritization considerations.
-      </p>
-
-      <div class="two-col">
-        <div class="panel">
-          <h3>Objective</h3>
-          <ul>
-            <li>Map turbidity indicators and sediment concentration patterns.</li>
-            <li>Identify potential hotspots consistent with siltation zones.</li>
-            <li>Summarize results in visuals suitable for planning discussions.</li>
-          </ul>
+    <!-- NAV (same structure as index) -->
+    <header class="nav" role="navigation">
+      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-name">
+            <strong>Paola Jayme Romaguera</strong>
+            <span>Climate Risk • GIS • Remote Sensing • Python</span>
+          </div>
         </div>
 
-        <div class="panel">
-          <h3>Approach</h3>
-          <ul>
-            <li>Process satellite imagery in GEE (cloud masking and compositing).</li>
-            <li>Derive turbidity indicators using spectral indices.</li>
-            <li>Analyze spatial patterns and time-series changes to flag hotspots.</li>
-          </ul>
+        <nav class="nav-links" aria-label="Primary">
+          <a class="pill" href="index.html#top">Overview</a>
+          <a class="pill" href="index.html#featured">Featured</a>
+          <a class="pill" href="index.html#research">Research</a>
+          <a class="pill" href="projects.html">All Projects</a>
+          <a class="pill" href="resume.pdf">Resume</a>
+          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="chapter" id="top">
+      <div class="wide">
+        <div class="hero-panel reveal">
+          <div class="hero-copy">
+            <div class="crumbs">
+              <a href="projects.html">Projects</a>
+              <span>•</span>
+              <span>River Turbidity Assessment</span>
+            </div>
+
+            <div class="micro"><span class="dot"></span> Remote sensing • Google Earth Engine • Water quality proxy</div>
+
+            <h1 class="super">River Turbidity Assessment</h1>
+
+            <p class="lede2">
+              Used satellite imagery to map turbidity patterns over time and identify potential siltation hotspots.
+              This case study is independent and uses only public-domain, synthetic, or sanitized examples.
+            </p>
+
+            <div class="tags">
+              <span class="tag">Remote sensing</span>
+              <span class="tag">GEE</span>
+              <span class="tag">Time series</span>
+              <span class="tag">Water quality proxy</span>
+              <span class="tag">Maps</span>
+            </div>
+
+            <div class="row">
+              <a class="pill" href="projects.html">← Back to Projects</a>
+              <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+              <span class="small">No proprietary code or client data shared</span>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="two-col" style="margin-top:14px;">
-        <div class="panel">
-          <h3>Tools Used</h3>
-          <ul>
-            <li>Google Earth Engine</li>
-            <li>Satellite imagery (e.g., Sentinel-2 / Landsat)</li>
-            <li>Remote sensing indices + time-series summaries</li>
-          </ul>
+    <!-- HIGHLIGHTS -->
+    <section class="chapter" id="details">
+      <div class="wide">
+        <div class="reveal">
+          <h2 style="margin:0 0 10px; font-size:28px; letter-spacing:-.3px;">Highlights</h2>
+          <p class="lede2" style="margin:0;">What this assessment was designed to answer and how it’s structured.</p>
         </div>
 
-        <div class="panel">
-          <h3>What I Owned (Leadership)</h3>
-          <ul>
-            <li>Designed the analysis workflow and index selection for turbidity interpretation.</li>
-            <li>Built the processing pipeline in GEE to make results repeatable.</li>
-            <li>Translated outputs into maps/graphics suitable for non-technical audiences.</li>
-          </ul>
+        <div class="detail-grid">
+          <div class="detail-card reveal">
+            <h3>Objective</h3>
+            <ul>
+              <li>Map spatial turbidity patterns and detect hotspots.</li>
+              <li>Track changes through time (seasonality / anomalies).</li>
+              <li>Produce clear maps and summaries for interpretation.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card reveal">
+            <h3>Approach</h3>
+            <ul>
+              <li>Assemble imagery collection and apply QA masking.</li>
+              <li>Compute turbidity proxy (e.g., NDTI) and aggregate.</li>
+              <li>Summarize trends and create monthly/seasonal maps.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card reveal">
+            <h3>Tools</h3>
+            <ul>
+              <li>Google Earth Engine for processing at scale.</li>
+              <li>QGIS/ArcGIS for cartography (as needed).</li>
+              <li>Python for post-processing and plotting (optional).</li>
+            </ul>
+          </div>
+
+          <div class="detail-card reveal">
+            <h3>My role</h3>
+            <ul>
+              <li>Designed the workflow and QC approach.</li>
+              <li>Implemented index extraction + map outputs.</li>
+              <li>Produced interpretation-ready visuals.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card detail-wide reveal">
+            <h3>Key takeaways</h3>
+            <ul>
+              <li>Monthly composites reduce noise and improve interpretability.</li>
+              <li>Clear QA/QC steps are critical for defensible results.</li>
+              <li>Maps + trend summaries work well for non-technical audiences.</li>
+            </ul>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="panel" style="margin-top:14px;">
-        <h3>Workflow Snapshot</h3>
-        <p class="small">Replace with a diagram of your GEE processing steps.</p>
-        <img src="assets/workflow-turbidity.png" alt="Turbidity workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
-      </div>
-
-      <div class="panel" style="margin-top:14px;">
-        <h3>Results Gallery</h3>
-        <p class="small">Suggested visuals: turbidity map, hotspot map, time-series plot.</p>
-        <div class="gallery">
-          <img src="assets/turbidity-map.png" alt="Turbidity map output">
-          <img src="assets/turbidity-hotspots.png" alt="Potential siltation hotspots">
-          <img src="assets/turbidity-timeseries.png" alt="Turbidity time series">
+    <!-- MODULE 1 -->
+    <section class="chapter" id="module-data">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 1</div>
+                <h2 class="h-title">Data assembly & QA</h2>
+                <p class="h-desc">Build the image collection and apply masking to improve signal quality.</p>
+                <ul class="h-points">
+                  <li>Select imagery and time range (e.g., multi-year).</li>
+                  <li>Cloud/shadow masking and water masking as appropriate.</li>
+                  <li>Standardize bands and resolution handling.</li>
+                </ul>
+              </div>
+              <div class="h-media">
+                <img src="assets/turbidity-map.png" alt="Turbidity data/QA screenshot">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="panel" style="margin-top:14px;">
-        <h3>Key Takeaways</h3>
-        <ul>
-          <li>Remote sensing provides scalable turbidity monitoring over large river networks.</li>
-          <li>Hotspot mapping helps prioritize areas for further investigation and planning.</li>
-          <li>Time-series views support interpretation of seasonality and event-driven changes.</li>
-        </ul>
+    <!-- MODULE 2 -->
+    <section class="chapter" id="module-index"
+      style="--scene-bg:
+        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
+        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 2</div>
+                <h2 class="h-title">Index computation</h2>
+                <p class="h-desc">Compute turbidity proxy (e.g., NDTI) and generate composites.</p>
+                <ul class="h-points">
+                  <li>Calculate index per scene and harmonize outputs.</li>
+                  <li>Create monthly/seasonal composites.</li>
+                  <li>Extract statistics for AOIs / segments.</li>
+                </ul>
+              </div>
+              <div class="h-media">
+                <img src="assets/turbidity.png" alt="Turbidity index computation screenshot">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="panel" style="margin-top:14px;">
-        <h3>Data Privacy Note</h3>
-        <p class="small">
-          Use public imagery and non-sensitive outputs only. If you include examples, avoid any confidential operational details.
-        </p>
+    <!-- MODULE 3 -->
+    <section class="chapter" id="module-outputs">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 3</div>
+                <h2 class="h-title">Outputs & interpretation</h2>
+                <p class="h-desc">Deliver maps and summaries that support interpretation and reporting.</p>
+                <ul class="h-points">
+                  <li>Hotspot maps + change detection summaries.</li>
+                  <li>Time-series plots (monthly/seasonal).</li>
+                  <li>Export maps and tables for reporting packs.</li>
+                </ul>
+              </div>
+              <div class="h-media">
+                <img src="assets/turbidity-map.png" alt="Turbidity outputs screenshot">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row reveal" style="margin-top:16px;">
+          <a class="pill" href="projects.html">← Back to Projects</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+        </div>
       </div>
+    </section>
 
-      <div class="cta" style="margin-top:16px;">
-        <a class="pill" href="projects.html">← Back to Projects</a>
-        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <span>© <span id="y"></span> Paola Romaguera</span>
+        <span>
+          <a href="projects.html">Projects</a> •
+          <a href="resume.pdf">Resume</a> •
+          <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
+        </span>
       </div>
-    </div>
-
-    <div class="footer">
-      <span>© <span id="y"></span> Paola Romaguera</span>
-      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
-    </div>
+    </footer>
 
   </div>
 
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <!-- Lightbox HTML must be OUTSIDE scripts -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">×</button>
+    <img id="lightboxImg" alt="Full-size preview">
+  </div>
+
+  <script>
+    // Footer year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Reveal transitions — re-trigger enter/exit
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('in');
+        else e.target.classList.remove('in');
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+    revealEls.forEach(el => io.observe(el));
+
+    // Lightbox
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const closeBtn = document.getElementById("lightboxClose");
+
+    document.querySelectorAll(".h-media img").forEach(img => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.currentSrc || img.src;
+        lightbox.classList.add("show");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeLightbox(){
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLightbox();
+    });
+  </script>
 </body>
 </html>
