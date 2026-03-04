@@ -423,7 +423,7 @@ html{
 
 /* Each section takes a full screen height */
 .snap-section{
-  min-height: calc(100vh - 96px); /* minus nav height-ish */
+  min-height: calc(100vh - 88px); /* minus nav height-ish */
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: flex;
