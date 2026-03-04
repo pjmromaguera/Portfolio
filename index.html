@@ -79,6 +79,16 @@
       margin: 0 0 18px;
     }
 
+    /* Make the two hero panels equal height */
+    .hero-apple{
+      align-items: stretch; /* change from start -> stretch */
+    }
+    .hero-apple > .feature{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
     /* Hero layout */
     .hero-apple{
       display:grid;
