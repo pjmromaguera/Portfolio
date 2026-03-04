@@ -495,5 +495,19 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   </script>
+
+  <script>
+  const carousel = document.getElementById('featuredCarousel');
+  if (carousel) {
+    carousel.addEventListener('wheel', (e) => {
+      // Convert vertical wheel motion into horizontal scroll
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        carousel.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+</script>
+  
 </body>
 </html>
