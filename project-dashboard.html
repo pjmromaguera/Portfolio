@@ -1,273 +1,446 @@
+<!-- =========================
+FILE: project-dashboard.html
+Apple-like hero + adjacent gallery
+========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Hazard Exposure Assessment Dashboard | Paola Romaguera</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hazard Exposure Assessment Dashboard | Paola Romaguera</title>
+  <meta name="description" content="Personal Streamlit mini-app that automates hazard exposure metrics and visual summaries for distributed asset portfolios (no client data shared)." />
+  <link rel="stylesheet" href="style.css" />
 
-<link rel="stylesheet" href="style.css" />
+  <!-- Page-only layout helpers (safe + consistent with your main page) -->
+  <style>
+    /* Make this page feel like index (full-bleed sections) */
+    body .container{ max-width:none; padding:0; }
+    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
 
-<style>
+    /* Sticky nav like main page */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+      margin: 0;
+    }
 
-.wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
+    /* Chapter background scene */
+    .chapter{
+      padding: 70px 0;
+      position: relative;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    @media (max-width: 860px){ .chapter{ padding: 46px 0; } }
 
-.chapter{
-  padding:80px 0;
-  border-top:1px solid rgba(255,255,255,.06);
-}
+    .chapter::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.12), transparent 55%),
+        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.10), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+      pointer-events:none;
+      z-index:0;
+    }
+    .chapter > *{ position:relative; z-index:1; }
 
-.case-grid{
-  display:grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap:16px;
-}
+    /* Hero split: text + adjacent gallery */
+    .case-hero{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .case-hero{ grid-template-columns: 1fr; }
+    }
 
-@media (max-width:980px){
-  .case-grid{ grid-template-columns:1fr; }
-}
+    .hero-panel{
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-copy{ padding: 26px; }
 
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
+    .crumbs{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .crumbs a{ color: var(--text); opacity:.9; }
+    .crumbs span{ opacity:.75; }
 
-.gallery img{
-  width:100%;
-  border-radius:16px;
-  border:1px solid var(--line);
-}
+    .micro{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size: 12px;
+      color: var(--muted);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 12px;
+    }
+    .micro .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
 
-.feature h3{
-  margin-bottom:10px;
-}
+    .super{
+      font-size: clamp(34px, 4.6vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.7px;
+      margin: 0 0 12px;
+    }
+    .lede2{
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 72ch;
+      margin: 0 0 14px;
+    }
 
-.feature ul{
-  padding-left:18px;
-  color:var(--muted);
-  line-height:1.6;
-}
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
 
-</style>
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 14px;
+    }
+    .tag{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
 
+    /* Adjacent gallery */
+    .hero-gallery{
+      padding: 14px;
+    }
+
+    .gallery-main{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+      height: 420px;
+    }
+    @media (max-width: 980px){
+      .gallery-main{ height: 320px; }
+    }
+
+    .gallery-main img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .thumbs{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .thumb{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+      height: 92px;
+      cursor: pointer;
+      opacity: .9;
+      transition: transform .14s ease, opacity .14s ease, box-shadow .14s ease;
+    }
+    .thumb:hover{ transform: translateY(-2px); opacity: 1; box-shadow: 0 14px 45px rgba(0,0,0,.35); }
+    .thumb.active{ outline: 2px solid rgba(34,211,238,.55); opacity: 1; }
+
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    /* Content grid below hero (uniform cards) */
+    .case-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 980px){
+      .case-grid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 640px){
+      .case-grid{ grid-template-columns: 1fr; }
+    }
+
+    .case-card{
+      grid-column: span 6;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 18px;
+    }
+    .case-card h3{
+      margin:0 0 10px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .case-card ul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .case-card li{ margin: 8px 0; }
+
+    .case-wide{ grid-column: span 12; }
+
+    .media-panel{
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 18px;
+      margin-top: 14px;
+    }
+    .media-panel h3{ margin:0 0 10px; font-size: 16px; }
+    .media-panel p{ margin:0 0 12px; color: var(--muted); font-size: 13px; }
+
+    .media-panel img{
+      width:100%;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      display:block;
+    }
+
+    /* Footer spacing */
+    .footer{ margin: 0; padding: 26px 0 38px; }
+  </style>
 </head>
 
 <body>
-<div class="container">
-
-<header class="nav">
-<div class="wide" style="display:flex;align-items:center;justify-content:space-between">
-
-<div class="brand">
-<div class="brand-badge"></div>
-<div class="brand-name">
-<strong>Paola Jayme Romaguera</strong>
-<span>Climate Risk • GIS • Remote Sensing</span>
-</div>
-</div>
-
-<nav class="nav-links">
-<a class="pill" href="index.html">Home</a>
-<a class="pill" href="projects.html">Projects</a>
-<a class="pill" href="resume.pdf">Resume</a>
-<a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-</nav>
-
-</div>
-</header>
-
-<section class="chapter">
-
-<div class="wide">
-
-<div class="feature">
-
-<div class="micro">
-<span class="dot"></span>
-Case Study
-</div>
-
-<h1 class="super">
-Hazard Exposure Assessment Dashboard
-</h1>
-
-<p class="lede2">
-A personal workflow tool designed to automate hazard exposure assessments for geographically distributed asset portfolios. The project focuses on improving efficiency, consistency, and clarity in spatial risk evaluation.
-</p>
-
-<div class="row">
-<a class="pill" href="projects.html">← Back to Projects</a>
-<span class="small">Personal project — no proprietary data used</span>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<div class="wide case-grid">
-
-<div class="feature">
-
-<h3>Objective</h3>
-
-<ul>
-<li>Reduce manual steps when assessing large portfolios of assets.</li>
-<li>Produce consistent exposure metrics and spatial summaries.</li>
-<li>Create a repeatable workflow for hazard exposure analysis.</li>
-</ul>
-
-</div>
-
-
-<div class="feature">
-
-<h3>Approach</h3>
-
-<ul>
-<li>Import asset coordinates and hazard layers.</li>
-<li>Automate spatial overlay analysis.</li>
-<li>Generate charts and maps summarizing exposure.</li>
-</ul>
-
-</div>
-
-
-<div class="feature">
-
-<h3>Tools</h3>
-
-<ul>
-<li>Streamlit workflow interface</li>
-<li>GIS spatial overlays</li>
-<li>Python preprocessing scripts</li>
-</ul>
-
-</div>
-
-
-<div class="feature">
-
-<h3>Role</h3>
-
-<ul>
-<li>Designed the entire workflow architecture.</li>
-<li>Defined exposure indicators and outputs.</li>
-<li>Developed the tool as a personal workflow optimization.</li>
-</ul>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<div class="wide">
-
-<div class="feature">
-
-<h3>Workflow</h3>
-
-<p class="small">
-Example workflow showing the automated exposure assessment process.
-</p>
-
-<img src="assets/workflow-dashboard.png" style="width:100%;border-radius:16px;border:1px solid var(--line)">
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<div class="wide">
-
-<div class="feature">
-
-<h3>Results</h3>
-
-<p class="small">
-Example screenshots of the application modules.
-</p>
-
-<div class="gallery">
-
-<img src="assets/app-input.png">
-
-<img src="assets/app-run.png">
-
-<img src="assets/app-results.png">
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="chapter">
-
-<div class="wide case-grid">
-
-<div class="feature">
-
-<h3>Key Takeaways</h3>
-
-<ul>
-<li>Exposure assessments become faster for large portfolios.</li>
-<li>Standardized outputs improve reporting consistency.</li>
-<li>Clear visuals improve communication with decision-makers.</li>
-</ul>
-
-</div>
-
-
-<div class="feature">
-
-<h3>Data Privacy</h3>
-
-<p class="small">
-All visuals shown in this case study use public or synthetic examples. No proprietary datasets, internal tools, or client information are included.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<footer class="footer">
-<div class="wide" style="display:flex;justify-content:space-between">
-
-<span>© <span id="y"></span> Paola Romaguera</span>
-
-<span>
-<a href="index.html">Home</a> •
-<a href="projects.html">Projects</a> •
-<a href="resume.pdf">Resume</a>
-</span>
-
-</div>
-</footer>
-
-</div>
-
-<script>
-document.getElementById('y').textContent = new Date().getFullYear();
-</script>
-
+  <div class="container">
+
+    <!-- NAV -->
+    <header class="nav" role="navigation">
+      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-name">
+            <strong>Paola Jayme Romaguera</strong>
+            <span>Case Study</span>
+          </div>
+        </div>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a class="pill" href="index.html">Home</a>
+          <a class="pill" href="projects.html">Projects</a>
+          <a class="pill" href="resume.pdf">Resume</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO + ADJACENT GALLERY -->
+    <section class="chapter" id="top">
+      <div class="wide case-hero">
+
+        <!-- Left: Title + story -->
+        <div class="hero-panel">
+          <div class="hero-copy">
+            <div class="crumbs">
+              <a href="projects.html">Projects</a>
+              <span>•</span>
+              <span>Hazard Exposure Assessment Dashboard</span>
+            </div>
+
+            <div class="micro"><span class="dot"></span> Personal mini-app • Streamlit • GIS automation</div>
+
+            <h1 class="super">Hazard Exposure Assessment Dashboard</h1>
+
+            <p class="lede2">
+              A personal workflow tool to speed up and standardize hazard exposure assessments for geographically distributed asset portfolios.
+              This case study is independent and uses only public-domain, synthetic, or sanitized examples.
+            </p>
+
+            <div class="tags">
+              <span class="tag">Dashboard</span>
+              <span class="tag">Exposure metrics</span>
+              <span class="tag">Spatial overlays</span>
+              <span class="tag">Maps + charts</span>
+              <span class="tag">Streamlit</span>
+            </div>
+
+            <div class="row">
+              <a class="pill" href="projects.html">← Back to Projects</a>
+              <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+              <span class="small">No proprietary code or client data shared</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Gallery -->
+        <div class="hero-panel">
+          <div class="hero-gallery" aria-label="Project gallery">
+            <div class="gallery-main">
+              <img id="mainShot" src="assets/app-results.png" alt="Dashboard screenshot">
+            </div>
+
+            <div class="thumbs" role="list">
+              <div class="thumb" role="listitem" data-src="assets/app-input.png" aria-label="View input screen">
+                <img src="assets/app-input.png" alt="Dashboard input screen">
+              </div>
+              <div class="thumb" role="listitem" data-src="assets/app-run.png" aria-label="View run screen">
+                <img src="assets/app-run.png" alt="Dashboard run screen">
+              </div>
+              <div class="thumb active" role="listitem" data-src="assets/app-results.png" aria-label="View results screen">
+                <img src="assets/app-results.png" alt="Dashboard results screen">
+              </div>
+            </div>
+
+            <p class="small" style="margin:10px 0 0;">
+              Click thumbnails to preview. (You can swap these images anytime.)
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Details grid -->
+      <div class="wide">
+        <div class="case-grid">
+
+          <div class="case-card">
+            <h3>Objective</h3>
+            <ul>
+              <li>Reduce manual steps when assessing tens to hundreds of sites.</li>
+              <li>Produce decision-ready outputs: exposure metrics + clean visuals.</li>
+              <li>Improve consistency using a repeatable, standardized workflow.</li>
+            </ul>
+          </div>
+
+          <div class="case-card">
+            <h3>Approach</h3>
+            <ul>
+              <li>Ingest asset locations and selected hazard layers.</li>
+              <li>Automate overlays and summarization into exposure indicators.</li>
+              <li>Generate maps/charts for interpretation and reporting.</li>
+            </ul>
+          </div>
+
+          <div class="case-card">
+            <h3>Tools</h3>
+            <ul>
+              <li>Streamlit for the interface and modular workflow steps</li>
+              <li>GIS overlays + spatial joins for exposure extraction</li>
+              <li>Python (optional) for preprocessing and automation</li>
+            </ul>
+          </div>
+
+          <div class="case-card">
+            <h3>My role</h3>
+            <ul>
+              <li>Designed the end-to-end workflow and information architecture.</li>
+              <li>Defined exposure metrics and standardized output formats.</li>
+              <li>Built this as a personal optimization initiative (not client delivery).</li>
+            </ul>
+          </div>
+
+          <div class="case-card case-wide">
+            <h3>Key takeaways</h3>
+            <ul>
+              <li>Exposure assessments become faster and more scalable for large, distributed portfolios.</li>
+              <li>Standardized outputs reduce rework and improve cross-project consistency.</li>
+              <li>Clear visuals improve communication with non-technical stakeholders.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="media-panel">
+          <h3>Workflow snapshot</h3>
+          <p>High-level view of the modules and output flow.</p>
+          <img src="assets/workflow-dashboard.png" alt="Dashboard workflow diagram">
+        </div>
+
+        <div class="media-panel">
+          <h3>Data privacy note</h3>
+          <p class="small" style="margin:0;">
+            This case study is described at a high level. Visuals should use public-domain, synthetic, or sanitized examples.
+            No proprietary client datasets or internal systems are included.
+          </p>
+        </div>
+
+        <div class="row" style="margin-top:16px;">
+          <a class="pill" href="projects.html">← Back to Projects</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <span>© <span id="y"></span> Paola Romaguera</span>
+        <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Click thumbnails to swap main image (simple, reliable)
+    (function(){
+      const main = document.getElementById('mainShot');
+      const thumbs = Array.from(document.querySelectorAll('.thumb'));
+      if (!main || !thumbs.length) return;
+
+      thumbs.forEach(t => {
+        t.addEventListener('click', () => {
+          const src = t.getAttribute('data-src');
+          if (!src) return;
+
+          thumbs.forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+
+          // Swap image
+          main.setAttribute('src', src);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
