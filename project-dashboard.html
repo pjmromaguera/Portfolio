@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +33,7 @@
     }
     @media (max-width: 860px){ .chapter{ padding: 52px 0; } }
 
-    /* Subtle chapter ambience only (NO screenshot backgrounds) */
+    /* Subtle chapter ambience only */
     .chapter::before{
       content:"";
       position:absolute;
@@ -126,6 +125,45 @@
       color: var(--muted);
     }
 
+    /* ===== Details ===== */
+    .detail-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 980px){
+      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 640px){
+      .detail-grid{ grid-template-columns: 1fr; }
+    }
+
+    .detail-card{
+      grid-column: span 6;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 22px;
+    }
+    .detail-card h3{
+      margin:0 0 12px;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .detail-card ul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+    .detail-card li{ margin: 10px 0; }
+    .detail-wide{ grid-column: span 12; }
+
+    /* ===== Modules ===== */
     .module-wrap{
       display: grid;
       grid-template-columns: 1fr;
@@ -147,7 +185,6 @@
       gap: 22px;
       align-items: center;
     }
-
     @media (max-width: 980px){
       .highlight-grid{ grid-template-columns: 1fr; }
     }
@@ -172,9 +209,6 @@
       box-shadow: 0 0 0 4px rgba(52,211,153,.10);
     }
 
-
-
-    /* Bigger module headings + body */
     .h-title{
       margin: 0 0 14px;
       font-size: clamp(24px, 2.4vw, 34px);
@@ -192,64 +226,41 @@
       margin: 0;
       padding-left: 20px;
       color: var(--muted);
-      font-size: clamp(16px, 1.05vw, 16px);
+      font-size: 16px;
       line-height: 1.85;
     }
     .h-points li{ margin: 10px 0; }
-    
-    /* Bigger cards in Highlights section */
-    .detail-card{
-      padding: 22px;
-    }
-    .detail-card h3{
-      margin: 0 0 12px;
-      font-size: 18px;
-    }
-    .detail-card ul{
-      font-size: 14px;
-      line-height: 1.85;
-    }
 
     .h-media{
       border: 1px solid var(--line);
       border-radius: 20px;
       background: rgba(0,0,0,.18);
-      overflow: visible;
+      overflow: hidden;
       box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      position: relative;
     }
     .h-media img{
       width: 100%;
       height: auto;
       display: block;
-    }
-
-        /* Hover-zoom module images */
-    .h-media{
-      position: relative;
-    }
-    .h-media img{
+      cursor: zoom-in;
       transform: scale(1);
       transition: transform .22s ease, filter .22s ease;
       will-change: transform;
       transform-origin: center;
     }
-    
-    /* zoom on hover (desktop) */
+
     @media (hover:hover){
       .h-media:hover img{
         transform: scale(1.06);
         filter: saturate(1.05) contrast(1.03);
       }
-    }
-    
-    /* optional: subtle lift on hover */
-    @media (hover:hover){
       .highlight:hover .h-media{
         box-shadow: 0 22px 70px rgba(0,0,0,.45);
       }
     }
-    /* ===== Image Lightbox ===== */
-    
+
+    /* ===== Lightbox ===== */
     .lightbox{
       position: fixed;
       inset: 0;
@@ -259,17 +270,16 @@
       align-items: center;
       justify-content: center;
       z-index: 2000;
-    
+
       opacity: 0;
       visibility: hidden;
-      transition: opacity .25s ease;
+      transition: opacity .25s ease, visibility .25s ease;
+      padding: 20px;
     }
-    
     .lightbox.show{
       opacity: 1;
       visibility: visible;
     }
-    
     .lightbox img{
       max-width: 92vw;
       max-height: 88vh;
@@ -277,65 +287,27 @@
       border: 1px solid var(--line);
       box-shadow: 0 40px 120px rgba(0,0,0,.6);
     }
-    
-    /* close button */
     .lightbox-close{
       position: absolute;
-      top: 28px;
-      right: 36px;
-      font-size: 28px;
+      top: 22px;
+      right: 26px;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
       color: white;
+      font-size: 24px;
       cursor: pointer;
-      opacity: .7;
-      transition: opacity .2s;
+      opacity: .85;
+      transition: opacity .2s, transform .2s;
     }
-    
     .lightbox-close:hover{
       opacity: 1;
+      transform: translateY(-1px);
     }
-    
-    /* make module images clickable */
-    .h-media img{
-      cursor: zoom-in;
-    }
-    
-    /* ===== Details (Objective/Approach/Role/etc) ===== */
-    .detail-grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-    @media (max-width: 980px){
-      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
-    }
-    @media (max-width: 640px){
-      .detail-grid{ grid-template-columns: 1fr; }
-    }
-
-    .detail-card{
-      grid-column: span 6;
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      padding: 18px;
-    }
-    .detail-card h3{
-      margin:0 0 10px;
-      font-size: 16px;
-      letter-spacing: -.2px;
-    }
-    .detail-card ul{
-      margin:0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.75;
-    }
-    .detail-card li{ margin: 8px 0; }
-    .detail-wide{ grid-column: span 12; }
 
     /* Reveal transitions */
     .reveal{
@@ -356,7 +328,7 @@
 <body>
   <div class="container">
 
-    <!-- NAV (same structure as index) -->
+    <!-- NAV -->
     <header class="nav" role="navigation">
       <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
         <div class="brand">
@@ -379,13 +351,8 @@
       </div>
     </header>
 
-    <!-- CHAPTER 1: HERO -->
-    <section class="chapter" id="top"
-      style="--scene-bg:
-        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.12), transparent 55%),
-        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.10), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.20), rgba(11,16,32,0));">
-
+    <!-- HERO -->
+    <section class="chapter" id="top">
       <div class="wide">
         <div class="hero-panel reveal">
           <div class="hero-copy">
@@ -422,7 +389,7 @@
       </div>
     </section>
 
-    <!-- CHAPTER 2: DETAILS (Objective/Approach/Role/Tools/Takeaways) -->
+    <!-- DETAILS -->
     <section class="chapter" id="details">
       <div class="wide">
         <div class="reveal">
@@ -481,7 +448,7 @@
       </div>
     </section>
 
-    <!-- CHAPTER 3: MODULE — INPUT -->
+    <!-- MODULE 1 -->
     <section class="chapter" id="module-input">
       <div class="wide">
         <div class="module-wrap reveal">
@@ -511,12 +478,8 @@
       </div>
     </section>
 
-    <!-- CHAPTER 4: MODULE — RUN -->
-    <section class="chapter" id="module-run"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
-        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+    <!-- MODULE 2 -->
+    <section class="chapter" id="module-run">
       <div class="wide">
         <div class="module-wrap reveal">
           <div class="highlight">
@@ -545,7 +508,7 @@
       </div>
     </section>
 
-    <!-- CHAPTER 5: MODULE — RESULTS -->
+    <!-- MODULE 3 -->
     <section class="chapter" id="module-results">
       <div class="wide">
         <div class="module-wrap reveal">
@@ -575,12 +538,8 @@
       </div>
     </section>
 
-    <!-- CHAPTER 6: WORKFLOW SNAPSHOT -->
-    <section class="chapter" id="workflow"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
-        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+    <!-- WORKFLOW -->
+    <section class="chapter" id="workflow">
       <div class="wide">
         <div class="hero-panel reveal">
           <div class="hero-copy">
@@ -614,76 +573,71 @@
 
   </div>
 
+  <!-- LIGHTBOX (MUST be in BODY, not inside script) -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+    <img id="lightboxImg" alt="">
+  </div>
+
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-    <!-- LIGHTBOX -->
-    <div class="lightbox" id="lightbox">
-      <span class="lightbox-close" id="lightboxClose">&times;</span>
-      <img id="lightboxImg" src="">
-    </div>
-    // Reveal transitions — re-trigger enter/exit
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('in');
-        else e.target.classList.remove('in');
+    // Run after DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+
+      // Footer year
+      const y = document.getElementById('y');
+      if (y) y.textContent = new Date().getFullYear();
+
+      // Reveal transitions — re-trigger enter/exit
+      const revealEls = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('in');
+          else e.target.classList.remove('in');
+        });
+      }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+      revealEls.forEach(el => io.observe(el));
+
+      // Lightbox
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightboxImg");
+      const closeBtn = document.getElementById("lightboxClose");
+
+      if (!lightbox || !lightboxImg || !closeBtn) return;
+
+      function openLightbox(src, alt){
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || "Full size image";
+        lightbox.classList.add("show");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox(){
+        lightbox.classList.remove("show");
+        lightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        // optional: clear src after close
+        setTimeout(() => { lightboxImg.src = ""; }, 200);
+      }
+
+      document.querySelectorAll(".h-media img").forEach(img => {
+        img.addEventListener("click", () => openLightbox(img.src, img.alt));
       });
-    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
-    revealEls.forEach(el => io.observe(el));
+
+      closeBtn.addEventListener("click", closeLightbox);
+
+      // click outside image closes
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      // ESC closes
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLightbox();
+      });
+
+    });
   </script>
 
-  <script>
-
-document.getElementById('y').textContent = new Date().getFullYear();
-
-/* Reveal transitions */
-const revealEls = document.querySelectorAll('.reveal');
-
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('in');
-    else e.target.classList.remove('in');
-  });
-}, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
-
-revealEls.forEach(el => io.observe(el));
-
-
-/* ===== Lightbox ===== */
-
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightboxImg");
-const closeBtn = document.getElementById("lightboxClose");
-
-document.querySelectorAll(".h-media img").forEach(img => {
-
-  img.addEventListener("click", () => {
-
-    lightboxImg.src = img.src;
-    lightbox.classList.add("show");
-
-  });
-
-});
-
-closeBtn.addEventListener("click", () => {
-  lightbox.classList.remove("show");
-});
-
-/* click outside image closes */
-lightbox.addEventListener("click", (e)=>{
-  if(e.target === lightbox){
-    lightbox.classList.remove("show");
-  }
-});
-
-/* ESC closes */
-document.addEventListener("keydown",(e)=>{
-  if(e.key === "Escape"){
-    lightbox.classList.remove("show");
-  }
-});
-
-</script>
 </body>
 </html>
