@@ -1,127 +1,40 @@
-<!-- =========================
-FILE: project-flo2d.html
-========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>2D Flood Modeling Using FLO-2D | Paola Romaguera</title>
-  <meta name="description" content="2D hydrodynamic flood modeling using FLO-2D within a GIS workflow to generate flood depth and extent maps." />
+  <title>2D Flood Modeling (FLO-2D) | Paola Jayme Romaguera</title>
+  <meta name="description" content="2D hydrodynamic flood modeling workflow producing flood depth and extent outputs for hazard interpretation and planning (public/sanitized examples only)." />
   <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
 
-    <div class="nav">
-      <div class="brand">
-        <div class="brand-badge" aria-hidden="true"></div>
-        <div class="brand-name">
-          <strong>Paola Romaguera</strong>
-          <span>Case Study</span>
-        </div>
-      </div>
+  <style>
+    body .container{ max-width:none; padding:0; }
+    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
 
-      <div class="nav-links">
-        <a class="pill" href="index.html">Home</a>
-        <a class="pill" href="projects.html">Projects</a>
-        <a class="pill" href="resume.pdf">Resume</a>
-        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-      </div>
-    </div>
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11,16,32,0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+      margin: 0;
+    }
 
-    <div class="card proj-detail">
-      <h1>2D Flood Modeling Using FLO-2D</h1>
-      <p class="lede">
-        Built two-dimensional hydrodynamic flood simulations to model river flooding using FLO-2D within a GIS workflow.
-        The model produced flood depth and extent outputs used to generate hazard maps for interpretation and planning.
-      </p>
+    .chapter{
+      padding: 80px 0;
+      position: relative;
+      border-top: 1px solid rgba(255,255,255,.06);
+      overflow: hidden;
+    }
+    @media (max-width: 860px){ .chapter{ padding: 52px 0; } }
 
-      <div class="two-col">
-        <div class="panel">
-          <h3>Objective</h3>
-          <ul>
-            <li>Simulate river flooding behavior under specified hydrologic conditions.</li>
-            <li>Generate flood depth/extent maps suitable for hazard interpretation.</li>
-            <li>Convert model outputs into GIS layers that can support exposure analysis.</li>
-          </ul>
-        </div>
-
-        <div class="panel">
-          <h3>Approach</h3>
-          <ul>
-            <li>Prepare terrain and model grid inputs (DEM processing and conditioning).</li>
-            <li>Define hydrologic and boundary conditions required for simulation.</li>
-            <li>Run FLO-2D and post-process results into map-ready datasets.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="two-col" style="margin-top:14px;">
-        <div class="panel">
-          <h3>Tools Used</h3>
-          <ul>
-            <li>FLO-2D (2D hydrodynamic modeling)</li>
-            <li>GIS platform for pre/post-processing (QGIS/ArcGIS)</li>
-            <li>DEM + supporting spatial layers</li>
-          </ul>
-        </div>
-
-        <div class="panel">
-          <h3>Responsibilities</h3>
-          <ul>
-            <li>Built the model workflow and ensured GIS-ready outputs.</li>
-            <li>Standardized post-processing steps for consistent mapping.</li>
-            <li>Translated results into clear hazard visuals for stakeholders.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="panel" style="margin-top:14px;">
-        <h3>Workflow Snapshot</h3>
-
-        <img src="assets/workflow-flo2d.png" alt="FLO-2D workflow diagram" style="width:100%; border-radius:16px; border:1px solid var(--line);" />
-      </div>
-
-      <div class="panel" style="margin-top:14px;">
-        <h3>Results Gallery</h3>
-
-        <div class="gallery">
-          <img src="assets/flo2d-depth.png" alt="Flood depth map output">
-          <img src="assets/flo2d-extent.png" alt="Flood extent map output">
-          <img src="assets/flo2d-domain.png" alt="Model domain and setup">
-        </div>
-      </div>
-
-      <div class="panel" style="margin-top:14px;">
-        <h3>Key Takeaways</h3>
-        <ul>
-          <li>2D modeling provides spatially detailed flood depth patterns beyond simple extents.</li>
-          <li>GIS-integrated workflows make it easier to convert results into exposure-ready layers.</li>
-          <li>Clear depth/extent mapping improves communication of hazard patterns.</li>
-        </ul>
-      </div>
-
-      <div class="panel" style="margin-top:14px;">
-        <h3>Data Privacy Note</h3>
-        <p class="small">
-          If sharing outputs publicly, use public/synthetic inputs or sanitize any sensitive site identifiers.
-        </p>
-      </div>
-
-      <div class="cta" style="margin-top:16px;">
-        <a class="pill" href="projects.html">← Back to Projects</a>
-        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
-      </div>
-    </div>
-
-    <div class="footer">
-      <span>© <span id="y"></span> Paola Romaguera</span>
-      <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
-    </div>
-
-  </div>
-
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-</body>
-</html>
+    .chapter::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: var(--scene-bg,
+        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.10), transparent 55%),
+        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32
