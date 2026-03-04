@@ -9,72 +9,87 @@
 
   <!-- Minimal additions for “static scroll-shift” layout -->
   <style>
-    /* Lock native page scroll */
-    html, body { height: 100%; }
-    body { overflow: hidden; }
+  html, body { height: 100%; }
+  body { overflow: hidden; }
 
-    /* Stage = viewport minus nav height (we keep nav visible) */
-    .stage{
-      height: calc(100vh - 96px); /* nav ~96px incl padding; adjust if needed */
-      overflow: hidden;
-      position: relative;
-    }
+  /* Use CSS var so stage height always matches actual nav height */
+  :root { --navH: 96px; }
 
-    /* Slides container moves up/down */
-    .slides{
-      height: 100%;
-      will-change: transform;
-      transition: transform 650ms cubic-bezier(.22,.8,.22,1);
-    }
+  .stage{
+    height: calc(100vh - var(--navH));
+    overflow: hidden;
+    position: relative;
+    padding-top: 10px; /* prevents top cropping */
+  }
 
-    /* Each slide fills the stage */
-    .slide{
-      height: 100%;
-      display: flex;
-      align-items: center;
-      padding: 10px 0 26px;
-    }
+  .slides{
+    height: 100%;
+    will-change: transform;
+    transition: transform 650ms cubic-bezier(.22,.8,.22,1);
+  }
 
-    /* Subtle appear/slide for contents (per slide) */
-    .slide .reveal-in{
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 550ms ease, transform 550ms ease;
-      transition-delay: 120ms;
-    }
-    .slide.is-active .reveal-in{
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .slide{
+    height: 100%;
+    display: flex;
+    align-items: flex-start; /* important: do NOT vertically center */
+    padding: 12px 0 24px;    /* adds breathing room */
+  }
 
-    /* Optional: tiny hint at bottom */
-    .scroll-hint{
-      position: absolute;
-      left: 0; right: 0; bottom: 10px;
-      display:flex;
-      justify-content:center;
-      pointer-events:none;
-      opacity:.9;
-    }
-    .scroll-hint span{
-      font-size:12px;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.03);
-    }
+  /* keep your reveal */
+  .slide .reveal-in{
+    width: 100%;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 550ms ease, transform 550ms ease;
+    transition-delay: 120ms;
+  }
+  .slide.is-active .reveal-in{
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    /* Mobile: allow normal scroll (better UX) */
-    @media (max-width: 860px){
-      body{ overflow: auto; }
-      .stage{ height: auto; }
-      .slides{ transition: none; transform: none !important; }
-      .slide{ height: auto; }
-      .slide .reveal-in{ opacity: 1; transform: none; }
-      .scroll-hint{ display:none; }
-    }
-  </style>
+  /* If a slide has a big grid, allow internal scrolling inside the stage */
+  .slide .reveal-in{
+    max-height: calc(100vh - var(--navH) - 24px);
+    overflow: auto;
+    padding-right: 6px; /* space for scrollbar */
+  }
+
+  /* nicer scrollbar (optional) */
+  .slide .reveal-in::-webkit-scrollbar{ width: 10px; }
+  .slide .reveal-in::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+  }
+
+  /* optional hint */
+  .scroll-hint{
+    position: absolute;
+    left: 0; right: 0; bottom: 10px;
+    display:flex;
+    justify-content:center;
+    pointer-events:none;
+    opacity:.9;
+  }
+  .scroll-hint span{
+    font-size:12px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.03);
+  }
+
+  /* Mobile fallback: normal scroll */
+  @media (max-width: 860px){
+    body{ overflow: auto; }
+    .stage{ height: auto; padding-top: 0; }
+    .slides{ transition: none; transform: none !important; }
+    .slide{ height: auto; }
+    .slide .reveal-in{ opacity: 1; transform: none; max-height: none; overflow: visible; padding-right: 0; }
+    .scroll-hint{ display:none; }
+  }
+</style>
 </head>
 
 <body>
@@ -185,7 +200,7 @@
 
         <!-- SLIDE 2: FEATURED -->
         <section class="slide" data-index="1">
-          <div class="reveal-in" style="width:100%;">
+          <div class="reveal-in" style="margin-top:6px;">
             <div class="section">
               <h2>Featured case studies</h2>
 
@@ -391,6 +406,18 @@
     </div>
 
   </div>
+
+  <script>
+  // Auto-set --navH based on actual nav height (prevents cropping)
+  function setNavHeightVar(){
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    const h = Math.ceil(nav.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--navH', h + 'px');
+  }
+  window.addEventListener('load', setNavHeightVar);
+  window.addEventListener('resize', setNavHeightVar);
+</script>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
