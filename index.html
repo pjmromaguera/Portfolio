@@ -7,13 +7,14 @@
   <meta name="description" content="Portfolio of Paola Romaguera — climate risk modeling, GIS, remote sensing, and geospatial analytics for evidence-based decision-making." />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Index-only polish: chapters + hero + transitions + carousel (one card at a time) -->
   <style>
+    html{ scroll-behavior: smooth; }
+
     /* Wrapper */
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
     body .container{ max-width:none; padding:0; }
 
-    /* Sticky nav (keeps your existing .nav structure) */
+    /* Sticky nav */
     .nav{
       position: sticky;
       top: 0;
@@ -25,21 +26,44 @@
       margin: 0;
     }
 
-    /* Chapters */
-    .chapter{ padding: 70px 0; position: relative; }
-    @media (max-width: 860px){ .chapter{ padding: 46px 0; } }
+    /* ===== Section theming (different per chapter) ===== */
+    .chapter{
+      padding: 80px 0;
+      position: relative;
+      background: transparent;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    @media (max-width: 860px){
+      .chapter{ padding: 52px 0; }
+    }
 
-    /* Spotlight background (Apple-ish) */
-    .spotlight::before{
+    .chapter::after{
       content:"";
       position:absolute;
-      inset:-180px -160px auto -160px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(125,211,252,.10), transparent 70%);
+      inset:0;
+      background: var(--scene-bg, transparent);
       pointer-events:none;
       z-index:0;
     }
     .chapter > *{ position:relative; z-index:1; }
+
+    #top{ --scene-bg:
+      radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.14), transparent 55%),
+      radial-gradient(900px 520px at 70% 60%, rgba(167,139,250,.12), transparent 60%),
+      linear-gradient(180deg, rgba(11,16,32,.22), rgba(11,16,32,0));
+    }
+
+    #featured{ --scene-bg:
+      radial-gradient(1100px 520px at 60% 25%, rgba(52,211,153,.12), transparent 55%),
+      radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.10), transparent 60%),
+      linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+    }
+
+    #research{ --scene-bg:
+      radial-gradient(1100px 520px at 35% 25%, rgba(167,139,250,.13), transparent 55%),
+      radial-gradient(900px 520px at 75% 70%, rgba(34,211,238,.10), transparent 60%),
+      linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+    }
 
     /* Hero type */
     .super{
@@ -62,9 +86,11 @@
       gap: 18px;
       align-items: start;
     }
-    @media (max-width: 980px){ .hero-apple{ grid-template-columns: 1fr; } }
+    @media (max-width: 980px){
+      .hero-apple{ grid-template-columns: 1fr; }
+    }
 
-    /* Feature panel */
+    /* Feature panels */
     .feature{
       border: 1px solid var(--line);
       border-radius: calc(var(--radius) + 6px);
@@ -92,22 +118,30 @@
       box-shadow: 0 0 0 4px rgba(52,211,153,.10);
     }
 
-    /* Rows */
-    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
 
-    /* Reveal / chapter transition */
+    /* ===== Transitions: always re-trigger ===== */
     .reveal{
       opacity: 0;
       transform: translateY(18px);
       transition: opacity .8s ease, transform .8s ease;
       will-change: opacity, transform;
     }
-    .reveal.in{ opacity: 1; transform: translateY(0); }
+    .reveal.in{
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    /* Parallax (subtle) */
+    /* Parallax */
     .parallax{ will-change: transform; transform: translateY(0px); }
 
-    /* Featured header */
+    /* ===== Featured: larger type ===== */
     .feature-head{
       display:flex;
       align-items:center;
@@ -115,11 +149,14 @@
       gap: 12px;
       margin-bottom: 12px;
     }
-    .feature-head h2{ margin:0; font-size:22px; letter-spacing:-.2px; }
+    .feature-head h2{
+      margin:0;
+      font-size: 28px;
+      letter-spacing: -0.3px;
+    }
 
-    /* ===== One-card carousel ===== */
+    /* One-card carousel */
     .carousel{ margin-top: 6px; }
-
     .carousel-track{
       display:flex;
       gap: 16px;
@@ -131,7 +168,6 @@
       scroll-padding: 50%;
       -webkit-overflow-scrolling: touch;
 
-      /* hide scrollbar */
       scrollbar-width: none;
     }
     .carousel-track::-webkit-scrollbar{ display:none; }
@@ -149,7 +185,6 @@
       .carousel-track .hcard{ flex-basis: 92%; max-width: none; }
     }
 
-    /* Card */
     .hcard{
       display:flex;
       flex-direction: column;
@@ -166,7 +201,7 @@
       box-shadow: 0 18px 60px rgba(0,0,0,.45);
     }
     .hcard-media{
-      height: 260px;
+      height: 280px;
       border-bottom: 1px solid var(--line);
       overflow: hidden;
       background: rgba(255,255,255,.03);
@@ -178,10 +213,20 @@
       display:block;
     }
     .hcard-body{ padding: 18px; }
-    .hcard-body h3{ margin: 0 0 8px; font-size: 16px; letter-spacing:-.2px; }
-    .hcard-body p{ margin: 0; color: var(--muted); font-size: 13px; line-height:1.55; }
+    .hcard-body h3{
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .hcard-body p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height:1.65;
+    }
+    .carousel .small{ font-size: 13px; }
 
-    /* Pagination indicator (dots + active pill) */
+    /* Pagination */
     .carousel-indicator{ display:flex; justify-content:center; margin-top: 12px; }
     .indicator-track{
       display:flex;
@@ -206,7 +251,11 @@
       opacity: 1;
     }
 
-    /* Research tiles (keep your existing .tiles/.tile styles if you have them in style.css) */
+    /* ===== Research: larger type ===== */
+    #research h2{
+      font-size: 28px !important;
+      letter-spacing: -0.3px !important;
+    }
     .tiles{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -234,9 +283,17 @@
       gap: 10px;
       flex: 1;
     }
-    .tile h3{ margin:0; font-size: 16px; letter-spacing:-.2px; }
-    .tile p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.55; }
-
+    .tile h3{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:-.2px;
+    }
+    .tile p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
     .kws{
       display:flex;
       flex-wrap:wrap;
@@ -249,7 +306,7 @@
       padding:6px 10px;
       border:1px solid var(--line);
       border-radius:999px;
-      font-size:12px;
+      font-size:13px;
       color: var(--muted);
       background: rgba(255,255,255,.03);
       white-space:nowrap;
@@ -287,7 +344,7 @@
     </header>
 
     <!-- CHAPTER 1: HERO -->
-    <section class="chapter spotlight" id="top">
+    <section class="chapter" id="top">
       <div class="wide hero-apple">
 
         <div class="feature reveal">
@@ -350,7 +407,7 @@
       </div>
     </section>
 
-    <!-- CHAPTER 2: FEATURED (carousel) -->
+    <!-- CHAPTER 2: FEATURED -->
     <section class="chapter" id="featured">
       <div class="wide">
 
@@ -417,17 +474,16 @@
     </section>
 
     <!-- CHAPTER 3: RESEARCH -->
-    <section class="chapter spotlight" id="research">
+    <section class="chapter" id="research">
       <div class="wide">
         <div class="reveal">
-          <h2 style="font-size:22px;margin:0 0 10px;letter-spacing:-.2px;">Research &amp; Publications</h2>
+          <h2 style="margin:0 0 10px;">Research &amp; Publications</h2>
           <p class="lede2" style="margin-bottom:0;">
             Conference presentations and publications supporting multi-hazard and geospatial analytics work.
           </p>
         </div>
 
         <div class="tiles">
-
           <div class="tile wide reveal">
             <div class="body">
               <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
@@ -482,7 +538,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="row reveal" style="margin-top:16px;">
@@ -510,16 +565,17 @@
     // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Reveal on scroll (keeps your chapter transitions)
+    // Reveal transitions — ALWAYS re-trigger (enter/exit)
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) e.target.classList.add('in');
+        else e.target.classList.remove('in');
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
     revealEls.forEach(el => io.observe(el));
 
-    // Subtle parallax (optional)
+    // Subtle parallax
     const parallaxEls = document.querySelectorAll('[data-parallax]');
     function onScroll(){
       const y = window.scrollY || window.pageYOffset;
@@ -540,7 +596,6 @@
       const cards = Array.from(track.querySelectorAll('.hcard'));
       if (!cards.length) return;
 
-      // Build dots
       ind.innerHTML = '';
       const dots = cards.map((_, i) => {
         const d = document.createElement('span');
@@ -563,17 +618,14 @@
         const center = track.scrollLeft + track.clientWidth / 2;
         let bestIdx = 0;
         let bestDist = Infinity;
-
         cards.forEach((card, i) => {
           const cardCenter = card.offsetLeft + card.clientWidth / 2;
           const dist = Math.abs(cardCenter - center);
           if (dist < bestDist) { bestDist = dist; bestIdx = i; }
         });
-
         dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
       }
 
-      // Scroll -> update indicator (rAF)
       let ticking = false;
       track.addEventListener('scroll', () => {
         if (!ticking) {
@@ -582,7 +634,6 @@
         }
       }, { passive: true });
 
-      // Wheel -> horizontal (only when hovering carousel)
       track.addEventListener('wheel', (e) => {
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
           track.scrollLeft += e.deltaY;
@@ -590,7 +641,6 @@
         }
       }, { passive: false });
 
-      // Init
       window.addEventListener('load', () => setTimeout(updateActive, 60));
       window.addEventListener('resize', () => setTimeout(updateActive, 60));
     })();
