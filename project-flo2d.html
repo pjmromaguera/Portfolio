@@ -37,4 +37,525 @@
       background: var(--scene-bg,
         radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.10), transparent 55%),
         radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0))
+      );
+      pointer-events:none;
+      z-index:0;
+    }
+    .chapter > *{ position:relative; z-index:1; }
+
+    .hero-panel{
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-copy{ padding: 28px; }
+
+    .crumbs{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .crumbs a{ color: var(--text); opacity:.9; }
+    .crumbs span{ opacity:.75; }
+
+    .micro{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size: 12px;
+      color: var(--muted);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 12px;
+    }
+    .micro .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
+
+    .super{
+      font-size: clamp(40px, 5.2vw, 68px);
+      line-height: 1.03;
+      letter-spacing: -0.9px;
+      margin: 0 0 12px;
+    }
+    .lede2{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      max-width: 78ch;
+      margin: 0 0 14px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 14px;
+    }
+    .tag{
+      font-size:14px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+
+    /* Highlights grid + mobile fix */
+    .detail-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 980px){
+      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 640px){
+      .detail-grid{ grid-template-columns: 1fr; }
+    }
+
+    .detail-card{
+      grid-column: span 6;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 22px;
+    }
+    .detail-card h3{
+      margin:0 0 12px;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .detail-card ul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+    .detail-card li{ margin: 10px 0; }
+    .detail-wide{ grid-column: span 12; }
+
+    @media (max-width: 640px){
+      .detail-card,
+      .detail-wide{ grid-column: 1 / -1; }
+    }
+
+    /* Modules */
+    .module-wrap{ display:grid; grid-template-columns: 1fr; gap:14px; }
+
+    .highlight{
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 28px;
+    }
+
+    .highlight-grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 22px;
+      align-items: center;
+    }
+    @media (max-width: 980px){
+      .highlight-grid{ grid-template-columns: 1fr; }
+    }
+
+    .h-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:16px;
+      color: var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding:7px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .h-eyebrow .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
+
+    .h-title{
+      margin:0 0 14px;
+      font-size: clamp(24px, 2.4vw, 34px);
+      letter-spacing: -.4px;
+      line-height: 1.12;
+    }
+    .h-desc{
+      margin:0 0 16px;
+      color: var(--muted);
+      font-size: clamp(15px, 1.15vw, 18px);
+      line-height: 1.8;
+      max-width: 66ch;
+    }
+    .h-points{
+      margin:0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.85;
+    }
+    .h-points li{ margin:10px 0; }
+
+    .h-media{
+      border:1px solid var(--line);
+      border-radius:20px;
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      position:relative;
+    }
+    .h-media img{
+      width:100%;
+      height:auto;
+      display:block;
+      cursor: zoom-in;
+      transform: scale(1);
+      transition: transform .22s ease, filter .22s ease;
+      will-change: transform;
+    }
+    @media (hover:hover){
+      .h-media:hover img{
+        transform: scale(1.06);
+        filter: saturate(1.05) contrast(1.03);
+      }
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(5,10,20,.85);
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index: 2000;
+      opacity:0;
+      visibility:hidden;
+      transition: opacity .25s ease;
+      padding: 18px;
+    }
+    .lightbox.show{ opacity:1; visibility:visible; }
+    .lightbox img{
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: 0 40px 120px rgba(0,0,0,.6);
+    }
+    .lightbox-close{
+      position:absolute;
+      top:22px;
+      right:22px;
+      font-size:30px;
+      color:white;
+      cursor:pointer;
+      opacity:.75;
+      transition: opacity .2s;
+      line-height:1;
+      padding:10px 12px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(0,0,0,.25);
+    }
+    .lightbox-close:hover{ opacity:1; }
+
+    /* Reveal */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity .8s ease, transform .8s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.in{ opacity:1; transform: translateY(0); }
+
+    .footer{ margin:0; padding:26px 0 38px; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <header class="nav" role="navigation">
+      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div class="brand">
+          <div class="brand-badge" aria-hidden="true"></div>
+          <div class="brand-name">
+            <strong>Paola Jayme Romaguera</strong>
+            <span>Climate Risk • GIS • Remote Sensing • Python</span>
+          </div>
+        </div>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a class="pill" href="index.html#top">Overview</a>
+          <a class="pill" href="index.html#featured">Featured</a>
+          <a class="pill" href="index.html#research">Research</a>
+          <a class="pill" href="projects.html">All Projects</a>
+          <a class="pill" href="resume.pdf">Resume</a>
+          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="chapter" id="top">
+      <div class="wide">
+        <div class="hero-panel reveal">
+          <div class="hero-copy">
+            <div class="crumbs">
+              <a href="projects.html">Projects</a>
+              <span>•</span>
+              <span>2D Flood Modeling</span>
+            </div>
+
+            <div class="micro"><span class="dot"></span> Hydrodynamics • FLO-2D • Flood depth & extent</div>
+
+            <h1 class="super">2D Flood Modeling (FLO-2D)</h1>
+
+            <p class="lede2">
+              Built a 2D hydrodynamic modeling workflow to simulate flood behavior and generate depth/extent outputs
+              to support hazard interpretation and planning. This case study uses only public-domain, synthetic, or sanitized examples.
+            </p>
+
+            <div class="tags">
+              <span class="tag">Flood modeling</span>
+              <span class="tag">FLO-2D</span>
+              <span class="tag">Hydrodynamics</span>
+              <span class="tag">Depth & extent</span>
+              <span class="tag">GIS outputs</span>
+            </div>
+
+            <div class="row">
+              <a class="pill" href="projects.html">← Back to Projects</a>
+              <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+              <span class="small">No proprietary code or client data shared</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="chapter" id="details">
+      <div class="wide">
+        <div class="reveal">
+          <h2 style="margin:0 0 10px; font-size:28px; letter-spacing:-.3px;">Highlights</h2>
+          <p class="lede2" style="margin:0;">What the model outputs were intended for and how the workflow is organized.</p>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-card reveal">
+            <h3>Objective</h3>
+            <ul>
+              <li>Simulate flood behavior and identify flow paths.</li>
+              <li>Generate flood depth and extent maps for planning.</li>
+              <li>Support interpretation with clear spatial outputs.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card reveal">
+            <h3>Approach</h3>
+            <ul>
+              <li>Prepare terrain + roughness and boundary conditions.</li>
+              <li>Run 2D simulations and review stability/QC.</li>
+              <li>Post-process rasters and map final outputs.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card reveal">
+            <h3>Tools</h3>
+            <ul>
+              <li>FLO-2D for model setup and simulation.</li>
+              <li>GIS for terrain preparation and mapping.</li>
+              <li>Optional Python for automation and summaries.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card reveal">
+            <h3>My role</h3>
+            <ul>
+              <li>Set up model inputs and parameters.</li>
+              <li>Executed runs and performed QC checks.</li>
+              <li>Generated GIS-ready outputs and maps.</li>
+            </ul>
+          </div>
+
+          <div class="detail-card detail-wide reveal">
+            <h3>Key takeaways</h3>
+            <ul>
+              <li>Input quality (terrain/roughness) strongly drives output reliability.</li>
+              <li>Consistent QC steps reduce reruns and improve defensibility.</li>
+              <li>Depth + extent maps communicate results clearly to stakeholders.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 1 -->
+    <section class="chapter" id="module-setup">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 1</div>
+                <h2 class="h-title">Model setup</h2>
+                <p class="h-desc">Prepare terrain, roughness, and boundary conditions for simulation.</p>
+                <ul class="h-points">
+                  <li>DEM processing and grid preparation.</li>
+                  <li>Assign roughness/land cover parameters.</li>
+                  <li>Define inflows/outflows and event assumptions.</li>
+                </ul>
+              </div>
+              <div class="h-media">
+                <img src="assets/Flood Modelling.png" alt="FLO-2D model setup screenshot">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 2 -->
+    <section class="chapter" id="module-run"
+      style="--scene-bg:
+        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
+        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 2</div>
+                <h2 class="h-title">Simulation & QC</h2>
+                <p class="h-desc">Run the model and verify stability and consistency of results.</p>
+                <ul class="h-points">
+                  <li>Execute scenarios (events, durations, sensitivity).</li>
+                  <li>Check stability and output sanity (depth/velocity).</li>
+                  <li>Iterate settings to resolve artifacts if needed.</li>
+                </ul>
+              </div>
+              <div class="h-media">
+                <img src="assets/flo2d-depth.png" alt="FLO-2D simulation output screenshot">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 3 -->
+    <section class="chapter" id="module-post">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 3</div>
+                <h2 class="h-title">Post-processing & outputs</h2>
+                <p class="h-desc">Convert results into GIS-ready products and decision-ready maps.</p>
+                <ul class="h-points">
+                  <li>Export depth/extent rasters and contours.</li>
+                  <li>Compose maps and summary figures for reporting.</li>
+                  <li>Package outputs for downstream exposure analysis.</li>
+                </ul>
+              </div>
+              <div class="h-media">
+                <img src="assets/flo2d-depth.png" alt="Flood depth map output screenshot">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row reveal" style="margin-top:16px;">
+          <a class="pill" href="projects.html">← Back to Projects</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <span>© <span id="y"></span> Paola Romaguera</span>
+        <span>
+          <a href="projects.html">Projects</a> •
+          <a href="resume.pdf">Resume</a> •
+          <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
+        </span>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">×</button>
+    <img id="lightboxImg" alt="Full-size preview">
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('in');
+        else e.target.classList.remove('in');
+      });
+    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+    revealEls.forEach(el => io.observe(el));
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const closeBtn = document.getElementById("lightboxClose");
+
+    document.querySelectorAll(".h-media img").forEach(img => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.currentSrc || img.src;
+        lightbox.classList.add("show");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeLightbox(){
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImg.src = "";
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+  </script>
+</body>
+</html>
