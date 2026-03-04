@@ -1,9 +1,4 @@
-<!-- =========================
-FILE: project-dashboard.html
-Big hero title + scroll chapters with photo backgrounds (overlay text)
-Nav matches index/projects
-Retains reveal transitions
-========================= -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +13,7 @@ Retains reveal transitions
     body .container{ max-width:none; padding:0; }
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
 
-    /* Nav: sticky like index (markup matches index) */
+    /* Nav: sticky like index */
     .nav{
       position: sticky;
       top: 0;
@@ -39,7 +34,7 @@ Retains reveal transitions
     }
     @media (max-width: 860px){ .chapter{ padding: 52px 0; } }
 
-    /* Default scene layer (subtle gradients, like index) */
+    /* Subtle chapter ambience only (NO screenshot backgrounds) */
     .chapter::before{
       content:"";
       position:absolute;
@@ -53,34 +48,7 @@ Retains reveal transitions
       z-index:0;
     }
 
-    /* Photo background layer per chapter (set via inline --bg-img) */
-    .chapter.photo::after{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background-image: var(--bg-img);
-      background-size: cover;
-      background-position: center;
-      filter: saturate(1.05) contrast(1.05);
-      transform: scale(1.02);
-      opacity: var(--bg-opacity, .22);   /* tweak per chapter if needed */
-      pointer-events:none;
-      z-index:0;
-    }
-
-    /* Darken for readability */
-    .chapter.photo .scrim{
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(180deg, rgba(11,16,32,.70), rgba(11,16,32,.35) 45%, rgba(11,16,32,.78)),
-        radial-gradient(900px 520px at 30% 25%, rgba(34,211,238,.10), transparent 55%),
-        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.10), transparent 60%);
-      pointer-events:none;
-      z-index:1;
-    }
-
-    .chapter > *{ position:relative; z-index:2; }
+    .chapter > *{ position:relative; z-index:1; }
 
     /* Hero panel */
     .hero-panel{
@@ -158,38 +126,33 @@ Retains reveal transitions
       color: var(--muted);
     }
 
-    /* ===== modules ===== */
+    /* ===== Apple-like modules ===== */
     .module-wrap{
       display: grid;
       grid-template-columns: 1fr;
       gap: 14px;
     }
-    
-    /* Big highlight panel */
+
     .highlight{
       border: 1px solid var(--line);
       border-radius: 26px;
-      background: rgba(255,255,255,.04);        /* looks like a soft card on dark bg */
+      background: rgba(255,255,255,.04);
       box-shadow: var(--shadow);
       overflow: hidden;
       padding: 26px;
     }
-    
-    /* Split layout: text left, media right */
+
     .highlight-grid{
       display: grid;
       grid-template-columns: 1.05fr .95fr;
       gap: 22px;
       align-items: center;
     }
-    
+
     @media (max-width: 980px){
-      .highlight-grid{
-        grid-template-columns: 1fr;
-      }
+      .highlight-grid{ grid-template-columns: 1fr; }
     }
-    
-    /* Left copy */
+
     .h-eyebrow{
       display: inline-flex;
       align-items: center;
@@ -209,14 +172,14 @@ Retains reveal transitions
       background: var(--accent2);
       box-shadow: 0 0 0 4px rgba(52,211,153,.10);
     }
-    
+
     .h-title{
       margin: 0 0 10px;
       font-size: clamp(20px, 2.1vw, 28px);
       letter-spacing: -.3px;
       line-height: 1.15;
     }
-    
+
     .h-desc{
       margin: 0 0 14px;
       color: var(--muted);
@@ -224,7 +187,7 @@ Retains reveal transitions
       line-height: 1.75;
       max-width: 62ch;
     }
-    
+
     .h-points{
       margin: 0;
       padding-left: 18px;
@@ -233,8 +196,7 @@ Retains reveal transitions
       line-height: 1.75;
     }
     .h-points li{ margin: 8px 0; }
-    
-    /* Right media: big screenshot inside */
+
     .h-media{
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -242,19 +204,51 @@ Retains reveal transitions
       overflow: hidden;
       box-shadow: 0 18px 60px rgba(0,0,0,.35);
     }
-    
     .h-media img{
       width: 100%;
       height: auto;
       display: block;
     }
-    
-    /* Optional: keep the module chapter background subtle (not the screenshot) */
-    .chapter.photo::after{
-      opacity: .10 !important;  /* lower so the highlight panel dominates */
+
+    /* ===== Details (Objective/Approach/Role/etc) ===== */
+    .detail-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    @media (max-width: 980px){
+      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 640px){
+      .detail-grid{ grid-template-columns: 1fr; }
     }
 
-    /* Reveal transitions (same behavior as index) */
+    .detail-card{
+      grid-column: span 6;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 18px;
+    }
+    .detail-card h3{
+      margin:0 0 10px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .detail-card ul{
+      margin:0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+    .detail-card li{ margin: 8px 0; }
+    .detail-wide{ grid-column: span 12; }
+
+    /* Reveal transitions */
     .reveal{
       opacity: 0;
       transform: translateY(18px);
@@ -296,7 +290,7 @@ Retains reveal transitions
       </div>
     </header>
 
-    <!-- CHAPTER 1: HERO (big title + description) -->
+    <!-- CHAPTER 1: HERO -->
     <section class="chapter" id="top"
       style="--scene-bg:
         radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.12), transparent 55%),
@@ -339,110 +333,160 @@ Retains reveal transitions
       </div>
     </section>
 
-   <!-- CHAPTER 2: MODULE — INPUT -->
-<section class="chapter photo" id="module-input"
-  style="--bg-img:url('assets/app-input.png'); --bg-opacity:.10;">
-  <div class="scrim" aria-hidden="true"></div>
+    <!-- CHAPTER 2: DETAILS (Objective/Approach/Role/Tools/Takeaways) -->
+    <section class="chapter" id="details">
+      <div class="wide">
+        <div class="reveal">
+          <h2 style="margin:0 0 10px; font-size:28px; letter-spacing:-.3px;">Highlights</h2>
+          <p class="lede2" style="margin:0;">
+            What this dashboard is designed to achieve and how it’s structured.
+          </p>
+        </div>
 
-  <div class="wide">
-    <div class="module-wrap reveal">
-      <div class="highlight">
-        <div class="highlight-grid">
-
-          <!-- LEFT: copy -->
-          <div>
-            <div class="h-eyebrow"><span class="dot"></span> Module 1</div>
-            <h2 class="h-title">Inputs</h2>
-            <p class="h-desc">
-              Set up the assessment by loading asset locations and selecting hazard layers and parameters.
-            </p>
-            <ul class="h-points">
-              <li>Upload/define asset locations (points or site list).</li>
-              <li>Select hazards and analysis settings (buffers, thresholds).</li>
-              <li>Validate inputs to reduce downstream rework.</li>
+        <div class="detail-grid">
+          <div class="detail-card reveal">
+            <h3>Objective</h3>
+            <ul>
+              <li>Reduce manual steps when assessing tens to hundreds of sites.</li>
+              <li>Produce decision-ready outputs: exposure metrics + clean visuals.</li>
+              <li>Improve consistency using a repeatable, standardized workflow.</li>
             </ul>
           </div>
 
-          <!-- RIGHT: visual -->
-          <div class="h-media">
-            <img src="assets/app-input.png" alt="Dashboard Inputs module screenshot">
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-    <!-- MODULE — RUN -->
-<section class="chapter photo" id="module-run"
-  style="--bg-img:url('assets/app-run.png'); --bg-opacity:.10;">
-  <div class="scrim" aria-hidden="true"></div>
-
-  <div class="wide">
-    <div class="module-wrap reveal">
-      <div class="highlight">
-        <div class="highlight-grid">
-
-          <div>
-            <div class="h-eyebrow"><span class="dot"></span> Module 2</div>
-            <h2 class="h-title">Run</h2>
-            <p class="h-desc">
-              Execute overlays and summarization to compute exposure indicators consistently across portfolios.
-            </p>
-            <ul class="h-points">
-              <li>Automated spatial overlays / joins for selected hazard layers.</li>
-              <li>Standardized aggregation into exposure metrics.</li>
-              <li>Repeatable workflow for tens to hundreds of sites.</li>
+          <div class="detail-card reveal">
+            <h3>Approach</h3>
+            <ul>
+              <li>Ingest asset locations and selected hazard layers.</li>
+              <li>Automate overlays and summarization into exposure indicators.</li>
+              <li>Generate maps/charts for interpretation and reporting.</li>
             </ul>
           </div>
 
-          <div class="h-media">
-            <img src="assets/app-run.png" alt="Dashboard Run module screenshot">
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MODULE — RESULTS -->
-<section class="chapter photo" id="module-results"
-  style="--bg-img:url('assets/app-results.png'); --bg-opacity:.10;">
-  <div class="scrim" aria-hidden="true"></div>
-
-  <div class="wide">
-    <div class="module-wrap reveal">
-      <div class="highlight">
-        <div class="highlight-grid">
-
-          <div>
-            <div class="h-eyebrow"><span class="dot"></span> Module 3</div>
-            <h2 class="h-title">Results</h2>
-            <p class="h-desc">
-              Review decision-ready outputs (metrics + visuals) and export results for reporting.
-            </p>
-            <ul class="h-points">
-              <li>Portfolio-level summaries (counts/percentages by hazard).</li>
-              <li>Maps/charts to communicate spatial patterns.</li>
-              <li>Export tables/figures for reporting packs.</li>
+          <div class="detail-card reveal">
+            <h3>Tools</h3>
+            <ul>
+              <li>Streamlit for the interface and modular workflow steps.</li>
+              <li>GIS overlays + spatial joins for exposure extraction.</li>
+              <li>Python (optional) for preprocessing and automation.</li>
             </ul>
           </div>
 
-          <div class="h-media">
-            <img src="assets/app-results.png" alt="Dashboard Results module screenshot">
+          <div class="detail-card reveal">
+            <h3>My role</h3>
+            <ul>
+              <li>Designed the end-to-end workflow and information architecture.</li>
+              <li>Defined exposure metrics and standardized output formats.</li>
+              <li>Built as a personal optimization initiative (not client delivery).</li>
+            </ul>
           </div>
 
+          <div class="detail-card detail-wide reveal">
+            <h3>Key takeaways</h3>
+            <ul>
+              <li>Faster, more scalable assessments for distributed portfolios.</li>
+              <li>Standardized outputs reduce rework and improve consistency.</li>
+              <li>Clear visuals help communicate results to non-technical stakeholders.</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
+    <!-- CHAPTER 3: MODULE — INPUT -->
+    <section class="chapter" id="module-input">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
 
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 1</div>
+                <h2 class="h-title">Inputs</h2>
+                <p class="h-desc">
+                  Set up the assessment by loading asset locations and selecting hazard layers and parameters.
+                </p>
+                <ul class="h-points">
+                  <li>Upload/define asset locations (points or site list).</li>
+                  <li>Select hazards and analysis settings (buffers, thresholds).</li>
+                  <li>Validate inputs to reduce downstream rework.</li>
+                </ul>
+              </div>
 
-    <!-- CHAPTER 5: WORKFLOW SNAPSHOT (normal chapter) -->
+              <div class="h-media">
+                <img src="assets/app-input.png" alt="Dashboard Inputs module screenshot">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 4: MODULE — RUN -->
+    <section class="chapter" id="module-run"
+      style="--scene-bg:
+        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
+        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 2</div>
+                <h2 class="h-title">Run</h2>
+                <p class="h-desc">
+                  Execute overlays and summarization to compute exposure indicators consistently across portfolios.
+                </p>
+                <ul class="h-points">
+                  <li>Automated spatial overlays / joins for selected hazard layers.</li>
+                  <li>Standardized aggregation into exposure metrics.</li>
+                  <li>Repeatable workflow for tens to hundreds of sites.</li>
+                </ul>
+              </div>
+
+              <div class="h-media">
+                <img src="assets/app-run.png" alt="Dashboard Run module screenshot">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 5: MODULE — RESULTS -->
+    <section class="chapter" id="module-results">
+      <div class="wide">
+        <div class="module-wrap reveal">
+          <div class="highlight">
+            <div class="highlight-grid">
+
+              <div>
+                <div class="h-eyebrow"><span class="dot"></span> Module 3</div>
+                <h2 class="h-title">Results</h2>
+                <p class="h-desc">
+                  Review decision-ready outputs (metrics + visuals) and export results for reporting.
+                </p>
+                <ul class="h-points">
+                  <li>Portfolio-level summaries (counts/percentages by hazard).</li>
+                  <li>Maps/charts to communicate spatial patterns.</li>
+                  <li>Export tables/figures for reporting packs.</li>
+                </ul>
+              </div>
+
+              <div class="h-media">
+                <img src="assets/app-results.png" alt="Dashboard Results module screenshot">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTER 6: WORKFLOW SNAPSHOT -->
     <section class="chapter" id="workflow"
       style="--scene-bg:
         radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
@@ -482,10 +526,9 @@ Retains reveal transitions
   </div>
 
   <script>
-    // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Reveal transitions — re-trigger enter/exit (so it always feels like "chapters")
+    // Reveal transitions — re-trigger enter/exit
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
