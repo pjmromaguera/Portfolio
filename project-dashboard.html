@@ -1,23 +1,24 @@
 <!-- =========================
 FILE: project-dashboard.html
-Apple-like hero + adjacent gallery
+Consistent header across ALL pages (matches index)
 ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hazard Exposure Assessment Dashboard | Paola Romaguera</title>
+  <title>Hazard Exposure Assessment Dashboard | Paola Jayme Romaguera</title>
   <meta name="description" content="Personal Streamlit mini-app that automates hazard exposure metrics and visual summaries for distributed asset portfolios (no client data shared)." />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Page-only layout helpers (safe + consistent with your main page) -->
+  <!-- Page-only layout helpers (kept minimal; nav uses SAME markup as index) -->
   <style>
-    /* Make this page feel like index (full-bleed sections) */
+    /* Full-bleed like index */
     body .container{ max-width:none; padding:0; }
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
 
-    /* Sticky nav like main page */
+    /* ===== IMPORTANT: nav visuals should live in style.css (shared).
+       This page keeps nav sticky only, matching index behavior. ===== */
     .nav{
       position: sticky;
       top: 0;
@@ -29,7 +30,7 @@ Apple-like hero + adjacent gallery
       margin: 0;
     }
 
-    /* Chapter background scene */
+    /* Chapter scene (same vibe as index) */
     .chapter{
       padding: 70px 0;
       position: relative;
@@ -50,7 +51,7 @@ Apple-like hero + adjacent gallery
     }
     .chapter > *{ position:relative; z-index:1; }
 
-    /* Hero split: text + adjacent gallery */
+    /* Hero split */
     .case-hero{
       display:grid;
       grid-template-columns: 1.05fr .95fr;
@@ -137,9 +138,7 @@ Apple-like hero + adjacent gallery
     }
 
     /* Adjacent gallery */
-    .hero-gallery{
-      padding: 14px;
-    }
+    .hero-gallery{ padding: 14px; }
 
     .gallery-main{
       border: 1px solid var(--line);
@@ -186,7 +185,7 @@ Apple-like hero + adjacent gallery
       display:block;
     }
 
-    /* Content grid below hero (uniform cards) */
+    /* Details grid below hero */
     .case-grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -222,7 +221,6 @@ Apple-like hero + adjacent gallery
       line-height: 1.7;
     }
     .case-card li{ margin: 8px 0; }
-
     .case-wide{ grid-column: span 12; }
 
     .media-panel{
@@ -244,7 +242,6 @@ Apple-like hero + adjacent gallery
       display:block;
     }
 
-    /* Footer spacing */
     .footer{ margin: 0; padding: 26px 0 38px; }
   </style>
 </head>
@@ -252,21 +249,24 @@ Apple-like hero + adjacent gallery
 <body>
   <div class="container">
 
-    <!-- NAV -->
+    <!-- NAV (SAME structure as index.html) -->
     <header class="nav" role="navigation">
       <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
         <div class="brand">
           <div class="brand-badge" aria-hidden="true"></div>
           <div class="brand-name">
             <strong>Paola Jayme Romaguera</strong>
-            <span>Case Study</span>
+            <span>Climate Risk • GIS • Remote Sensing • Python</span>
           </div>
         </div>
 
         <nav class="nav-links" aria-label="Primary">
-          <a class="pill" href="index.html">Home</a>
-          <a class="pill" href="projects.html">Projects</a>
+          <a class="pill" href="index.html#top">Overview</a>
+          <a class="pill" href="index.html#featured">Featured</a>
+          <a class="pill" href="index.html#research">Research</a>
+          <a class="pill" href="projects.html">All Projects</a>
           <a class="pill" href="resume.pdf">Resume</a>
+          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
           <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
         </nav>
       </div>
@@ -413,7 +413,11 @@ Apple-like hero + adjacent gallery
     <footer class="footer">
       <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
         <span>© <span id="y"></span> Paola Romaguera</span>
-        <span><a href="index.html">Home</a> • <a href="projects.html">Projects</a> • <a href="resume.pdf">Resume</a></span>
+        <span>
+          <a href="projects.html">Projects</a> •
+          <a href="resume.pdf">Resume</a> •
+          <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
+        </span>
       </div>
     </footer>
 
@@ -436,7 +440,6 @@ Apple-like hero + adjacent gallery
           thumbs.forEach(x => x.classList.remove('active'));
           t.classList.add('active');
 
-          // Swap image
           main.setAttribute('src', src);
         });
       });
