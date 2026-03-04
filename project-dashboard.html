@@ -320,6 +320,18 @@
       opacity: 1;
       transform: translateY(0);
     }
+    /* ✅ Mobile fix: force highlight cards to take full width */
+@media (max-width: 640px){
+  .detail-grid{
+    grid-template-columns: 1fr !important;
+  }
+  .detail-card,
+  .detail-wide{
+    grid-column: 1 / -1 !important; /* overrides span 6 / span 12 */
+    width: 100%;
+  }
+}
+    
 
     .footer{ margin: 0; padding: 26px 0 38px; }
   </style>
