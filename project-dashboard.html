@@ -248,7 +248,57 @@
         box-shadow: 0 22px 70px rgba(0,0,0,.45);
       }
     }
-
+    /* ===== Image Lightbox ===== */
+    
+    .lightbox{
+      position: fixed;
+      inset: 0;
+      background: rgba(5,10,20,.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease;
+    }
+    
+    .lightbox.show{
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .lightbox img{
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: 0 40px 120px rgba(0,0,0,.6);
+    }
+    
+    /* close button */
+    .lightbox-close{
+      position: absolute;
+      top: 28px;
+      right: 36px;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      opacity: .7;
+      transition: opacity .2s;
+    }
+    
+    .lightbox-close:hover{
+      opacity: 1;
+    }
+    
+    /* make module images clickable */
+    .h-media img{
+      cursor: zoom-in;
+    }
+    
     /* ===== Details (Objective/Approach/Role/etc) ===== */
     .detail-grid{
       display:grid;
@@ -566,7 +616,11 @@
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
-
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close" id="lightboxClose">&times;</span>
+      <img id="lightboxImg" src="">
+    </div>
     // Reveal transitions — re-trigger enter/exit
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
@@ -577,5 +631,59 @@
     }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
     revealEls.forEach(el => io.observe(el));
   </script>
+
+  <script>
+
+document.getElementById('y').textContent = new Date().getFullYear();
+
+/* Reveal transitions */
+const revealEls = document.querySelectorAll('.reveal');
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('in');
+    else e.target.classList.remove('in');
+  });
+}, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
+
+revealEls.forEach(el => io.observe(el));
+
+
+/* ===== Lightbox ===== */
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const closeBtn = document.getElementById("lightboxClose");
+
+document.querySelectorAll(".h-media img").forEach(img => {
+
+  img.addEventListener("click", () => {
+
+    lightboxImg.src = img.src;
+    lightbox.classList.add("show");
+
+  });
+
+});
+
+closeBtn.addEventListener("click", () => {
+  lightbox.classList.remove("show");
+});
+
+/* click outside image closes */
+lightbox.addEventListener("click", (e)=>{
+  if(e.target === lightbox){
+    lightbox.classList.remove("show");
+  }
+});
+
+/* ESC closes */
+document.addEventListener("keydown",(e)=>{
+  if(e.key === "Escape"){
+    lightbox.classList.remove("show");
+  }
+});
+
+</script>
 </body>
 </html>
