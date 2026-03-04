@@ -239,7 +239,7 @@
 
         <div class="nav-links">
           <a class="pill" href="#top">Overview</a>
-          <a class="pill" href="#featured">Featured</a>
+          <a class="pill" href="#ured">ured</a>
           <a class="pill" href="#research">Research</a>
           <a class="pill" href="projects.html">All Projects</a>
           <a class="pill" href="resume.pdf">Resume</a>
@@ -253,7 +253,7 @@
     <section class="chapter spotlight" id="top">
       <div class="wide hero-apple">
 
-        <div class="feature reveal">
+        <div class="ure reveal">
           <div class="micro"><span class="dot"></span> Climate Risk &amp; Geospatial Analytics</div>
 
           <h1 class="super">Decision-ready climate risk insights from geospatial data.</h1>
@@ -321,49 +321,61 @@
       <a class="pill" href="projects.html">View all</a>
     </div>
 
-    <div class="hscroll" id="featuredCarousel">
-      <a class="hcard" href="project-dashboard.html">
-        <div class="hcard-media"><img src="assets/app-cover.png" alt=""></div>
-        <div class="hcard-body">
-          <h3>Hazard Exposure Assessment Dashboard</h3>
-          <p>Personal dashboard to automate exposure metrics and visualization for distributed portfolios.</p>
-        </div>
-      </a>
+    <!-- Carousel viewport -->
+    <div class="carousel" aria-label="Featured projects carousel">
+      <div class="carousel-track" id="featuredTrack">
 
-      <a class="hcard" href="project-methodology.html">
-        <div class="hcard-media"><img src="assets/rainfall-cover.jpg" alt=""></div>
-        <div class="hcard-body">
-          <h3>Hazard Exposure Assessment Methodology</h3>
-          <p>Standardized framework integrating local and global datasets for current and future scenarios.</p>
-        </div>
-      </a>
+        <a class="hcard" href="project-dashboard.html">
+          <div class="hcard-media"><img src="assets/app-cover.png" alt="Hazard Exposure Dashboard cover"></div>
+          <div class="hcard-body">
+            <h3>Hazard Exposure Assessment Dashboard</h3>
+            <p>Personal dashboard to automate exposure metrics and visualization for distributed portfolios.</p>
+          </div>
+        </a>
 
-      <a class="hcard" href="project-turbidity.html">
-        <div class="hcard-media"><img src="assets/turbidity.png" alt=""></div>
-        <div class="hcard-body">
-          <h3>River Turbidity Assessment</h3>
-          <p>Mapped turbidity patterns in GEE to identify potential siltation zones.</p>
-        </div>
-      </a>
+        <a class="hcard" href="project-methodology.html">
+          <div class="hcard-media"><img src="assets/rainfall-cover.jpg" alt="Methodology cover"></div>
+          <div class="hcard-body">
+            <h3>Hazard Exposure Assessment Methodology</h3>
+            <p>Standardized framework integrating local and global datasets for current and future scenarios.</p>
+          </div>
+        </a>
 
-      <a class="hcard" href="project-flo2d.html">
-        <div class="hcard-media"><img src="assets/Flood Modelling.png" alt=""></div>
-        <div class="hcard-body">
-          <h3>2D Flood Modeling (FLO-2D)</h3>
-          <p>Hydrodynamic simulations producing flood depth and extent maps.</p>
-        </div>
-      </a>
+        <a class="hcard" href="project-turbidity.html">
+          <div class="hcard-media"><img src="assets/turbidity.png" alt="Turbidity cover"></div>
+          <div class="hcard-body">
+            <h3>River Turbidity Assessment</h3>
+            <p>Mapped turbidity patterns in GEE to identify potential siltation zones.</p>
+          </div>
+        </a>
 
-      <a class="hcard" href="project-eddies.html">
-        <div class="hcard-media"><img src="assets/eddies.png" alt=""></div>
-        <div class="hcard-body">
-          <h3>Ocean Eddy Detection (Freelance)</h3>
-          <p>Processed NetCDF datasets to detect eddies and track lifecycle evolution.</p>
-        </div>
-      </a>
+        <a class="hcard" href="project-flo2d.html">
+          <div class="hcard-media"><img src="assets/Flood Modelling.png" alt="FLO-2D cover"></div>
+          <div class="hcard-body">
+            <h3>2D Flood Modeling (FLO-2D)</h3>
+            <p>Hydrodynamic simulations producing flood depth and extent maps.</p>
+          </div>
+        </a>
+
+        <a class="hcard" href="project-eddies.html">
+          <div class="hcard-media"><img src="assets/eddies.png" alt="Eddies cover"></div>
+          <div class="hcard-body">
+            <h3>Ocean Eddy Detection (Freelance)</h3>
+            <p>Processed multi-year NetCDF datasets to detect mesoscale eddies and track lifecycle evolution.</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Pagination indicator -->
+      <div class="carousel-indicator" aria-hidden="true">
+        <div class="indicator-track" id="indicatorTrack"></div>
+      </div>
+
+      <p class="small" style="margin-top:10px;">
+        Swipe/drag or scroll to navigate. Click a card to open the case study.
+      </p>
     </div>
-
-    <p class="small" style="margin-top:10px;">Scroll sideways (trackpad) or Shift + mouse wheel.</p>
   </div>
 </section>
 
@@ -507,6 +519,79 @@
       }
     }, { passive: false });
   }
+</script>
+  <script>
+  (function(){
+    const track = document.getElementById('featuredTrack');
+    const ind = document.getElementById('indicatorTrack');
+    if (!track || !ind) return;
+
+    const cards = Array.from(track.querySelectorAll('.hcard'));
+    if (!cards.length) return;
+
+    // Build dots
+    ind.innerHTML = '';
+    const dots = cards.map((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'ind-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('role', 'button');
+      d.setAttribute('tabindex', '0');
+      d.setAttribute('aria-label', `Go to item ${i+1}`);
+      d.addEventListener('click', () => {
+        cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+      d.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+      ind.appendChild(d);
+      return d;
+    });
+
+    // Determine which card is closest to the center of the viewport
+    function updateActive(){
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      cards.forEach((card, i) => {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const dist = Math.abs(cardCenter - center);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      });
+
+      dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+    }
+
+    // Update on scroll (throttled with rAF)
+    let ticking = false;
+    track.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActive();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Wheel -> horizontal when hovering the carousel
+    track.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        track.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Init after layout
+    window.addEventListener('load', () => setTimeout(updateActive, 50));
+    window.addEventListener('resize', () => setTimeout(updateActive, 50));
+  })();
 </script>
   
 </body>
