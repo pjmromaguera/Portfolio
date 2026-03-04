@@ -240,7 +240,142 @@ h1{
 @media (max-width: 640px){
   .grid{ grid-template-columns: 1fr; }
 }
+/* ===== Apple-like horizontal featured carousel ===== */
+.feature-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 12px;
+}
+.feature-head h2{
+  margin:0;
+  font-size: 22px;
+  letter-spacing: -.2px;
+}
 
+/* Horizontal scroller */
+.hscroll{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(320px, 420px);
+  gap: 16px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 2px 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  /* keep it clean */
+  border-radius: 18px;
+}
+
+/* stylish scrollbar */
+.hscroll{
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.06);
+}
+.hscroll::-webkit-scrollbar{ height: 12px; }
+.hscroll::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.06);
+  border-radius: 999px;
+}
+.hscroll::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.22);
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.06);
+}
+.hscroll::-webkit-scrollbar-thumb:hover{
+  background: rgba(255,255,255,.30);
+}
+
+/* Cards */
+.hcard{
+  scroll-snap-align: start;
+  display:flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 6px);
+  background: rgba(15,26,43,.55);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-height: 420px;
+
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.hcard:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+}
+
+.hcard-media{
+  height: 220px;
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid var(--line);
+  overflow:hidden;
+}
+.hcard-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+}
+
+.hcard-body{
+  padding: 18px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.hcard-body h3{
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -.2px;
+}
+.hcard-body p{
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* tags (no hashtags, italic vibe) */
+.hcard-tags{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+}
+.hcard-tags span{
+  display:inline-flex;
+  align-items:center;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--muted);
+  background: rgba(255,255,255,.03);
+  white-space: nowrap;
+}
+.hcard-tags em{ font-style: italic; }
+
+/* CTA */
+.hcard-cta{
+  margin-top: 10px;
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Responsive sizing */
+@media (max-width: 520px){
+  .hscroll{ grid-auto-columns: 86vw; }
+  .hcard{ min-height: 400px; }
+}
 /* PROJECT CARDS */
 .project{
   display:flex;
