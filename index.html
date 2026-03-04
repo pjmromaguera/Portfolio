@@ -13,7 +13,7 @@
   body { overflow: hidden; }
 
   /* Use CSS var so stage height always matches actual nav height */
-  :root { --navH: 96px; }
+  :root { --navH: 76px; }
 
   .stage{
     height: calc(100vh - var(--navH));
@@ -56,16 +56,16 @@
   }
 
   /* nicer scrollbar (optional) */
-  .slide .reveal-in::-webkit-scrollbar{ width: 10px; }
+ /* .slide .reveal-in::-webkit-scrollbar{ width: 10px; }
   .slide .reveal-in::-webkit-scrollbar-thumb{
     background: rgba(255,255,255,.12);
     border-radius: 999px;
   }
-
+*/
   /* optional hint */
   .scroll-hint{
     position: absolute;
-    left: 0; right: 0; bottom: 10px;
+    left: 0; right: 0; bottom: 20px;
     display:flex;
     justify-content:center;
     pointer-events:none;
@@ -153,7 +153,7 @@
                   Each selected project highlights the objective, approach, tools used, and outputs (maps/charts).
                 </p>
 
-                <div class="cta" style="margin-top:14px;">
+                <div class="cta" style="margin-top:8px;">
                   <a class="pill primary" href="#" data-jump="1">Explore Projects</a>
                  
                 </div>
@@ -200,7 +200,7 @@
 
         <!-- SLIDE 2: FEATURED -->
         <section class="slide" data-index="1">
-          <div class="reveal-in" style="margin-top:6px;">
+          <div class="reveal-in" style="margin-top:1px;">
             <div class="section">
               <h2>Featured case studies</h2>
 
