@@ -315,110 +315,124 @@
 
     <!-- CHAPTER 2: FEATURED -->
     <section class="chapter" id="featured">
-      <div class="wide">
-        <div class="reveal">
-          <h2 style="font-size:22px;margin:0 0 10px;letter-spacing:-.2px;">Featured case studies</h2>
-          <p class="lede2" style="margin-bottom:0;">
-            Short, decision-oriented writeups with objectives, approach, tools, and outputs.
-          </p>
+  <div class="wide">
+    <div class="feature-head">
+      <h2>Featured case studies</h2>
+      <a class="pill" href="projects.html">View all</a>
+    </div>
+
+    <!-- Horizontal scroller -->
+    <div class="hscroll" aria-label="Featured projects">
+      <a class="hcard" href="project-dashboard.html">
+        <div class="hcard-media">
+          <img src="assets/app-cover.png" alt="Hazard Exposure Assessment Dashboard cover">
         </div>
+        <div class="hcard-body">
+          <h3>Hazard Exposure Assessment Dashboard</h3>
+          <p>Personal Streamlit-based tool to automate exposure metrics and visuals for large, distributed portfolios.</p>
 
-        <div class="tiles">
-          <!-- Dashboard -->
-          <a class="tile wide reveal" href="project-dashboard.html">
-            <div class="cover parallax" data-parallax="0.10">
-              <img src="assets/app-cover.png" alt="Hazard Exposure Assessment Dashboard cover">
-            </div>
-            <div class="body">
-              <h3>Hazard Exposure Assessment Dashboard</h3>
-              <p>Personal Streamlit-style workflow tool to automate exposure metrics and visual summaries for large, distributed portfolios.</p>
-              <div class="kws">
-                <span class="kw"><em>Dashboard</em></span>
-                <span class="kw"><em>GIS</em></span>
-                <span class="kw"><em>Exposure metrics</em></span>
-                <span class="kw"><em>Workflow automation</em></span>
-              </div>
-              <div class="row">
-                <span class="small">Read case study</span><span class="small">→</span>
-              </div>
-            </div>
-          </a>
+          <div class="hcard-tags">
+            <span><em>Dashboard</em></span>
+            <span><em>GIS</em></span>
+            <span><em>Exposure metrics</em></span>
+            <span><em>Streamlit</em></span>
+          </div>
 
-          <!-- Methodology -->
-          <a class="tile reveal" href="project-methodology.html">
-            <div class="cover parallax" data-parallax="0.10">
-              <img src="assets/rainfall-cover.jpg" alt="Methodology cover">
-            </div>
-            <div class="body">
-              <h3>Hazard Exposure Assessment Methodology</h3>
-              <p>Standardized framework integrating local and global datasets for current climate and future projections.</p>
-              <div class="kws">
-                <span class="kw"><em>Methodology</em></span>
-                <span class="kw"><em>Local + global data</em></span>
-                <span class="kw"><em>Future scenarios</em></span>
-              </div>
-              <div class="row"><span class="small">Read</span><span class="small">→</span></div>
-            </div>
-          </a>
-
-          <!-- Turbidity -->
-          <a class="tile reveal" href="project-turbidity.html">
-            <div class="cover parallax" data-parallax="0.10">
-              <img src="assets/turbidity.png" alt="Turbidity cover">
-            </div>
-            <div class="body">
-              <h3>River Turbidity Assessment</h3>
-              <p>Mapped turbidity patterns in GEE to identify potential siltation zones for planning and interpretation.</p>
-              <div class="kws">
-                <span class="kw"><em>GEE</em></span>
-                <span class="kw"><em>Remote sensing</em></span>
-                <span class="kw"><em>Time series</em></span>
-              </div>
-              <div class="row"><span class="small">Read</span><span class="small">→</span></div>
-            </div>
-          </a>
-
-          <!-- FLO-2D -->
-          <a class="tile reveal" href="project-flo2d.html">
-            <div class="cover parallax" data-parallax="0.10">
-              <img src="assets/Flood Modelling.png" alt="FLO-2D cover">
-            </div>
-            <div class="body">
-              <h3>2D Flood Modeling (FLO-2D)</h3>
-              <p>Hydrodynamic simulations producing flood depth and extent maps for hazard interpretation and planning.</p>
-              <div class="kws">
-                <span class="kw"><em>FLO-2D</em></span>
-                <span class="kw"><em>Hydrodynamic</em></span>
-                <span class="kw"><em>Depth &amp; extent</em></span>
-              </div>
-              <div class="row"><span class="small">Read</span><span class="small">→</span></div>
-            </div>
-          </a>
-
-          <!-- Eddies -->
-          <a class="tile reveal" href="project-eddies.html">
-            <div class="cover parallax" data-parallax="0.10">
-              <img src="assets/eddies.png" alt="Eddies cover">
-            </div>
-            <div class="body">
-              <h3>Ocean Eddy Detection (Freelance)</h3>
-              <p>Processed multi-year NetCDF datasets to detect mesoscale eddies, extract parameters, and track lifecycle evolution.</p>
-              <div class="kws">
-                <span class="kw"><em>Python</em></span>
-                <span class="kw"><em>NetCDF</em></span>
-                <span class="kw"><em>Feature tracking</em></span>
-              </div>
-              <div class="row"><span class="small">Read</span><span class="small">→</span></div>
-            </div>
-          </a>
+          <div class="hcard-cta">
+            <span>Read case study</span>
+            <span>→</span>
+          </div>
         </div>
+      </a>
 
-        <div class="row reveal" style="margin-top:16px;">
-          <a class="pill" href="projects.html">View all projects</a>
-          <a class="pill primary" href="#research">Go to research</a>
+      <a class="hcard" href="project-methodology.html">
+        <div class="hcard-media">
+          <img src="assets/rainfall-cover.jpg" alt="Hazard Exposure Methodology cover">
         </div>
-      </div>
-    </section>
+        <div class="hcard-body">
+          <h3>Hazard Exposure Assessment Methodology</h3>
+          <p>Standardized framework integrating local and global datasets for current climate and future projections.</p>
+
+          <div class="hcard-tags">
+            <span><em>Methodology</em></span>
+            <span><em>Local + global data</em></span>
+            <span><em>Future scenarios</em></span>
+          </div>
+
+          <div class="hcard-cta">
+            <span>Read case study</span>
+            <span>→</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="hcard" href="project-turbidity.html">
+        <div class="hcard-media">
+          <img src="assets/turbidity.png" alt="River Turbidity cover">
+        </div>
+        <div class="hcard-body">
+          <h3>River Turbidity Assessment</h3>
+          <p>Used Google Earth Engine and satellite imagery to map turbidity patterns and potential siltation zones.</p>
+
+          <div class="hcard-tags">
+            <span><em>GEE</em></span>
+            <span><em>Remote sensing</em></span>
+            <span><em>Time series</em></span>
+          </div>
+
+          <div class="hcard-cta">
+            <span>Read case study</span>
+            <span>→</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="hcard" href="project-flo2d.html">
+        <div class="hcard-media">
+          <img src="assets/Flood Modelling.png" alt="FLO-2D cover">
+        </div>
+        <div class="hcard-body">
+          <h3>2D Flood Modeling (FLO-2D)</h3>
+          <p>Hydrodynamic simulations producing flood depth and extent maps for hazard interpretation and planning.</p>
+
+          <div class="hcard-tags">
+            <span><em>FLO-2D</em></span>
+            <span><em>Hydrodynamic</em></span>
+            <span><em>Depth &amp; extent</em></span>
+          </div>
+
+          <div class="hcard-cta">
+            <span>Read case study</span>
+            <span>→</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="hcard" href="project-eddies.html">
+        <div class="hcard-media">
+          <img src="assets/eddies.png" alt="Eddy detection cover">
+        </div>
+        <div class="hcard-body">
+          <h3>Ocean Eddy Detection (Freelance)</h3>
+          <p>Processed multi-year NetCDF datasets to detect mesoscale eddies, extract parameters, and track lifecycle evolution.</p>
+
+          <div class="hcard-tags">
+            <span><em>Python</em></span>
+            <span><em>NetCDF</em></span>
+            <span><em>Feature tracking</em></span>
+          </div>
+
+          <div class="hcard-cta">
+            <span>Read case study</span>
+            <span>→</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <p class="small" style="margin-top:10px;">Tip: use Shift + mouse wheel to scroll horizontally.</p>
+  </div>
+</section>
 
     <!-- CHAPTER 3: RESEARCH -->
     <section class="chapter spotlight" id="research">
@@ -509,6 +523,21 @@
   </div>
 
   <script>
+  // Wheel scroll horizontally when cursor is over the carousel
+  const scroller = document.querySelector('.hscroll');
+  if (scroller) {
+    scroller.addEventListener('wheel', (e) => {
+      // only when you can scroll horizontally
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        scroller.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+</script>
+  
+  <script>
+    
     // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
