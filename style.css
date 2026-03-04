@@ -324,6 +324,59 @@ hr.sep{
   margin:18px 0;
 }
 
+/* --- Research cards: cleaner keywords + buttons --- */
+.research-card .research-meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.research-card .research-meta .venue{
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-right: 6px;
+}
+
+.research-card .research-meta .kw{
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+  white-space: nowrap;
+}
+
+/* Buttons row */
+.research-card .research-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Make the buttons consistent in width on larger screens (optional) */
+@media (min-width: 900px){
+  .research-card .research-actions .pill{
+    min-width: 160px;
+    justify-content: center;
+    text-align: center;
+  }
+}
+.research-card{
+  display: flex;
+}
+.research-card .content{
+  display: flex;
+  flex-direction: column;
+}
+.research-card .research-actions{
+  margin-top: auto;
+}
 /* FOOTER */
 .footer{
   margin-top:34px;
