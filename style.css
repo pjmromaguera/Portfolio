@@ -36,6 +36,37 @@ a:hover{ opacity:.92; }
   background: transparent;
 }
 
+/* =========================================================
+   HERO LAYOUT
+   ========================================================= */
+
+.hero{
+  position: relative;
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:18px;
+  align-items:stretch;
+  margin-top:6px;
+
+  min-height:620px; /* keeps both sides aligned */
+}
+
+.hero > .card{
+  height:100%;
+}
+
+.hero-side{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  height:100%;
+}
+
+.hero-side .card{
+  flex:1;
+}
+
 /* NAV (base styles; index.html adds sticky behavior inline) */
 .nav{
   display:flex;
