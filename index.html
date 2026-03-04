@@ -7,16 +7,13 @@
   <meta name="description" content="Portfolio of Paola Romaguera — climate risk modeling, GIS, remote sensing, and geospatial analytics for evidence-based decision-making." />
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Apple-ish polish: typography scale, section spacing, sticky nav, reveals -->
+  <!-- Index-only polish: chapters + hero + transitions + carousel (one card at a time) -->
   <style>
-    /* --- Layout wrapper that feels more “landing page” than “document” --- */
-    .wide {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+    /* Wrapper */
+    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
+    body .container{ max-width:none; padding:0; }
 
-    /* Make nav sticky like Apple */
+    /* Sticky nav (keeps your existing .nav structure) */
     .nav{
       position: sticky;
       top: 0;
@@ -24,25 +21,27 @@
       background: rgba(11,16,32,0.72);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
-      padding: 14px 0 14px;
+      padding: 14px 0;
       margin: 0;
     }
-    /* Your existing .container adds padding; we want Apple-like full-bleed sections */
-    body .container{
-      max-width: none;
-      padding: 0;
-    }
 
-    /* “Chapter” sections */
-    .chapter{
-      padding: 70px 0;
-      position: relative;
-    }
-    @media (max-width: 860px){
-      .chapter{ padding: 46px 0; }
-    }
+    /* Chapters */
+    .chapter{ padding: 70px 0; position: relative; }
+    @media (max-width: 860px){ .chapter{ padding: 46px 0; } }
 
-    /* Apple-like huge headline */
+    /* Spotlight background (Apple-ish) */
+    .spotlight::before{
+      content:"";
+      position:absolute;
+      inset:-180px -160px auto -160px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(125,211,252,.10), transparent 70%);
+      pointer-events:none;
+      z-index:0;
+    }
+    .chapter > *{ position:relative; z-index:1; }
+
+    /* Hero type */
     .super{
       font-size: clamp(40px, 6vw, 74px);
       line-height: 1.05;
@@ -56,30 +55,16 @@
       margin: 0 0 18px;
     }
 
-    /* Soft “spotlight” background behind chapters */
-    .spotlight::before{
-      content:"";
-      position:absolute;
-      inset: -180px -160px auto -160px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(125,211,252,.10), transparent 70%);
-      pointer-events:none;
-      z-index:0;
-    }
-    .chapter > *{ position:relative; z-index:1; }
-
-    /* Hero layout: more Apple, less cardy */
+    /* Hero layout */
     .hero-apple{
       display:grid;
       grid-template-columns: 1.25fr .75fr;
       gap: 18px;
       align-items: start;
     }
-    @media (max-width: 980px){
-      .hero-apple{ grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px){ .hero-apple{ grid-template-columns: 1fr; } }
 
-    /* Big feature panel */
+    /* Feature panel */
     .feature{
       border: 1px solid var(--line);
       border-radius: calc(var(--radius) + 6px);
@@ -107,19 +92,129 @@
       box-shadow: 0 0 0 4px rgba(52,211,153,.10);
     }
 
-    /* Project grid feels like Apple tiles */
+    /* Rows */
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+
+    /* Reveal / chapter transition */
+    .reveal{
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .8s ease, transform .8s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.in{ opacity: 1; transform: translateY(0); }
+
+    /* Parallax (subtle) */
+    .parallax{ will-change: transform; transform: translateY(0px); }
+
+    /* Featured header */
+    .feature-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .feature-head h2{ margin:0; font-size:22px; letter-spacing:-.2px; }
+
+    /* ===== One-card carousel ===== */
+    .carousel{ margin-top: 6px; }
+
+    .carousel-track{
+      display:flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px 0 8px;
+
+      scroll-snap-type: x mandatory;
+      scroll-padding: 50%;
+      -webkit-overflow-scrolling: touch;
+
+      /* hide scrollbar */
+      scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar{ display:none; }
+
+    .carousel-track .hcard{
+      scroll-snap-align: center;
+      flex: 0 0 78%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    @media (min-width: 1100px){
+      .carousel-track .hcard{ flex-basis: 62%; max-width: 780px; }
+    }
+    @media (max-width: 640px){
+      .carousel-track .hcard{ flex-basis: 92%; max-width: none; }
+    }
+
+    /* Card */
+    .hcard{
+      display:flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .hcard:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+    }
+    .hcard-media{
+      height: 260px;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+    }
+    .hcard-media img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .hcard-body{ padding: 18px; }
+    .hcard-body h3{ margin: 0 0 8px; font-size: 16px; letter-spacing:-.2px; }
+    .hcard-body p{ margin: 0; color: var(--muted); font-size: 13px; line-height:1.55; }
+
+    /* Pagination indicator (dots + active pill) */
+    .carousel-indicator{ display:flex; justify-content:center; margin-top: 12px; }
+    .indicator-track{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 999px;
+    }
+    .ind-dot{
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      transition: width .22s ease, background .22s ease, opacity .22s ease;
+      opacity: .85;
+      cursor: pointer;
+    }
+    .ind-dot.active{
+      width: 30px;
+      background: rgba(255,255,255,.35);
+      opacity: 1;
+    }
+
+    /* Research tiles (keep your existing .tiles/.tile styles if you have them in style.css) */
     .tiles{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
       margin-top: 14px;
     }
-    @media (max-width: 980px){
-      .tiles{ grid-template-columns: repeat(6, 1fr); }
-    }
-    @media (max-width: 640px){
-      .tiles{ grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px){ .tiles{ grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 640px){ .tiles{ grid-template-columns: 1fr; } }
 
     .tile{
       grid-column: span 4;
@@ -130,25 +225,8 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .tile:hover{
-      transform: translateY(-3px);
-      box-shadow: 0 18px 60px rgba(0,0,0,.45);
     }
     .tile.wide{ grid-column: span 8; }
-    .tile .cover{
-      height: 210px;
-      border-bottom: 1px solid var(--line);
-      overflow:hidden;
-      background: rgba(255,255,255,.03);
-    }
-    .tile .cover img{
-      width:100%;height:100%;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.02);
-    }
     .tile .body{
       padding: 18px;
       display:flex;
@@ -156,24 +234,14 @@
       gap: 10px;
       flex: 1;
     }
-    .tile h3{
-      margin:0;
-      font-size: 16px;
-      letter-spacing: -.2px;
-    }
-    .tile p{
-      margin:0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-    }
+    .tile h3{ margin:0; font-size: 16px; letter-spacing:-.2px; }
+    .tile p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.55; }
 
-    /* Clean keyword pills (no hashtags) */
     .kws{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin-top: auto;
+      margin-top:auto;
     }
     .kws .kw{
       display:inline-flex;
@@ -188,38 +256,7 @@
     }
     .kws .kw em{ font-style: italic; }
 
-    /* CTA row like Apple “Learn more / Buy” */
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-
-    /* Reveal / transitions */
-    .reveal{
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .8s ease, transform .8s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.in{
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Parallax (subtle) — elements with data-parallax */
-    .parallax{
-      will-change: transform;
-      transform: translateY(0px);
-    }
-
-    /* Footer spacing for landing style */
-    .footer{
-      margin: 0;
-      padding: 26px 0 38px;
-    }
+    .footer{ margin: 0; padding: 26px 0 38px; }
   </style>
 </head>
 
@@ -227,7 +264,7 @@
   <div class="container">
 
     <!-- NAV -->
-    <div class="nav">
+    <header class="nav" role="navigation">
       <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
         <div class="brand">
           <div class="brand-badge" aria-hidden="true"></div>
@@ -237,23 +274,23 @@
           </div>
         </div>
 
-        <div class="nav-links">
+        <nav class="nav-links" aria-label="Primary">
           <a class="pill" href="#top">Overview</a>
-          <a class="pill" href="#ured">ured</a>
+          <a class="pill" href="#featured">Featured</a>
           <a class="pill" href="#research">Research</a>
           <a class="pill" href="projects.html">All Projects</a>
           <a class="pill" href="resume.pdf">Resume</a>
-          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank">LinkedIn</a>
+          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
           <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-        </div>
+        </nav>
       </div>
-    </div>
+    </header>
 
     <!-- CHAPTER 1: HERO -->
     <section class="chapter spotlight" id="top">
       <div class="wide hero-apple">
 
-        <div class="ure reveal">
+        <div class="feature reveal">
           <div class="micro"><span class="dot"></span> Climate Risk &amp; Geospatial Analytics</div>
 
           <h1 class="super">Decision-ready climate risk insights from geospatial data.</h1>
@@ -313,71 +350,71 @@
       </div>
     </section>
 
-    <!-- CHAPTER 2: FEATURED -->
- <section class="chapter" id="featured">
-  <div class="wide">
-    <div class="feature-head">
-      <h2>Featured case studies</h2>
-      <a class="pill" href="projects.html">View all</a>
-    </div>
+    <!-- CHAPTER 2: FEATURED (carousel) -->
+    <section class="chapter" id="featured">
+      <div class="wide">
 
-    <!-- Carousel viewport -->
-    <div class="carousel" aria-label="Featured projects carousel">
-      <div class="carousel-track" id="featuredTrack">
+        <div class="feature-head reveal">
+          <h2>Featured case studies</h2>
+          <a class="pill" href="projects.html">View all</a>
+        </div>
 
-        <a class="hcard" href="project-dashboard.html">
-          <div class="hcard-media"><img src="assets/app-cover.png" alt="Hazard Exposure Dashboard cover"></div>
-          <div class="hcard-body">
-            <h3>Hazard Exposure Assessment Dashboard</h3>
-            <p>Personal dashboard to automate exposure metrics and visualization for distributed portfolios.</p>
+        <div class="carousel reveal" aria-label="Featured projects carousel">
+          <div class="carousel-track" id="featuredTrack">
+
+            <a class="hcard" href="project-dashboard.html">
+              <div class="hcard-media"><img src="assets/app-cover.png" alt="Hazard Exposure Dashboard cover"></div>
+              <div class="hcard-body">
+                <h3>Hazard Exposure Assessment Dashboard</h3>
+                <p>Personal dashboard to automate exposure metrics and visualization for distributed portfolios.</p>
+              </div>
+            </a>
+
+            <a class="hcard" href="project-methodology.html">
+              <div class="hcard-media"><img src="assets/rainfall-cover.jpg" alt="Methodology cover"></div>
+              <div class="hcard-body">
+                <h3>Hazard Exposure Assessment Methodology</h3>
+                <p>Standardized framework integrating local and global datasets for current and future scenarios.</p>
+              </div>
+            </a>
+
+            <a class="hcard" href="project-turbidity.html">
+              <div class="hcard-media"><img src="assets/turbidity.png" alt="Turbidity cover"></div>
+              <div class="hcard-body">
+                <h3>River Turbidity Assessment</h3>
+                <p>Mapped turbidity patterns in GEE to identify potential siltation zones.</p>
+              </div>
+            </a>
+
+            <a class="hcard" href="project-flo2d.html">
+              <div class="hcard-media"><img src="assets/Flood Modelling.png" alt="FLO-2D cover"></div>
+              <div class="hcard-body">
+                <h3>2D Flood Modeling (FLO-2D)</h3>
+                <p>Hydrodynamic simulations producing flood depth and extent maps.</p>
+              </div>
+            </a>
+
+            <a class="hcard" href="project-eddies.html">
+              <div class="hcard-media"><img src="assets/eddies.png" alt="Eddies cover"></div>
+              <div class="hcard-body">
+                <h3>Ocean Eddy Detection (Freelance)</h3>
+                <p>Processed multi-year NetCDF datasets to detect mesoscale eddies and track lifecycle evolution.</p>
+              </div>
+            </a>
+
           </div>
-        </a>
 
-        <a class="hcard" href="project-methodology.html">
-          <div class="hcard-media"><img src="assets/rainfall-cover.jpg" alt="Methodology cover"></div>
-          <div class="hcard-body">
-            <h3>Hazard Exposure Assessment Methodology</h3>
-            <p>Standardized framework integrating local and global datasets for current and future scenarios.</p>
+          <div class="carousel-indicator" aria-hidden="true">
+            <div class="indicator-track" id="indicatorTrack"></div>
           </div>
-        </a>
 
-        <a class="hcard" href="project-turbidity.html">
-          <div class="hcard-media"><img src="assets/turbidity.png" alt="Turbidity cover"></div>
-          <div class="hcard-body">
-            <h3>River Turbidity Assessment</h3>
-            <p>Mapped turbidity patterns in GEE to identify potential siltation zones.</p>
-          </div>
-        </a>
-
-        <a class="hcard" href="project-flo2d.html">
-          <div class="hcard-media"><img src="assets/Flood Modelling.png" alt="FLO-2D cover"></div>
-          <div class="hcard-body">
-            <h3>2D Flood Modeling (FLO-2D)</h3>
-            <p>Hydrodynamic simulations producing flood depth and extent maps.</p>
-          </div>
-        </a>
-
-        <a class="hcard" href="project-eddies.html">
-          <div class="hcard-media"><img src="assets/eddies.png" alt="Eddies cover"></div>
-          <div class="hcard-body">
-            <h3>Ocean Eddy Detection (Freelance)</h3>
-            <p>Processed multi-year NetCDF datasets to detect mesoscale eddies and track lifecycle evolution.</p>
-          </div>
-        </a>
+          <p class="small" style="margin-top:10px;">
+            Swipe/drag or scroll to navigate. Click a card to open the case study.
+          </p>
+        </div>
 
       </div>
-
-      <!-- Pagination indicator -->
-      <div class="carousel-indicator" aria-hidden="true">
-        <div class="indicator-track" id="indicatorTrack"></div>
-      </div>
-
-      <p class="small" style="margin-top:10px;">
-        Swipe/drag or scroll to navigate. Click a card to open the case study.
-      </p>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- CHAPTER 3: RESEARCH -->
     <section class="chapter spotlight" id="research">
@@ -390,6 +427,7 @@
         </div>
 
         <div class="tiles">
+
           <div class="tile wide reveal">
             <div class="body">
               <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
@@ -403,8 +441,8 @@
                 <span class="kw"><em>Multi-hazard risk</em></span>
               </div>
               <div class="row" style="margin-top:10px;">
-                <a class="pill" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank">View abstract ↗</a>
-                <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank">View poster ↗</a>
+                <a class="pill" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank" rel="noopener">View abstract ↗</a>
+                <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank" rel="noopener">View poster ↗</a>
               </div>
             </div>
           </div>
@@ -422,7 +460,7 @@
                 <span class="kw"><em>HVSR inversion</em></span>
               </div>
               <div class="row" style="margin-top:10px;">
-                <a class="pill primary" href="assets/GeoCon 2023 Abstract Volume - Posters.pdf" target="_blank">View poster ↗</a>
+                <a class="pill primary" href="assets/GeoCon 2023 Abstract Volume - Posters.pdf" target="_blank" rel="noopener">View poster ↗</a>
               </div>
             </div>
           </div>
@@ -440,10 +478,11 @@
                 <span class="kw"><em>Remote sensing</em></span>
               </div>
               <div class="row" style="margin-top:10px;">
-                <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank">View publication ↗</a>
+                <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank" rel="noopener">View publication ↗</a>
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="row reveal" style="margin-top:16px;">
@@ -454,7 +493,7 @@
     </section>
 
     <!-- FOOTER -->
-    <div class="footer">
+    <footer class="footer">
       <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
         <span>© <span id="y"></span> Paola Romaguera</span>
         <span>
@@ -463,30 +502,15 @@
           <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
         </span>
       </div>
-    </div>
+    </footer>
 
   </div>
 
   <script>
-  // Wheel scroll horizontally when cursor is over the carousel
-  const scroller = document.querySelector('.hscroll');
-  if (scroller) {
-    scroller.addEventListener('wheel', (e) => {
-      // only when you can scroll horizontally
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        scroller.scrollLeft += e.deltaY;
-        e.preventDefault();
-      }
-    }, { passive: false });
-  }
-</script>
-  
-  <script>
-    
     // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Reveal on scroll (Apple-like “scene” transitions)
+    // Reveal on scroll (keeps your chapter transitions)
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -506,93 +530,70 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-  </script>
 
-  <script>
-  const carousel = document.getElementById('featuredCarousel');
-  if (carousel) {
-    carousel.addEventListener('wheel', (e) => {
-      // Convert vertical wheel motion into horizontal scroll
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        carousel.scrollLeft += e.deltaY;
-        e.preventDefault();
-      }
-    }, { passive: false });
-  }
-</script>
-  <script>
-  (function(){
-    const track = document.getElementById('featuredTrack');
-    const ind = document.getElementById('indicatorTrack');
-    if (!track || !ind) return;
+    // Carousel: dots + active pill + wheel-to-horizontal on the track
+    (function(){
+      const track = document.getElementById('featuredTrack');
+      const ind = document.getElementById('indicatorTrack');
+      if (!track || !ind) return;
 
-    const cards = Array.from(track.querySelectorAll('.hcard'));
-    if (!cards.length) return;
+      const cards = Array.from(track.querySelectorAll('.hcard'));
+      if (!cards.length) return;
 
-    // Build dots
-    ind.innerHTML = '';
-    const dots = cards.map((_, i) => {
-      const d = document.createElement('span');
-      d.className = 'ind-dot' + (i === 0 ? ' active' : '');
-      d.setAttribute('role', 'button');
-      d.setAttribute('tabindex', '0');
-      d.setAttribute('aria-label', `Go to item ${i+1}`);
-      d.addEventListener('click', () => {
-        cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      });
-      d.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        }
-      });
-      ind.appendChild(d);
-      return d;
-    });
+      // Build dots
+      ind.innerHTML = '';
+      const dots = cards.map((_, i) => {
+        const d = document.createElement('span');
+        d.className = 'ind-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('role', 'button');
+        d.setAttribute('tabindex', '0');
+        d.setAttribute('aria-label', `Go to item ${i+1}`);
 
-    // Determine which card is closest to the center of the viewport
-    function updateActive(){
-      const center = track.scrollLeft + track.clientWidth / 2;
-      let bestIdx = 0;
-      let bestDist = Infinity;
-
-      cards.forEach((card, i) => {
-        const cardCenter = card.offsetLeft + card.clientWidth / 2;
-        const dist = Math.abs(cardCenter - center);
-        if (dist < bestDist) {
-          bestDist = dist;
-          bestIdx = i;
-        }
-      });
-
-      dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
-    }
-
-    // Update on scroll (throttled with rAF)
-    let ticking = false;
-    track.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateActive();
-          ticking = false;
+        const go = () => cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        d.addEventListener('click', go);
+        d.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
         });
-        ticking = true;
-      }
-    }, { passive: true });
 
-    // Wheel -> horizontal when hovering the carousel
-    track.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        track.scrollLeft += e.deltaY;
-        e.preventDefault();
-      }
-    }, { passive: false });
+        ind.appendChild(d);
+        return d;
+      });
 
-    // Init after layout
-    window.addEventListener('load', () => setTimeout(updateActive, 50));
-    window.addEventListener('resize', () => setTimeout(updateActive, 50));
-  })();
-</script>
-  
+      function updateActive(){
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let bestIdx = 0;
+        let bestDist = Infinity;
+
+        cards.forEach((card, i) => {
+          const cardCenter = card.offsetLeft + card.clientWidth / 2;
+          const dist = Math.abs(cardCenter - center);
+          if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+        });
+
+        dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+      }
+
+      // Scroll -> update indicator (rAF)
+      let ticking = false;
+      track.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => { updateActive(); ticking = false; });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Wheel -> horizontal (only when hovering carousel)
+      track.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          track.scrollLeft += e.deltaY;
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Init
+      window.addEventListener('load', () => setTimeout(updateActive, 60));
+      window.addEventListener('resize', () => setTimeout(updateActive, 60));
+    })();
+  </script>
 </body>
 </html>
