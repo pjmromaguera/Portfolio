@@ -15,6 +15,7 @@
 
 *{ box-sizing:border-box; }
 html, body { height:100%; }
+html{ scroll-behavior:smooth; }
 
 body{
   margin:0;
@@ -27,6 +28,7 @@ body{
 a{ color:inherit; text-decoration:none; }
 a:hover{ opacity:.92; }
 
+/* Base container (your index.html overrides max-width on purpose) */
 .container{
   max-width:1100px;
   margin:0 auto;
@@ -34,7 +36,7 @@ a:hover{ opacity:.92; }
   background: transparent;
 }
 
-/* NAV */
+/* NAV (base styles; index.html adds sticky behavior inline) */
 .nav{
   display:flex;
   align-items:center;
@@ -65,6 +67,7 @@ a:hover{ opacity:.92; }
   gap:10px;
   flex-wrap:wrap;
 }
+
 .pill{
   padding:10px 12px;
   border:1px solid var(--line);
@@ -77,38 +80,17 @@ a:hover{ opacity:.92; }
   align-items:center;
   justify-content:center;
 }
-.pill:hover{ background: rgba(255,255,255,.06); color:var(--text); transform: translateY(-1px); }
+.pill:hover{
+  background: rgba(255,255,255,.06);
+  color:var(--text);
+  transform: translateY(-1px);
+}
 .pill.primary{
   color:#05131a;
   border:none;
   background: linear-gradient(135deg, rgba(125,211,252,1), rgba(52,211,153,1));
 }
 .pill.primary:hover{ filter:brightness(.98); }
-
-/* HERO */
-.hero{
-  position: relative;
-  display:grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap:18px;
-  align-items:stretch;
-  margin-top:6px;
-}
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:-160px -140px auto -140px;
-  height:340px;
-  background: radial-gradient(circle, rgba(125,211,252,.10), transparent 70%);
-  pointer-events:none;
-  z-index:0;
-}
-.hero > *{ position:relative; z-index:1; }
-
-@media (max-width: 860px){
-  .hero{ grid-template-columns:1fr; }
-  .nav{ flex-direction:column; align-items:flex-start; }
-}
 
 /* CARD */
 .card{
@@ -120,8 +102,7 @@ a:hover{ opacity:.92; }
   backdrop-filter: blur(8px);
 }
 
-.hero-main{ padding:24px; }
-
+/* Common bits used across pages */
 .kicker{
   display:inline-flex;
   align-items:center;
@@ -141,19 +122,6 @@ a:hover{ opacity:.92; }
   box-shadow: 0 0 0 4px rgba(52,211,153,.12);
 }
 
-h1{
-  margin:14px 0 10px;
-  font-size:36px;
-  line-height:1.15;
-  letter-spacing:-.3px;
-}
-.sub{
-  color: var(--muted);
-  font-size:15px;
-  margin:0 0 18px;
-  max-width:62ch;
-}
-
 .tags{
   display:flex;
   flex-wrap:wrap;
@@ -167,13 +135,6 @@ h1{
   border:1px solid var(--line);
   background: rgba(255,255,255,.03);
   color: var(--muted);
-}
-
-.hero-side{
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
 }
 
 .profile{
@@ -221,231 +182,6 @@ h1{
 }
 .quicklist li{ margin:6px 0; }
 
-/* SECTIONS + GRID */
-.section{ margin-top:26px; }
-.section h2{
-  font-size:18px;
-  margin:0 0 12px;
-  letter-spacing:-.2px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:14px;
-}
-@media (max-width: 980px){
-  .grid{ grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 640px){
-  .grid{ grid-template-columns: 1fr; }
-}
-/* ===== Apple-like horizontal featured carousel ===== */
-.feature-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom: 12px;
-}
-.feature-head h2{
-  margin:0;
-  font-size: 22px;
-  letter-spacing: -.2px;
-}
-
-/* Horizontal scroller */
-.hscroll{
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(320px, 420px);
-  gap: 16px;
-
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 8px 2px 14px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-
-  /* keep it clean */
-  border-radius: 18px;
-}
-
-/* stylish scrollbar */
-.hscroll{
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.06);
-}
-.hscroll::-webkit-scrollbar{ height: 12px; }
-.hscroll::-webkit-scrollbar-track{
-  background: rgba(255,255,255,.06);
-  border-radius: 999px;
-}
-.hscroll::-webkit-scrollbar-thumb{
-  background: rgba(255,255,255,.22);
-  border-radius: 999px;
-  border: 2px solid rgba(255,255,255,.06);
-}
-.hscroll::-webkit-scrollbar-thumb:hover{
-  background: rgba(255,255,255,.30);
-}
-
-/* Cards */
-.hcard{
-  scroll-snap-align: start;
-  display:flex;
-  flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: calc(var(--radius) + 6px);
-  background: rgba(15,26,43,.55);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  min-height: 420px;
-
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-.hcard:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 18px 60px rgba(0,0,0,.45);
-}
-
-.hcard-media{
-  height: 220px;
-  background: rgba(255,255,255,.04);
-  border-bottom: 1px solid var(--line);
-  overflow:hidden;
-}
-.hcard-media img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display:block;
-}
-
-.hcard-body{
-  padding: 18px;
-  display:flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-.hcard-body h3{
-  margin: 0;
-  font-size: 16px;
-  letter-spacing: -.2px;
-}
-.hcard-body p{
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-/* tags (no hashtags, italic vibe) */
-.hcard-tags{
-  display:flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: auto;
-}
-.hcard-tags span{
-  display:inline-flex;
-  align-items:center;
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 12px;
-  color: var(--muted);
-  background: rgba(255,255,255,.03);
-  white-space: nowrap;
-}
-.hcard-tags em{ font-style: italic; }
-
-/* CTA */
-.hcard-cta{
-  margin-top: 10px;
-  display:flex;
-  justify-content: space-between;
-  align-items:center;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-/* Responsive sizing */
-@media (max-width: 520px){
-  .hscroll{ grid-auto-columns: 86vw; }
-  .hcard{ min-height: 400px; }
-}
-/* PROJECT CARDS */
-.project{
-  display:flex;
-  flex-direction:column;
-  min-height: 100%;
-  transition: transform .14s ease, box-shadow .14s ease;
-}
-a.project:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 18px 55px rgba(0,0,0,.45);
-}
-
-.project .cover{
-  height:160px;
-  background: rgba(255,255,255,.04);
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color: var(--muted);
-  font-size:12px;
-  overflow:hidden;
-}
-.project .cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.project .content{
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  flex:1;
-}
-.project h3{
-  margin:0;
-  font-size:15px;
-  letter-spacing:-.2px;
-}
-.project p{
-  margin:0;
-  color: var(--muted);
-  font-size:13px;
-}
-
-/* PROJECT KEYWORDS (professional, no hashtags) */
-.proj-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:auto;
-  margin-bottom:2px;
-  align-items:center;
-}
-.proj-meta .kw{
-  display:inline-flex;
-  align-items:center;
-  padding:6px 10px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  font-size:12px;
-  color:var(--muted);
-  background: rgba(255,255,255,.03);
-  white-space:nowrap;
-}
-.proj-meta .kw em{ font-style:italic; }
-
 .cta{
   margin-top:10px;
   display:flex;
@@ -464,59 +200,19 @@ hr.sep{
   margin:18px 0;
 }
 
-/* --- Research cards: cleaner keywords + buttons --- */
-.research-card .research-meta{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  align-items: center;
+/* ===== Reveal transition (used with JS that adds/removes .in) ===== */
+.reveal{
+  opacity:0;
+  transform: translateY(18px);
+  transition: opacity .8s ease, transform .8s ease;
+  will-change: opacity, transform;
+}
+.reveal.in{
+  opacity:1;
+  transform: translateY(0);
 }
 
-.research-card .research-meta .venue{
-  font-size: 0.95rem;
-  opacity: 0.9;
-  margin-right: 6px;
-}
-
-.research-card .research-meta .kw{
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 0.95rem;
-  opacity: 0.95;
-  white-space: nowrap;
-}
-
-/* Buttons row */
-.research-card .research-actions{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-@media (min-width: 900px){
-  .research-card .research-actions .pill{
-    min-width: 160px;
-  }
-}
-
-.research-card{
-  display:flex;
-}
-.research-card .content{
-  display:flex;
-  flex-direction:column;
-}
-.research-card .research-actions{
-  margin-top:auto;
-}
-
-/* ---------- Gallery Layout (no stretch, centered) ---------- */
+/* ===== Gallery: centered, no stretching ===== */
 .gallery{
   display:grid;
   grid-template-columns: 1fr;
@@ -524,10 +220,9 @@ hr.sep{
   margin-top:12px;
 }
 
-/* hide empty spacer paragraphs if present */
+/* hide spacer paragraphs if present */
 .gallery p{ display:none; }
 
-/* works whether images are wrapped or direct children */
 .gallery img{
   justify-self:center;
   max-width:100%;
@@ -541,145 +236,22 @@ hr.sep{
 }
 
 @media (min-width: 900px){
-  .gallery{
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .gallery{ grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ===== Smooth section transitions (scroll snap) ===== */
-html{
-  scroll-behavior: smooth;
-}
+/* =========================================================
+   ONE-CARD FEATURED CAROUSEL (the one your index.html uses)
+   ========================================================= */
 
-/* Container that snaps to each section */
-.snap{
-  scroll-snap-type: y mandatory;
-}
+.carousel{ margin-top: 10px; }
 
-/* Each section takes a full screen height */
-.snap-section{
-  min-height: calc(100vh - 88px); /* minus nav height-ish */
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  display: flex;
-  align-items: center;
-  padding: 10px 0 30px;
-}
-
-/* Give sections breathing room on small screens */
-@media (max-width: 860px){
-  .snap-section{
-    min-height: auto;
-    padding: 18px 0;
-  }
-  .snap{
-    scroll-snap-type: none;
-  }
-}
-
-/* ===== Reveal transition ===== */
-.reveal{
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .65s ease, transform .65s ease;
-  will-change: opacity, transform;
-}
-
-.reveal.is-visible{
-  opacity: 1;
-  transform: translateY(0);
-}
-/* ===== HORIZONTAL CAROUSEL (known-good) ===== */
-.hscroll{
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 10px 6px 16px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-
-  /* IMPORTANT: allow horizontal overflow */
-  white-space: nowrap;
-}
-
-.hcard{
-  scroll-snap-align: start;
-  flex: 0 0 380px;           /* fixed width so it MUST overflow */
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  background: rgba(15,26,43,.55);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  white-space: normal;       /* allow text wrap inside cards */
-  text-decoration: none;
-}
-
-.hcard-media{
-  height: 210px;
-  border-bottom: 1px solid var(--line);
-  overflow: hidden;
-  background: rgba(255,255,255,.03);
-}
-.hcard-media img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hcard-body{
-  padding: 16px;
-}
-.hcard-body h3{
-  margin: 0 0 8px;
-  font-size: 16px;
-}
-.hcard-body p{
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-/* stylish scrollbar */
-.hscroll{
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,.22) rgba(255,255,255,.06);
-}
-.hscroll::-webkit-scrollbar{ height: 12px; }
-.hscroll::-webkit-scrollbar-track{
-  background: rgba(255,255,255,.06);
-  border-radius: 999px;
-}
-.hscroll::-webkit-scrollbar-thumb{
-  background: rgba(255,255,255,.22);
-  border-radius: 999px;
-  border: 2px solid rgba(255,255,255,.06);
-}
-.hscroll::-webkit-scrollbar-thumb:hover{
-  background: rgba(255,255,255,.30);
-}
-
-@media (max-width: 520px){
-  .hcard{ flex-basis: 86vw; }
-}
-/* ===== One-card carousel with Apple-like pagination ===== */
-
-.carousel{
-  margin-top: 10px;
-}
-
-/* viewport */
 .carousel-track{
-  display: flex;
-  gap: 16px;
+  display:flex;
+  gap:16px;
 
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x:auto;
+  overflow-y:hidden;
 
-  /* snap so one card locks in */
   scroll-snap-type: x mandatory;
   scroll-padding: 50%;
   -webkit-overflow-scrolling: touch;
@@ -687,19 +259,18 @@ html{
   padding: 8px 0 8px;
 
   /* hide scrollbar */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width:none;
 }
-.carousel-track::-webkit-scrollbar{ display: none; }
+.carousel-track::-webkit-scrollbar{ display:none; }
 
-/* Each card takes the whole viewport width (one per view) */
+/* each card is “one at a time” centered */
 .carousel-track .hcard{
-  scroll-snap-align: center;
-  flex: 0 0 78%;          /* desktop “one at a time” */
-  max-width: 720px;       /* keep it elegant */
+  scroll-snap-align:center;
+  flex: 0 0 78%;
+  max-width: 720px;
   margin: 0 auto;
 }
 
-/* On wide screens, keep it centered and not too huge */
 @media (min-width: 1100px){
   .carousel-track .hcard{
     flex-basis: 62%;
@@ -707,7 +278,6 @@ html{
   }
 }
 
-/* On phones, it should almost fill the screen */
 @media (max-width: 640px){
   .carousel-track .hcard{
     flex-basis: 92%;
@@ -715,7 +285,7 @@ html{
   }
 }
 
-/* Card styling (use your existing hcard styles if already defined) */
+/* Card style */
 .hcard{
   display:flex;
   flex-direction: column;
@@ -724,74 +294,151 @@ html{
   background: rgba(15,26,43,.55);
   box-shadow: var(--shadow);
   overflow: hidden;
-  text-decoration: none;
+  text-decoration:none;
   transition: transform .18s ease, box-shadow .18s ease;
 }
 .hcard:hover{
   transform: translateY(-3px);
   box-shadow: 0 18px 60px rgba(0,0,0,.45);
 }
+
 .hcard-media{
-  height: 260px;
+  height: 280px;
   border-bottom: 1px solid var(--line);
-  overflow: hidden;
+  overflow:hidden;
   background: rgba(255,255,255,.03);
 }
 .hcard-media img{
   width:100%;
   height:100%;
-  object-fit: cover;
+  object-fit:cover;
   display:block;
 }
-.hcard-body{
-  padding: 18px;
-}
+
+.hcard-body{ padding:18px; }
 .hcard-body h3{
-  margin: 0 0 8px;
-  font-size: 16px;
+  margin:0 0 8px;
+  font-size:18px;
+  letter-spacing:-.2px;
 }
 .hcard-body p{
-  margin: 0;
+  margin:0;
   color: var(--muted);
-  font-size: 13px;
-  line-height: 1.55;
+  font-size:14px;
+  line-height:1.65;
 }
 
-/* Pagination indicator (Apple-ish: dots + pill) */
+/* Pagination indicator */
 .carousel-indicator{
   display:flex;
   justify-content:center;
-  margin-top: 12px;
+  margin-top:12px;
 }
-
 .indicator-track{
   display:flex;
   align-items:center;
-  gap: 10px;
-
-  padding: 8px 12px;
-  border: 1px solid var(--line);
+  gap:10px;
+  padding:8px 12px;
+  border:1px solid var(--line);
   background: rgba(255,255,255,.03);
-  border-radius: 999px;
+  border-radius:999px;
 }
-
-/* dots */
 .ind-dot{
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
+  width:6px;
+  height:6px;
+  border-radius:999px;
   background: rgba(255,255,255,.18);
-  transition: transform .25s ease, opacity .25s ease;
-  opacity: .85;
+  transition: width .22s ease, background .22s ease, opacity .22s ease;
+  opacity:.85;
+  cursor:pointer;
+}
+.ind-dot.active{
+  width:30px;
+  background: rgba(255,255,255,.35);
+  opacity:1;
 }
 
-/* active dot becomes a “pill” */
-.ind-dot.active{
-  width: 30px;
-  height: 6px;
-  background: rgba(255,255,255,.35);
-  opacity: 1;
+/* FEATURED header (used in index) */
+.feature-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
 }
+.feature-head h2{
+  margin:0;
+  font-size:28px;
+  letter-spacing:-.3px;
+}
+
+/* =========================================================
+   Research / Tiles helpers (index.html uses .tile/.tiles)
+   ========================================================= */
+
+.tiles{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap:14px;
+  margin-top:14px;
+}
+@media (max-width: 980px){
+  .tiles{ grid-template-columns: repeat(6, 1fr); }
+}
+@media (max-width: 640px){
+  .tiles{ grid-template-columns: 1fr; }
+}
+
+.tile{
+  grid-column: span 4;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 6px);
+  background: rgba(15,26,43,.55);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.tile.wide{ grid-column: span 8; }
+
+.tile .body{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.tile h3{
+  margin:0;
+  font-size:18px;
+  letter-spacing:-.2px;
+}
+.tile p{
+  margin:0;
+  color: var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+
+.kws{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:auto;
+}
+.kws .kw{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-size:13px;
+  color:var(--muted);
+  background: rgba(255,255,255,.03);
+  white-space:nowrap;
+}
+.kws .kw em{ font-style:italic; }
+
 /* FOOTER */
 .footer{
   margin-top:34px;
@@ -806,7 +453,7 @@ html{
 }
 .footer a{ color:var(--text); }
 
-/* Optional: reduce motion for accessibility */
+/* Accessibility: reduce motion */
 @media (prefers-reduced-motion: reduce){
   *{ transition:none !important; scroll-behavior:auto !important; }
 }
