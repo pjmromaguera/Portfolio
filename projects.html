@@ -69,22 +69,25 @@
       margin-bottom: 18px;
     }
 
-    .kicker{
+    .header-eyebrow{
       display:inline-flex;
-      gap:8px;
       align-items:center;
-      font-size:12px;
-      color: var(--muted);
-      border:1px solid var(--line);
-      padding:7px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.03);
-      margin-bottom: 12px;
+      gap:8px;
+      font-family:'DM Mono', monospace;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:14px;
+      align-self:flex-start;
     }
-    .kicker .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--accent2);
-      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    .header-eyebrow::before{
+      content:'';
+      display:inline-block;
+      width:26px;
+      height:1px;
+      background:var(--accent);
+      opacity:.6;
     }
 
     .super{
@@ -251,7 +254,7 @@
 
           <div class="page-head reveal">
             <div>
-              <div class="kicker"><span class="dot"></span> Selected work</div>
+              <div class="header-eyebrow">Selected works</div>
               <h1 class="super">Projects &amp; case studies</h1>
               <p class="lede2">
                 Case studies highlighting climate risk modeling, geospatial analytics, and remote sensing workflows—focused on methodology, outputs, and decision-ready insights.
