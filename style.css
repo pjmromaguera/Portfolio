@@ -161,7 +161,7 @@ a:hover{ opacity:.92; }
   margin-top:12px;
 }
 .tag{
-  font-size:12px;
+  font-size:14px;
   padding:8px 10px;
   border-radius:999px;
   border:1px solid var(--line);
