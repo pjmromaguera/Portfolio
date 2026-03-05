@@ -444,27 +444,25 @@
 
 <body>
 
-  <header role="navigation">
-    <nav class="nav" aria-label="Primary navigation">
-      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-        <div class="brand">
-          <div class="brand-name">
-            <strong>Paola Jayme Romaguera</strong>
-            <span>Climate Risk • GIS • Remote Sensing • Python</span>
-          </div>
-        </div>
-
-        <div class="nav-links" aria-label="Primary">
-          <a class="pill" href="index.html#top">Overview</a>
-          <a class="pill" href="index.html#featured">Featured</a>
-          <a class="pill" href="index.html#research">Research</a>
-          <a class="pill" href="projects.html">All Projects</a>
-          <a class="pill" aria-current="page" href="resume.html">Resume</a>
-          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+  <header class="nav" role="navigation">
+    <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <div class="brand">
+        <div class="brand-name">
+          <strong>Paola Jayme Romaguera</strong>
+          <span>Climate Risk • GIS • Remote Sensing • Python</span>
         </div>
       </div>
-    </nav>
+  
+      <nav class="nav-links" aria-label="Primary">
+        <a class="pill" href="index.html#top">Overview</a>
+        <a class="pill" href="index.html#featured">Featured</a>
+        <a class="pill" href="index.html#research">Research</a>
+        <a class="pill" href="projects.html">All Projects</a>
+        <a class="pill" aria-current="page" href="resume.html">Resume</a>
+        <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+      </nav>
+    </div>
   </header>
 
   <div class="page-wrap">
@@ -504,7 +502,7 @@
       </div>
 
       <div class="download-bar">
-        <button class="pill" onclick="window.print(href="resume.pdf")" aria-label="Print resume">↓ Print / Save as PDF</button>
+        <button class="pill" onclick="printResume()" aria-label="Print resume">↓ Print / Save as PDF</button>
       </div>
     </header>
 
@@ -670,6 +668,15 @@
             </li>
           </ul>
         </section>
+
+          <script>
+  function printResume() {
+    const pdf = window.open("assets/Paola_Romaguera_Resume.pdf");
+    pdf.onload = function () {
+      pdf.print();
+    };
+  }
+  </script>
 
       </aside>
     </div>
