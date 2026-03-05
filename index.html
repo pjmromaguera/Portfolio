@@ -567,9 +567,9 @@
     </div>
 
     <nav class="nav-links" aria-label="Primary">
-      <a class="pill" href="index.html#top">Overview</a>
-      <a class="pill" href="index.html#featured">Featured</a>
-      <a class="pill" href="index.html#research">Research</a>
+      <a class="pill" href="#top">Overview</a>
+      <a class="pill" href="#featured">Featured</a>
+      <a class="pill" href="#research">Research</a>
       <a class="pill" href="projects.html">All Projects</a>
       <a class="pill" href="resume.html">Resume</a>
       <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
@@ -864,18 +864,6 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a.pill');
-    const sectionIO = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        navLinks.forEach(a => {
-          if (a.getAttribute('href') === '#' + e.target.id) a.setAttribute('aria-current', 'page');
-          else a.removeAttribute('aria-current');
-        });
-      });
-    }, { threshold: 0.4 });
-    sections.forEach(s => sectionIO.observe(s));
 
     (function(){
       const track = document.getElementById('featuredTrack');
