@@ -5,29 +5,36 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Projects | Paola Jayme Romaguera</title>
   <meta name="description" content="Selected projects in climate risk, GIS, remote sensing, and geospatial analytics." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Paola Jayme Romaguera" />
+  <meta property="og:title" content="Projects | Paola Jayme Romaguera" />
+  <meta property="og:description" content="Selected projects in climate risk, GIS, remote sensing, and geospatial analytics." />
+  <meta property="og:url" content="https://pjmromaguera.github.io/projects.html" />
+  <meta property="og:image" content="https://pjmromaguera.github.io/assets/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Page-only polish to match index.html -->
   <style>
     html{ scroll-behavior:smooth; }
 
-    /* Wrapper */
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
     body .container{ max-width:none; padding:0; }
 
-    /* Sticky nav (same feel as index) */
     .nav{
       position: sticky;
       top: 0;
       z-index: 1000;
       background: rgba(11,16,32,0.72);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
       padding: 14px 0;
       margin: 0;
     }
 
-    /* Chapter with its own scene bg */
     .chapter{
       padding: 80px 0;
       position: relative;
@@ -47,14 +54,39 @@
     }
     .chapter > *{ position:relative; z-index:1; }
 
-    /* Scene for this page */
     #projectsTop{ --scene-bg:
       radial-gradient(1100px 520px at 30% 20%, rgba(34,211,238,.12), transparent 55%),
       radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.12), transparent 60%),
       linear-gradient(180deg, rgba(11,16,32,.20), rgba(11,16,32,0));
     }
 
-    /* Apple-ish hero type */
+    .page-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size:12px;
+      color: var(--muted);
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 12px;
+    }
+    .kicker .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    }
+
     .super{
       font-size: clamp(36px, 5.5vw, 64px);
       line-height: 1.07;
@@ -68,27 +100,25 @@
       margin: 0;
     }
 
-    /* Header row */
-    .page-head{
+    .row{
       display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
     }
 
-    /* Optional: tighter "chip" look inside project cards on this page */
-    .project .meta .chip{
-      padding: 6px 10px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 12px;
+    .reveal{
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .8s ease, transform .8s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.in{
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Make project grid feel more like your main page spacing */
     .projects-grid{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
@@ -101,7 +131,6 @@
       .projects-grid{ grid-template-columns: 1fr; }
     }
 
-    /* Cards span columns like Apple tiles */
     .projects-grid a.project{ grid-column: span 4; }
     @media (max-width: 980px){
       .projects-grid a.project{ grid-column: span 3; }
@@ -110,10 +139,84 @@
       .projects-grid a.project{ grid-column: auto; }
     }
 
-    /* Slightly taller cover so it matches your featured aesthetics */
-    .project .cover{ height: 190px; }
+    .project{
+      display:flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 6px);
+      background: rgba(15,26,43,.55);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform .18s ease, box-shadow .18s ease;
+      min-height: 100%;
+    }
+    .project:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      text-decoration: none;
+    }
 
-    /* Footer spacing */
+    .project .cover{
+      height: 210px;
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+    }
+    .project .cover img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .project .content{
+      padding: 18px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
+    }
+    .project h3{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .project p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .project .meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:auto;
+    }
+    .project .meta .chip{
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .project .cta{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      border-top: 1px solid var(--line2);
+      padding-top: 12px;
+      margin-top: 8px;
+      color: rgba(232,234,242,.72);
+    }
+    .project .cta .small{ font-size: 13px; }
+
     .footer{ margin: 0; padding: 26px 0 38px; }
   </style>
 </head>
@@ -121,11 +224,9 @@
 <body>
   <div class="container">
 
-    <!-- NAV -->
-    <header class="nav" role="navigation">
+    <header class="nav" role="banner">
       <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
         <div class="brand">
-          <div class="brand-badge" aria-hidden="true"></div>
           <div class="brand-name">
             <strong>Paola Jayme Romaguera</strong>
             <span>Climate Risk • GIS • Remote Sensing • Python</span>
@@ -137,159 +238,143 @@
           <a class="pill" href="index.html#featured">Featured</a>
           <a class="pill" href="index.html#research">Research</a>
           <a class="pill" href="projects.html" aria-current="page">All Projects</a>
-          <a class="pill" href="resume.pdf">Resume</a>
+          <a class="pill" href="resume.html">Resume</a>
           <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
           <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
         </nav>
       </div>
     </header>
 
-    <!-- HERO / PAGE TITLE -->
-    <section class="chapter" id="projectsTop">
-      <div class="wide">
+    <main>
+      <section class="chapter" id="projectsTop">
+        <div class="wide">
 
-        <div class="page-head reveal">
-          <div>
-            <div class="kicker"><span class="dot"></span> Selected work</div>
-            <h1 class="super">Projects &amp; case studies</h1>
-            <p class="lede2">
-              Case studies highlighting climate risk modeling, geospatial analytics, and remote sensing workflows.
-              Focused on methodology, outputs, and decision-ready insights.
-            </p>
+          <div class="page-head reveal">
+            <div>
+              <div class="kicker"><span class="dot"></span> Selected work</div>
+              <h1 class="super">Projects &amp; case studies</h1>
+              <p class="lede2">
+                Case studies highlighting climate risk modeling, geospatial analytics, and remote sensing workflows—focused on methodology, outputs, and decision-ready insights.
+              </p>
+            </div>
+
+            <div class="row">
+              <a class="pill" href="index.html#featured">Back to featured</a>
+              <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+            </div>
           </div>
 
-          <div class="row" style="margin-top:10px;">
-            <a class="pill" href="index.html">Back to home</a>
-            <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+          <hr class="sep reveal" />
+
+          <div class="projects-grid">
+
+            <a class="project reveal" href="project-dashboard.html">
+              <div class="cover">
+                <img src="assets/app-cover.png" alt="Hazard Exposure Dashboard cover" loading="lazy">
+              </div>
+              <div class="content">
+                <h3>Hazard Exposure Assessment Dashboard</h3>
+                <p>Personal geospatial dashboard to automate hazard exposure metrics and visualization for large asset portfolios.</p>
+                <div class="meta">
+                  <span class="chip">Dashboard</span>
+                  <span class="chip">GIS</span>
+                  <span class="chip">Exposure analysis</span>
+                </div>
+                <div class="cta">
+                  <span class="small">Project details</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <a class="project reveal" href="project-methodology.html">
+              <div class="cover">
+                <img src="assets/method-cover.png" alt="Hazard exposure methodology cover" loading="lazy">
+              </div>
+              <div class="content">
+                <h3>Climate Hazard Exposure Assessment Methodology</h3>
+                <p>Standardized framework integrating local and global datasets to assess exposure under current and future climate scenarios.</p>
+                <div class="meta">
+                  <span class="chip">Climate risk</span>
+                  <span class="chip">Methodology</span>
+                  <span class="chip">Spatial analysis</span>
+                </div>
+                <div class="cta">
+                  <span class="small">Project details</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <a class="project reveal" href="project-turbidity.html">
+              <div class="cover">
+                <img src="assets/turbidity.png" alt="River turbidity map cover" loading="lazy">
+              </div>
+              <div class="content">
+                <h3>River Turbidity Assessment</h3>
+                <p>Used Google Earth Engine and satellite imagery to map turbidity patterns and identify potential siltation zones.</p>
+                <div class="meta">
+                  <span class="chip">Remote sensing</span>
+                  <span class="chip">GEE</span>
+                  <span class="chip">Satellite data</span>
+                </div>
+                <div class="cta">
+                  <span class="small">Project details</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <a class="project reveal" href="project-flo2d.html">
+              <div class="cover">
+                <img src="assets/Flood Modelling.png" alt="2D flood modeling output cover" loading="lazy">
+              </div>
+              <div class="content">
+                <h3>2D Flood Modeling (FLO-2D)</h3>
+                <p>Hydrodynamic simulations generating flood depth and extent maps to support hazard interpretation and planning.</p>
+                <div class="meta">
+                  <span class="chip">Flood modeling</span>
+                  <span class="chip">FLO-2D</span>
+                  <span class="chip">GIS</span>
+                </div>
+                <div class="cta">
+                  <span class="small">Project details</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
+            <a class="project reveal" href="project-eddies.html">
+              <div class="cover">
+                <img src="assets/eddies.png" alt="Ocean eddy detection cover" loading="lazy">
+              </div>
+              <div class="content">
+                <h3>Ocean Eddy Detection</h3>
+                <p>Processed multi-year NetCDF datasets in Python to detect mesoscale eddies and track lifecycle evolution.</p>
+                <div class="meta">
+                  <span class="chip">Python</span>
+                  <span class="chip">NetCDF</span>
+                  <span class="chip">Feature tracking</span>
+                </div>
+                <div class="cta">
+                  <span class="small">Project details</span>
+                  <span class="small">→</span>
+                </div>
+              </div>
+            </a>
+
           </div>
         </div>
+      </section>
+    </main>
 
-        <hr class="sep reveal" />
-
-        <!-- PROJECT GRID -->
-        <div class="projects-grid">
-
-          <!-- Dashboard -->
-          <a class="card project reveal" href="project-dashboard.html">
-            <div class="cover">
-              <img src="assets/app-cover.png" alt="Hazard Exposure Dashboard">
-            </div>
-            <div class="content">
-              <h3>Hazard Exposure Assessment Dashboard</h3>
-              <p>
-                Personal geospatial dashboard to automate hazard exposure metrics and visualization, improving efficiency for large asset portfolios.
-              </p>
-              <div class="meta">
-                <span class="chip">Dashboard</span>
-                <span class="chip">GIS</span>
-                <span class="chip">Exposure analysis</span>
-              </div>
-              <div class="cta">
-                <span class="small">Project Details</span>
-                <span class="small">→</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Methodology -->
-          <a class="card project reveal" href="project-methodology.html">
-            <div class="cover">
-              <img src="assets/method-cover.png" alt="Exposure methodology">
-            </div>
-            <div class="content">
-              <h3>Climate Hazard Exposure Assessment Methodology</h3>
-              <p>
-                Standardized framework integrating local and global datasets to assess asset exposure under current and future climate scenarios.
-              </p>
-              <div class="meta">
-                <span class="chip">Climate risk</span>
-                <span class="chip">Methodology</span>
-                <span class="chip">Spatial analysis</span>
-              </div>
-              <div class="cta">
-                <span class="small">Project Details</span>
-                <span class="small">→</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Turbidity -->
-          <a class="card project reveal" href="project-turbidity.html">
-            <div class="cover">
-              <img src="assets/turbidity.png" alt="Turbidity map">
-            </div>
-            <div class="content">
-              <h3>River Turbidity Assessment (Remote Sensing)</h3>
-              <p>
-                Used Google Earth Engine and satellite imagery to map turbidity patterns and identify potential siltation zones.
-              </p>
-              <div class="meta">
-                <span class="chip">Remote sensing</span>
-                <span class="chip">GEE</span>
-                <span class="chip">Satellite data</span>
-              </div>
-              <div class="cta">
-                <span class="small">Project Details</span>
-                <span class="small">→</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- FLO2D -->
-          <a class="card project reveal" href="project-flo2d.html">
-            <div class="cover">
-              <img src="assets/Flood Modelling.png" alt="Flood model output">
-            </div>
-            <div class="content">
-              <h3>2D Flood Modeling Using FLO-2D</h3>
-              <p>
-                Hydrodynamic simulations generating flood depth and extent maps to support hazard interpretation and planning.
-              </p>
-              <div class="meta">
-                <span class="chip">Flood modeling</span>
-                <span class="chip">FLO-2D</span>
-                <span class="chip">GIS</span>
-              </div>
-              <div class="cta">
-                <span class="small">Project Details</span>
-                <span class="small">→</span>
-              </div>
-            </div>
-          </a>
-
-          <!-- Eddies -->
-          <a class="card project reveal" href="project-eddies.html">
-            <div class="cover">
-              <img src="assets/eddies.png" alt="Ocean eddies">
-            </div>
-            <div class="content">
-              <h3>Ocean Eddy Detection and Lifecycle Tracking</h3>
-              <p>
-                Processed multi-year NetCDF datasets in Python to detect mesoscale eddies, extract parameters, and track lifecycle evolution.
-              </p>
-              <div class="meta">
-                <span class="chip">Python</span>
-                <span class="chip">NetCDF</span>
-                <span class="chip">Feature tracking</span>
-              </div>
-              <div class="cta">
-                <span class="small">Project Details</span>
-                <span class="small">→</span>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
     <footer class="footer">
       <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
         <span>© <span id="y"></span> Paola Romaguera</span>
         <span>
           <a href="index.html">Home</a> •
-          <a href="resume.pdf">Resume</a> •
+          <a href="projects.html">Projects</a> •
+          <a href="resume.html">Resume</a> •
           <a href="mailto:romaguera.pj@gmail.com">Contact</a>
         </span>
       </div>
@@ -298,10 +383,8 @@
   </div>
 
   <script>
-    // Footer year
     document.getElementById("y").textContent = new Date().getFullYear();
 
-    // Reveal transitions (matches index behavior: enter/exit)
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
