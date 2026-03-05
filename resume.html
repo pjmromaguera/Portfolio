@@ -96,6 +96,8 @@
       margin:0;
     }
 
+    html, body{ overflow-x: visible; }
+
     .brand-name{
       display:flex;
       flex-direction:column;
@@ -442,7 +444,7 @@
 
 <body>
 
-  <header role="banner">
+  <header role="navigation">
     <nav class="nav" aria-label="Primary navigation">
       <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
         <div class="brand">
@@ -452,7 +454,7 @@
           </div>
         </div>
 
-        <div class="nav-links" aria-label="Page links">
+        <div class="nav-links" aria-label="Primary">
           <a class="pill" href="index.html#top">Overview</a>
           <a class="pill" href="index.html#featured">Featured</a>
           <a class="pill" href="index.html#research">Research</a>
