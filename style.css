@@ -70,7 +70,7 @@ a:hover{ opacity:.92; }
 
     /* Nav matches index.html */
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
-
+    body .container{ max-width:none; padding:0; }
     .nav{
       position:sticky;
       top:0;
@@ -83,8 +83,14 @@ a:hover{ opacity:.92; }
       margin:0;
     }
 
-    html, body{ overflow-x: visible; }
+  
 
+    .nav .wide{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:25px;
+    } 
     .brand-name{
       display:flex;
       flex-direction:column;
@@ -99,8 +105,9 @@ a:hover{ opacity:.92; }
     .brand-name span{
       font-size:12px;
       color:var(--muted);
-      letter-spacing:.01em;
     }
+
+  html, body{ overflow-x: visible; }
 
     .nav-links{
       display:flex;
