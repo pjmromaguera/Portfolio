@@ -947,39 +947,53 @@
 window.addEventListener("DOMContentLoaded", () => {
 
   const chapters = document.querySelectorAll(".chapter[id]");
-  const navLinks = document.querySelectorAll(".nav-links a.pill");
+  const navLinks = document.querySelectorAll(".nav-links a.pill[href^='#']");
 
   if (!chapters.length || !navLinks.length) return;
 
   function setActive(id){
-    navLinks.forEach(link => {
-      const href = link.getAttribute("href") || "";
-
-      if (!href.startsWith("#")) return;
-
-      if (href === "#" + id){
+    navLinks.forEach(link=>{
+      if(link.getAttribute("href")==="#"+id){
         link.setAttribute("aria-current","page");
-      } else {
+      }else{
         link.removeAttribute("aria-current");
       }
     });
   }
 
-  const observer = new IntersectionObserver((entries)=>{
-    const visible = entries.filter(e => e.isIntersecting);
-    if(!visible.length) return;
+  function updateActive(){
+    const mid = window.innerHeight * 0.45;
 
-    visible.sort((a,b)=> b.intersectionRatio - a.intersectionRatio);
+    let best = null;
+    let bestDist = Infinity;
 
-    setActive(visible[0].target.id);
+    chapters.forEach(ch=>{
+      const rect = ch.getBoundingClientRect();
+      const center = rect.top + rect.height/2;
+      const dist = Math.abs(center - mid);
 
-  },{
-    threshold:[0.25,0.4,0.55,0.7]
-  });
+      if(dist < bestDist){
+        bestDist = dist;
+        best = ch;
+      }
+    });
 
-  chapters.forEach(chapter => observer.observe(chapter));
+    if(best) setActive(best.id);
+  }
 
-  setActive(chapters[0].id);
+  let ticking=false;
+
+  window.addEventListener("scroll",()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        updateActive();
+        ticking=false;
+      });
+      ticking=true;
+    }
+  },{passive:true});
+
+  updateActive();
 
 });
 </script>
