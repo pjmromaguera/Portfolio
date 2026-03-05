@@ -1,12 +1,3 @@
-<!-- =========================
-FILE: project-methodology.html
-Uniform with current portfolio styling:
-- Full-bleed chapters like index
-- Same sticky nav markup as index/projects
-- Reveal transitions re-trigger on enter/exit
-- Highlights grid (Objective/Approach/Tools/Role/Takeaways)
-- Module-style chapters (image + overlay card) w/ hover-zoom + click-to-lightbox
-========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,420 +5,748 @@ Uniform with current portfolio styling:
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Climate Hazard Exposure Assessment Methodology | Paola Jayme Romaguera</title>
   <meta name="description" content="Standardized methodology for assessing asset exposure to climate hazards under baseline and future projections using local and global datasets." />
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <style>
-    /* Full-bleed like index */
-    body .container{ max-width:none; padding:0; }
-    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
+    /* ══════════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════════ */
+    :root {
+      --bg:      #080e1e;
+      --surface: rgba(15, 26, 43, .55);
+      --line:    rgba(255,255,255,.08);
+      --line2:   rgba(255,255,255,.04);
+      --text:    #e8eaf2;
+      --muted:   #7e8ba8;
+      --accent:  #22d3ee;
+      --accent2: #a78bfa;
+      --accent3: #34d399;
+      --radius:  18px;
+      --shadow:  0 8px 40px rgba(0,0,0,.45);
+    }
 
-    /* Sticky nav like index */
-    .nav{
+    /* ══════════════════════════════════════════
+       RESET
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 1100px 600px at 10% 5%,  rgba(34,211,238,.10), transparent 55%),
+        radial-gradient(ellipse  800px 500px at 90% 30%, rgba(167,139,250,.09), transparent 55%),
+        var(--bg);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .h-media img { transition: none !important; }
+    }
+
+    /* ══════════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════════ */
+    .container { position: relative; z-index: 1; }
+
+    .wide {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ══════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════ */
+    .nav {
       position: sticky;
       top: 0;
       z-index: 1000;
       background: rgba(11,16,32,0.72);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
       padding: 14px 0;
-      margin: 0;
     }
 
-    /* Chapters */
-    .chapter{
-      padding: 80px 0;
-      position: relative;
-      border-top: 1px solid rgba(255,255,255,.06);
-      overflow: hidden;
-    }
-    @media (max-width: 860px){ .chapter{ padding: 52px 0; } }
-
-    .chapter::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: var(--scene-bg,
-        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.10), transparent 55%),
-        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0))
-      );
-      pointer-events:none;
-      z-index:0;
-    }
-    .chapter > *{ position:relative; z-index:1; }
-
-    /* Hero panel */
-    .hero-panel{
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hero-copy{ padding: 28px; }
-
-    .crumbs{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    .crumbs a{ color: var(--text); opacity:.9; }
-    .crumbs span{ opacity:.75; }
-
-    .micro{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      font-size: 12px;
-      color: var(--muted);
-      border:1px solid var(--line);
-      padding:7px 10px;
-      border-radius:999px;
-      background: rgba(255,255,255,.03);
-      margin-bottom: 12px;
-    }
-    .micro .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--accent2);
-      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
-    }
-
-    .super{
-      font-size: clamp(40px, 5.2vw, 68px);
-      line-height: 1.03;
-      letter-spacing: -0.9px;
-      margin: 0 0 12px;
-    }
-    .lede2{
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-      max-width: 78ch;
-      margin: 0 0 14px;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top: 12px;
-    }
-
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top: 14px;
-    }
-    .tag{
-      font-size:14px;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-    }
-
-    /* ===== Highlights grid (Objective/Approach/Tools/Role/etc) ===== */
-    .detail-grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-    @media (max-width: 980px){
-      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
-      .detail-card, .detail-wide{ grid-column: 1 / -1; }
-    }
-    @media (max-width: 640px){
-      .detail-grid{ grid-template-columns: 1fr !important; }
-      .detail-card, .detail-wide{ grid-column: 1 / -1 !important; width:100%; }
-    }
-
-    .detail-card{
-      grid-column: span 6;
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      padding: 22px;
-    }
-    .detail-card h3{
-      margin:0 0 12px;
-      font-size: 18px;
-      letter-spacing: -.2px;
-    }
-    .detail-card ul{
-      margin:0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.85;
-    }
-    .detail-card li{ margin: 10px 0; }
-    .detail-wide{ grid-column: span 12; }
-
-    /* ===== Module-style sections (text + media) ===== */
-    .module-wrap{
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .highlight{
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      padding: 26px;
-    }
-
-    .highlight-grid{
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 22px;
+    .nav .wide {
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
-    @media (max-width: 980px){ .highlight-grid{ grid-template-columns: 1fr; } }
 
-    .h-eyebrow{
+    .brand-name {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3;
+    }
+    .brand-name strong {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .brand-name span {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    .pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-size: 16px;
-      color: var(--muted);
+      padding: 6px 14px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      padding: 7px 10px;
       border-radius: 999px;
-      margin-bottom: 12px;
-    }
-    .h-eyebrow .dot{
-      width: 8px;height: 8px;border-radius: 999px;
-      background: var(--accent2);
-      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
-    }
-
-    .h-title{
-      margin: 0 0 14px;
-      font-size: clamp(24px, 2.4vw, 34px);
-      letter-spacing: -.4px;
-      line-height: 1.12;
-    }
-    .h-desc{
-      margin: 0 0 16px;
+      font-size: 12px;
+      font-weight: 500;
       color: var(--muted);
-      font-size: clamp(15px, 1.15vw, 18px);
-      line-height: 1.8;
-      max-width: 66ch;
+      background: rgba(255,255,255,.03);
+      transition: color .18s, border-color .18s, background .18s;
+      text-decoration: none;
+      cursor: pointer;
     }
-    .h-points{
-      margin: 0;
-      padding-left: 20px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.85;
+    .pill:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      text-decoration: none;
     }
-    .h-points li{ margin: 10px 0; }
-
-    .h-media{
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: rgba(0,0,0,.18);
-      overflow: hidden;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      position: relative;
+    .pill.primary {
+      color: var(--accent);
+      border-color: rgba(34,211,238,.25);
+      background: rgba(34,211,238,.06);
     }
-    .h-media img{
-      width: 100%;
-      height: auto;
-      display: block;
-      cursor: zoom-in;
-      transform: scale(1);
-      transition: transform .22s ease, filter .22s ease;
-      will-change: transform;
-      transform-origin: center;
-    }
-    @media (hover:hover){
-      .h-media:hover img{
-        transform: scale(1.06);
-        filter: saturate(1.05) contrast(1.03);
-      }
+    .pill.primary:hover {
+      background: rgba(34,211,238,.12);
+      border-color: rgba(34,211,238,.4);
     }
 
-    /* Workflow snapshot panel */
-    .media-panel{
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      padding: 18px;
-      margin-top: 14px;
+    /* ══════════════════════════════════════════
+       CHAPTERS
+    ══════════════════════════════════════════ */
+    .chapter {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
     }
-    .media-panel h3{ margin:0 0 10px; font-size: 18px; }
-    .media-panel p{ margin:0 0 12px; color: var(--muted); font-size: 14px; line-height:1.8; }
-    .media-panel img{
-      width:100%;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      display:block;
+    @media (max-width: 860px) { .chapter { padding: 52px 0; } }
+
+    #top {
+      background:
+        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.14), transparent 55%),
+        radial-gradient(900px  520px at 70% 60%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.22), rgba(11,16,32,0));
+    }
+    #details {
+      background:
+        radial-gradient(1100px 520px at 60% 25%, rgba(52,211,153,.10), transparent 55%),
+        radial-gradient(900px  520px at 25% 70%, rgba(125,211,252,.08), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+    }
+    .module-chapter {
+      background:
+        radial-gradient(1100px 520px at 35% 25%, rgba(167,139,250,.10), transparent 55%),
+        radial-gradient(900px  520px at 75% 70%, rgba(34,211,238,.08),  transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.16), rgba(11,16,32,0));
+    }
+    #module-exposure {
+      background:
+        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
+        radial-gradient(900px  520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+    }
+    #module-scenarios {
+      background:
+        radial-gradient(1100px 520px at 60% 25%, rgba(34,211,238,.11), transparent 55%),
+        radial-gradient(900px  520px at 25% 75%, rgba(167,139,250,.09), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
     }
 
-    /* Reveal transitions */
-    .reveal{
+    /* ══════════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════════ */
+    .reveal {
       opacity: 0;
       transform: translateY(18px);
-      transition: opacity .8s ease, transform .8s ease;
+      transition: opacity .75s ease, transform .75s ease;
       will-change: opacity, transform;
     }
-    .reveal.in{
+    .reveal.in {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Lightbox */
-    .lightbox{
+    /* ══════════════════════════════════════════
+       SHARED UTILITIES
+    ══════════════════════════════════════════ */
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .sep {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 20px 0;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    .hero-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 36px;
+    }
+
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .crumbs a {
+      color: var(--text);
+      opacity: .8;
+      text-decoration: none;
+    }
+    .crumbs a:hover { opacity: 1; text-decoration: underline; }
+    .crumbs .sep-dot { opacity: .4; }
+
+    .micro {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 14px;
+      align-self: flex-start;
+    }
+    .micro .dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--accent3);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.12);
+    }
+
+    .super {
+      
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.06;
+      letter-spacing: -0.6px;
+      margin: 0 0 14px;
+    }
+
+    .lede2 {
+      color: var(--muted);
+      font-size: clamp(14px, 1.4vw, 17px);
+      max-width: 72ch;
+      margin: 0 0 16px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 4px;
+    }
+    .tag {
+      font-size: 11.5px;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.025);
+      white-space: nowrap;
+    }
+
+    /* ══════════════════════════════════════════
+       HIGHLIGHTS GRID
+    ══════════════════════════════════════════ */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      letter-spacing: -0.3px;
+      margin: 0 0 6px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+    @media (max-width: 720px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .detail-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      transition: border-color .2s;
+    }
+    .detail-card:hover { border-color: rgba(255,255,255,.16); }
+
+    .detail-wide { grid-column: 1 / -1; }
+
+    .detail-card h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .detail-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .detail-card ul li {
+      font-size: 13.5px;
+      color: rgba(232,234,242,.80);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .detail-card ul li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      opacity: .45;
+    }
+
+    /* ══════════════════════════════════════════
+       MODULE HIGHLIGHTS
+    ══════════════════════════════════════════ */
+    .highlight {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 32px;
+      transition: border-color .2s;
+    }
+    .highlight:hover { border-color: rgba(255,255,255,.14); }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .highlight-grid { grid-template-columns: 1fr; }
+    }
+
+    .highlight-grid.flipped { direction: rtl; }
+    .highlight-grid.flipped > * { direction: ltr; }
+
+    .module-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    .h-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 3vw, 38px);
+      letter-spacing: -.4px;
+      line-height: 1.08;
+      margin: 0 0 12px;
+    }
+
+    .h-desc {
+      color: var(--muted);
+      font-size: clamp(13.5px, 1.2vw, 16px);
+      line-height: 1.75;
+      margin: 0 0 18px;
+      max-width: 60ch;
+    }
+
+    .h-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .h-points li {
+      font-size: 13.5px;
+      color: rgba(232,234,242,.80);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .h-points li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      opacity: .55;
+    }
+
+    .h-media {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) - 4px);
+      background: rgba(0,0,0,.22);
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,.35);
+    }
+    .h-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: zoom-in;
+      transition: transform .3s ease, filter .3s ease;
+    }
+    @media (hover: hover) {
+      .h-media img:hover {
+        transform: scale(1.04);
+        filter: saturate(1.05) contrast(1.02);
+      }
+    }
+
+    /* ══════════════════════════════════════════
+       DATASET TABLE
+    ══════════════════════════════════════════ */
+    .table-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .table-panel-header {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .table-panel-header h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .table-panel-header p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0;
+      max-width: 72ch;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .dataset-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .dataset-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 12px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      white-space: nowrap;
+    }
+
+    .dataset-table td {
+      padding: 11px 18px;
+      color: rgba(232,234,242,.78);
+      border-bottom: 1px solid var(--line2);
+      line-height: 1.55;
+      vertical-align: top;
+    }
+
+    .dataset-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .dataset-table tbody tr:hover td {
+      background: rgba(255,255,255,.025);
+    }
+
+    .dataset-table td:first-child {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .04em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ══════════════════════════════════════════
+       PRIVACY NOTE CARD
+    ══════════════════════════════════════════ */
+    .note-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      border-left: 3px solid var(--accent2);
+    }
+
+    .note-card h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    .note-card p {
+      font-size: 13.5px;
+      color: rgba(232,234,242,.75);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ══════════════════════════════════════════
+       LIGHTBOX
+    ══════════════════════════════════════════ */
+    .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(5,10,20,.85);
-      backdrop-filter: blur(10px);
+      background: rgba(5,10,20,.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 2000;
+      padding: 20px;
       opacity: 0;
       visibility: hidden;
-      transition: opacity .25s ease;
-      padding: 20px;
+      transition: opacity .25s ease, visibility .25s ease;
     }
-    .lightbox.show{
+    .lightbox.show {
       opacity: 1;
       visibility: visible;
     }
-    .lightbox img{
+    .lightbox img {
       max-width: 92vw;
       max-height: 88vh;
-      border-radius: 14px;
+      border-radius: var(--radius);
       border: 1px solid var(--line);
-      box-shadow: 0 40px 120px rgba(0,0,0,.6);
+      box-shadow: 0 40px 120px rgba(0,0,0,.65);
+      display: block;
     }
-    .lightbox-close{
+    .lightbox-close {
       position: absolute;
-      top: 18px;
-      right: 18px;
-      width: 44px;
-      height: 44px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      top: 20px;
+      right: 24px;
+      width: 40px; height: 40px;
       border-radius: 999px;
+      display: grid;
+      place-items: center;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.07);
       color: var(--text);
+      font-size: 22px;
       cursor: pointer;
-      opacity: .85;
-      transition: opacity .2s ease, transform .2s ease;
-      user-select:none;
+      transition: background .18s, transform .18s;
     }
-    .lightbox-close:hover{ opacity: 1; transform: scale(1.02); }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,.14);
+      transform: scale(1.08);
+    }
 
-    .footer{ margin: 0; padding: 26px 0 38px; }
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    .footer {
+      padding: 28px 0 40px;
+      border-top: 1px solid var(--line2);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer-inner a { color: var(--muted); }
+    .footer-inner a:hover { color: var(--text); }
   </style>
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- NAV (same structure as index/projects) -->
-    <header class="nav" role="navigation">
-      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+  <!-- ══ NAV ══ -->
+  <header role="banner">
+    <nav class="nav" aria-label="Primary navigation">
+      <div class="wide">
         <div class="brand">
-          <div class="brand-badge" aria-hidden="true"></div>
           <div class="brand-name">
             <strong>Paola Jayme Romaguera</strong>
             <span>Climate Risk • GIS • Remote Sensing • Python</span>
           </div>
         </div>
 
-        <nav class="nav-links" aria-label="Primary">
-          <a class="pill" href="index.html#top">Overview</a>
-          <a class="pill" href="index.html#featured">Featured</a>
-          <a class="pill" href="index.html#research">Research</a>
-          <a class="pill" href="projects.html">All Projects</a>
-          <a class="pill" href="resume.pdf">Resume</a>
-          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-        </nav>
+        <ul class="nav-links" role="list">
+          <li><a class="pill" href="index.html#top">Overview</a></li>
+          <li><a class="pill" href="index.html#featured">Featured</a></li>
+          <li><a class="pill" href="index.html#research">Research</a></li>
+          <li><a class="pill" href="projects.html">All Projects</a></li>
+          <li><a class="pill" href="resume.html">Resume</a></li>
+          <li><a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a></li>
+        </ul>
       </div>
-    </header>
+    </nav>
+  </header>
 
-    <!-- LIGHTBOX (must be in BODY, not inside <script>) -->
-    <div class="lightbox" id="lightbox" aria-hidden="true">
-      <div class="lightbox-close" id="lightboxClose" aria-label="Close image" role="button">✕</div>
-      <img id="lightboxImg" src="" alt="Expanded view">
-    </div>
+  <main>
 
-    <!-- CHAPTER 1: HERO -->
-    <section class="chapter" id="top"
-      style="--scene-bg:
-        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.12), transparent 55%),
-        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.10), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.20), rgba(11,16,32,0));">
-
+    <!-- ══ HERO ══ -->
+    <section class="chapter" id="top" aria-labelledby="project-heading">
       <div class="wide">
         <div class="hero-panel reveal">
-          <div class="hero-copy">
-            <div class="crumbs">
-              <a href="projects.html">Projects</a>
-              <span>•</span>
-              <span>Climate Hazard Exposure Assessment Methodology</span>
-            </div>
 
-            <div class="micro"><span class="dot"></span> Methodology • Local + global datasets • Baseline + future scenarios</div>
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="projects.html">Projects</a>
+            <span class="sep-dot" aria-hidden="true">·</span>
+            <span>Climate Hazard Exposure Assessment Methodology</span>
+          </nav>
 
-            <h1 class="super">Climate Hazard Exposure Assessment Methodology</h1>
-
-            <p class="lede2">
-              Developed a standardized methodology for assessing asset exposure to climate hazards under both current conditions and future projections.
-              The framework integrates local high-resolution datasets with global climate model outputs to enable consistent, scalable analysis across sectors.
-            </p>
-
-            <div class="tags">
-              <span class="tag">Climate risk</span>
-              <span class="tag">Methodology</span>
-              <span class="tag">Dataset evaluation</span>
-              <span class="tag">Exposure metrics</span>
-              <span class="tag">Scenario comparison</span>
-            </div>
-
-            <div class="row">
-              <a class="pill primary" href="projects.html">← Back to Projects</a>
-              <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
-              
-            </div>
+          <div class="micro" aria-label="Methodology · Local and global datasets · Baseline and future scenarios">
+            <span class="dot" aria-hidden="true"></span>
+            Methodology &nbsp;·&nbsp; Local + global datasets &nbsp;·&nbsp; Baseline + future scenarios
           </div>
+
+          <h1 class="super" id="project-heading">
+            Climate Hazard Exposure Assessment Methodology
+          </h1>
+
+          <p class="lede2">
+            Developed a standardized methodology for assessing asset exposure to climate hazards under both current
+            conditions and future projections. The framework integrates local high-resolution datasets with global
+            climate model outputs to enable consistent, scalable analysis across sectors.
+          </p>
+
+          <div class="tags" aria-label="Project tags">
+            <span class="tag">Climate risk</span>
+            <span class="tag">Methodology</span>
+            <span class="tag">Dataset evaluation</span>
+            <span class="tag">Exposure metrics</span>
+            <span class="tag">Scenario comparison</span>
+            <span class="tag">TCFD</span>
+          </div>
+
+          <hr class="sep" aria-hidden="true" />
+
+          <div class="row">
+            <a class="pill" href="projects.html">← Back to Projects</a>
+            <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 2: HIGHLIGHTS -->
-    <section class="chapter" id="details">
+    <!-- ══ HIGHLIGHTS ══ -->
+    <section class="chapter" id="details" aria-labelledby="details-heading">
       <div class="wide">
+
         <div class="reveal">
-          <h2 style="margin:0 0 10px; font-size:28px; letter-spacing:-.3px;">Highlights</h2>
-          <p class="lede2" style="margin:0;">
-            What the framework is designed to achieve and how it’s structured.
+          <div class="section-label">Overview</div>
+          <h2 class="section-title" id="details-heading">Highlights</h2>
+          <p class="lede2" style="margin-bottom:0;">
+            What the framework is designed to achieve and how it's structured.
           </p>
         </div>
 
         <div class="detail-grid">
+
           <div class="detail-card reveal">
             <h3>Objective</h3>
             <ul>
@@ -438,10 +757,10 @@ Uniform with current portfolio styling:
           </div>
 
           <div class="detail-card reveal">
-            <h3>Method overview</h3>
+            <h3>Method Overview</h3>
             <ul>
-              <li>Hazard selection for multi-hazard coverage (e.g., flood, rainfall extremes, landslide susceptibility).</li>
-              <li>Dataset evaluation: local vs global comparison, assumptions review, and coverage checks.</li>
+              <li>Hazard selection for multi-hazard coverage: flood, rainfall extremes, landslide susceptibility.</li>
+              <li>Dataset evaluation: local vs. global comparison, assumptions review, and coverage checks.</li>
               <li>Exposure extraction: overlay assets with hazard layers and summarize into interpretable metrics.</li>
             </ul>
           </div>
@@ -449,14 +768,14 @@ Uniform with current portfolio styling:
           <div class="detail-card reveal">
             <h3>Tools</h3>
             <ul>
-              <li>Python (pandas, xarray, geopandas; optional raster tools) for processing and automation.</li>
-              <li>QGIS/ArcGIS for QA/QC, review, and cartographic outputs.</li>
-              <li>Reporting outputs: maps + tables + charts.</li>
+              <li>Python (pandas, xarray, geopandas) for processing and automation.</li>
+              <li>QGIS / ArcGIS for QA/QC, review, and cartographic outputs.</li>
+              <li>Reporting outputs: maps, tables, and charts.</li>
             </ul>
           </div>
 
           <div class="detail-card reveal">
-            <h3>My role</h3>
+            <h3>My Role</h3>
             <ul>
               <li>Designed and standardized the methodology for repeatable delivery.</li>
               <li>Defined dataset selection criteria and documentation structure.</li>
@@ -465,275 +784,256 @@ Uniform with current portfolio styling:
           </div>
 
           <div class="detail-card detail-wide reveal">
-            <h3>Key takeaways</h3>
+            <h3>Key Takeaways</h3>
             <ul>
-              <li>Combining local and global datasets improves detail while keeping future-scenario relevance.</li>
-              <li>Documented selection criteria supports defensible and consistent assessments.</li>
+              <li>Combining local and global datasets improves spatial detail while maintaining future-scenario relevance.</li>
+              <li>Documented selection criteria supports defensible and reproducible assessments.</li>
               <li>Standard outputs enable faster scaling across sectors and geographies.</li>
             </ul>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 3: MODULE — DATASET EVALUATION -->
-    <section class="chapter" id="module-datasets"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 40% 25%, rgba(167,139,250,.11), transparent 55%),
-        radial-gradient(900px 520px at 70% 70%, rgba(34,211,238,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+    <!-- ══ PROCESS 1 — DATASET EVALUATION ══ -->
+    <section class="chapter module-chapter" id="module-datasets" aria-labelledby="mod1-heading">
       <div class="wide">
-        <div class="module-wrap reveal">
-          <div class="highlight">
-            <div class="highlight-grid">
+        <div class="highlight reveal">
 
-              <div>
-                <div class="h-eyebrow"><span class="dot"></span> Process 1</div>
-                <h2 class="h-title">Dataset evaluation</h2>
-                <p class="h-desc">
-                  Compare local and global hazard datasets to select best-fit inputs for resolution, coverage, assumptions, and interpretability.
-                </p>
-                <ul class="h-points">
-                  <li>Assess resolution, spatial coverage, and temporal representativeness.</li>
-                  <li>Review assumptions/metadata and known limitations.</li>
-                  <li>Document selection decisions to ensure defensibility.</li>
-                </ul>
-              </div>
+          <div class="module-eyebrow">Process 01</div>
+          <h2 class="h-title" id="mod1-heading">Dataset Evaluation</h2>
+          <p class="h-desc">
+            Compare local and global hazard datasets to select best-fit inputs based on resolution, coverage,
+            assumptions, and interpretability — and document decisions for defensibility.
+          </p>
+          <ul class="h-points" style="margin-bottom: 28px;">
+            <li>Assess spatial resolution, coverage, and temporal representativeness.</li>
+            <li>Review metadata, underlying assumptions, and known limitations.</li>
+            <li>Document selection rationale to ensure consistent and defensible assessments.</li>
+          </ul>
 
-        <div class="panel" style="margin-top:18px;">
-  <h3>Illustrative Dataset Evaluation</h3>
-  <p class="h-desc">
-    Candidate datasets were evaluated based on spatial coverage, temporal scope, resolution, and accessibility to identify the most appropriate inputs for exposure assessment workflows.
-  </p>
-
-  <div class="table-wrap">
-    <table class="dataset-table">
-      <thead>
-        <tr>
-          <th>Criteria</th>
-          <th>Data Source 1</th>
-          <th>Data Source 2</th>
-          <th>Data Source 3</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td>Spatial Coverage</td>
-          <td>Global</td>
-          <td>Local</td>
-          <td>Both (Regional + Global)</td>
-        </tr>
-
-        <tr>
-          <td>Temporal Scope</td>
-          <td>Historical baseline</td>
-          <td>Historical baseline</td>
-          <td>Historical + Future projections</td>
-        </tr>
-
-        <tr>
-          <td>Resolution</td>
-          <td>Coarse (~10–25 km)</td>
-          <td>Fine (~5–30 m)</td>
-          <td>Moderate (~1 km)</td>
-        </tr>
-
-        <tr>
-          <td>Accessibility</td>
-          <td>Open source</td>
-          <td>Paid / licensed</td>
-          <td>Open source</td>
-        </tr>
-
-        <tr>
-          <td>Typical Use Case</td>
-          <td>Global risk screening</td>
-          <td>Local engineering analysis</td>
-          <td>Climate scenario assessment</td>
-        </tr>
-
-        <tr>
-          <td>Strengths</td>
-          <td>Consistent global coverage</td>
-          <td>High spatial detail</td>
-          <td>Future climate projections</td>
-        </tr>
-
-        <tr>
-          <td>Limitations</td>
-          <td>Low spatial resolution</td>
-          <td>Limited geographic coverage</td>
-          <td>Moderate spatial resolution</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
+          <div class="table-panel">
+            <div class="table-panel-header">
+              <h3>Illustrative Dataset Evaluation</h3>
+              <p>
+                Candidate datasets evaluated on spatial coverage, temporal scope, resolution, and accessibility
+                to identify the most appropriate inputs for exposure assessment workflows.
+              </p>
             </div>
+            <div class="table-wrap">
+              <table class="dataset-table">
+                <thead>
+                  <tr>
+                    <th>Criteria</th>
+                    <th>Data Source 1</th>
+                    <th>Data Source 2</th>
+                    <th>Data Source 3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Spatial Coverage</td>
+                    <td>Global</td>
+                    <td>Local</td>
+                    <td>Regional + Global</td>
+                  </tr>
+                  <tr>
+                    <td>Temporal Scope</td>
+                    <td>Historical baseline</td>
+                    <td>Historical baseline</td>
+                    <td>Historical + Future projections</td>
+                  </tr>
+                  <tr>
+                    <td>Resolution</td>
+                    <td>Coarse (~10–25 km)</td>
+                    <td>Fine (~5–30 m)</td>
+                    <td>Moderate (~1 km)</td>
+                  </tr>
+                  <tr>
+                    <td>Accessibility</td>
+                    <td>Open source</td>
+                    <td>Paid / licensed</td>
+                    <td>Open source</td>
+                  </tr>
+                  <tr>
+                    <td>Typical Use Case</td>
+                    <td>Global risk screening</td>
+                    <td>Local engineering analysis</td>
+                    <td>Climate scenario assessment</td>
+                  </tr>
+                  <tr>
+                    <td>Strengths</td>
+                    <td>Consistent global coverage</td>
+                    <td>High spatial detail</td>
+                    <td>Future climate projections</td>
+                  </tr>
+                  <tr>
+                    <td>Limitations</td>
+                    <td>Low spatial resolution</td>
+                    <td>Limited geographic coverage</td>
+                    <td>Moderate spatial resolution</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PROCESS 2 — EXPOSURE EXTRACTION ══ -->
+    <section class="chapter" id="module-exposure" aria-labelledby="mod2-heading">
+      <div class="wide">
+        <div class="highlight reveal">
+          <div class="highlight-grid flipped">
+
+            <div>
+              <div class="module-eyebrow">Process 02</div>
+              <h2 class="h-title" id="mod2-heading">Exposure Extraction</h2>
+              <p class="h-desc">
+                Overlay assets with hazard layers and summarize results into interpretable exposure metrics
+                that are consistent and reusable across portfolios.
+              </p>
+              <ul class="h-points">
+                <li>Spatial overlays and buffer-based extraction as appropriate per hazard type.</li>
+                <li>Summaries by counts, percentiles, and threshold exceedances — designed for decisions.</li>
+                <li>Repeatable output format across asset types and sectors.</li>
+              </ul>
+            </div>
+
+            <div class="h-media">
+              <img
+                src="assets/method-exposure.png"
+                alt="Example exposure map showing asset overlay with hazard layers"
+                loading="lazy"
+              />
+            </div>
+
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 4: MODULE — EXPOSURE MAPS -->
-    <section class="chapter" id="module-exposure"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
-        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+    <!-- ══ PROCESS 3 — SCENARIO COMPARISON ══ -->
+    <section class="chapter" id="module-scenarios" aria-labelledby="mod3-heading">
       <div class="wide">
-        <div class="module-wrap reveal">
-          <div class="highlight">
-            <div class="highlight-grid">
+        <div class="highlight reveal">
+          <div class="highlight-grid">
 
-              <div>
-                <div class="h-eyebrow"><span class="dot"></span> Process 2</div>
-                <h2 class="h-title">Exposure extraction</h2>
-                <p class="h-desc">
-                  Overlay assets with hazard layers and summarize results into interpretable exposure metrics that are consistent across portfolios.
-                </p>
-                <ul class="h-points">
-                  <li>Spatial overlays and buffer-based extraction (as relevant).</li>
-                  <li>Summaries (counts/percentiles/threshold exceedances) designed for decisions.</li>
-                  <li>Repeatable outputs across asset types and sectors.</li>
-                </ul>
-              </div>
-
-              <div class="h-media">
-                <img src="assets/method-exposure.png" alt="Example exposure map">
-              </div>
-
+            <div>
+              <div class="module-eyebrow">Process 03</div>
+              <h2 class="h-title" id="mod3-heading">Scenario Comparison</h2>
+              <p class="h-desc">
+                Compare baseline and future scenarios — SSP/RCP-aligned pathways — to highlight shifts in
+                hazard intensity and exposure relevant to planning and investment decisions.
+              </p>
+              <ul class="h-points">
+                <li>Baseline vs. future deltas summarized in a consistent, comparable format.</li>
+                <li>Scenario framing supports risk prioritization and adaptation planning.</li>
+                <li>Charts and tables designed for executive-ready reporting packs.</li>
+              </ul>
             </div>
+
+            <div class="h-media">
+              <img
+                src="assets/method-scenario.png"
+                alt="Scenario comparison chart: baseline vs future hazard exposure shifts"
+                loading="lazy"
+              />
+            </div>
+
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- CHAPTER 5: MODULE — SCENARIO COMPARISON -->
-    <section class="chapter" id="module-scenarios"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 60% 25%, rgba(34,211,238,.11), transparent 55%),
-        radial-gradient(900px 520px at 25% 75%, rgba(167,139,250,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
-      <div class="wide">
-        <div class="module-wrap reveal">
-          <div class="highlight">
-            <div class="highlight-grid">
-
-              <div>
-                <div class="h-eyebrow"><span class="dot"></span> Process 3</div>
-                <h2 class="h-title">Scenario comparison</h2>
-                <p class="h-desc">
-                  Compare baseline and future scenarios (e.g., SSP/RCP-aligned pathways) to highlight shifts in hazard intensity and exposure.
-                </p>
-                <ul class="h-points">
-                  <li>Baseline vs future deltas summarized in a consistent format.</li>
-                  <li>Scenario framing supports planning and prioritization.</li>
-                  <li>Charts/tables designed for executive-ready reporting.</li>
-                </ul>
-              </div>
-
-              <div class="h-media">
-                <img src="assets/method-scenario.png" alt="Scenario comparison chart">
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER 6: WORKFLOW SNAPSHOT
-    <section class="chapter" id="workflow"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
-        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
-      <div class="wide">
-        <div class="media-panel reveal">
-          <h3>Workflow snapshot</h3>
-          <p>High-level view of methodology steps from dataset evaluation to scenario comparison outputs.</p>
-          <img src="assets/workflow-methodology.png" alt="Methodology workflow diagram">
-        </div> -->
-        <section class="chapter" id="workflow"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
-        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
-        <div class="wide">
-          <div class="media-panel reveal">
-          <h3>Data privacy note</h3>
+        <!-- Data privacy note -->
+        <div class="note-card reveal" style="margin-top: 24px;">
+          <h3>Data Privacy Note</h3>
           <p>
-            This case study is generalized and should only display public, synthetic, or sanitized examples.
+            This case study is generalized and displays only public, synthetic, or sanitized examples.
             No client-confidential information is included.
           </p>
         </div>
 
-        <div class="row reveal" style="margin-top:16px;">
+        <div class="row reveal" style="margin-top: 24px;">
           <a class="pill" href="projects.html">← Back to Projects</a>
           <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
         </div>
+
       </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-        <span>© <span id="y"></span> Paola Romaguera</span>
-        <span>
-          <a href="projects.html">Projects</a> •
-          <a href="resume.pdf">Resume</a> •
-          <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
-        </span>
-      </div>
-    </footer>
+  </main>
 
-  </div>
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="wide footer-inner">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <nav aria-label="Footer navigation">
+        <a href="projects.html">Projects</a> &nbsp;·&nbsp;
+        <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+        <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
+      </nav>
+    </div>
+  </footer>
 
-  <script>
-    // Footer year
-    document.getElementById('y').textContent = new Date().getFullYear();
+</div><!-- /.container -->
 
-    // Reveal transitions — re-trigger enter/exit
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('in');
-        else e.target.classList.remove('in');
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
-    revealEls.forEach(el => io.observe(el));
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Full size image" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+  <img id="lightboxImg" src="" alt="" />
+</div>
 
-    // Lightbox (click module images)
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const closeBtn = document.getElementById("lightboxClose");
+<script>
+  /* ── Year ── */
+  document.getElementById('y').textContent = new Date().getFullYear();
 
-    document.querySelectorAll(".h-media img").forEach(img => {
-      img.addEventListener("click", () => {
-        lightboxImg.src = img.src;
-        lightbox.classList.add("show");
-        lightbox.setAttribute("aria-hidden","false");
-      });
+  /* ── Scroll-reveal (fire once, never re-hide) ── */
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealIO.unobserve(e.target);
+      }
     });
+  }, { threshold: 0.10, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 
-    function closeLightbox(){
-      lightbox.classList.remove("show");
-      lightbox.setAttribute("aria-hidden","true");
-      lightboxImg.src = "";
-    }
+  /* ── Lightbox ── */
+  const lightbox    = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn    = document.getElementById('lightboxClose');
 
-    closeBtn.addEventListener("click", closeLightbox);
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('show');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
 
-    lightbox.addEventListener("click", (e) => {
-      if(e.target === lightbox) closeLightbox();
-    });
+  function closeLightbox() {
+    lightbox.classList.remove('show');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => { lightboxImg.src = ''; }, 260);
+  }
 
-    document.addEventListener("keydown",(e) => {
-      if(e.key === "Escape") closeLightbox();
-    });
-  </script>
+  document.querySelectorAll('.h-media img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 </body>
 </html>
