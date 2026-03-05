@@ -173,10 +173,10 @@ a:hover{ opacity:.92; }
   display:flex;
   gap:12px;
   align-items:center;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background: rgba(255,255,255,.03);
+  padding:0px;
+  border:0px solid var(--line);
+ /* border-radius:16px;
+  background: rgba(255,255,255,.03); */
 }
 .avatar{
   width:72px; height:72px;
