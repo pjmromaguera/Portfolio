@@ -145,6 +145,10 @@ a:hover{ opacity:.92; }
       background:rgba(255,255,255,.06);
     }
 
+    .pill[aria-current="page"]:hover{
+      background: rgba(255,255,255,.12);
+    }
+
 
 /* CARD */
 .card{
