@@ -22,16 +22,37 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <style>
+    :root{
+      --bg:#080e1e;
+      --surface:rgba(13,22,42,.70);
+      --surface2:rgba(255,255,255,.03);
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.04);
+      --text:#e8eaf2;
+      --muted:#7e8ba8;
+      --accent:#22d3ee;
+      --accent2:#a78bfa;
+      --accent3:#34d399;
+      --radius:18px;
+      --shadow:0 8px 40px rgba(0,0,0,.45);
+    }
+
+    *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+
     html{
       scroll-behavior:smooth;
+      background:var(--bg);
+      color:var(--text);
       font-family:'Instrument Sans',sans-serif;
+      font-size:15px;
+      line-height:1.65;
     }
 
     body{
       min-height:100vh;
       background:
-        radial-gradient(ellipse 900px 500px at 15% 10%, rgba(34,211,238,.09), transparent 55%),
-        radial-gradient(ellipse 700px 500px at 85% 80%, rgba(167,139,250,.08), transparent 55%),
+        radial-gradient(ellipse 1100px 600px at 10% 5%, rgba(34,211,238,.10), transparent 55%),
+        radial-gradient(ellipse 800px 500px at 90% 30%, rgba(167,139,250,.09), transparent 55%),
         var(--bg);
     }
 
@@ -39,16 +60,24 @@
       content:'';
       position:fixed;
       inset:0;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
       pointer-events:none;
       z-index:0;
     }
 
-    .container, .nav, .chapter{
-      position:relative;
-      z-index:1;
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+      .hcard{ transition:none !important; }
+      .hcard:hover{ transform:none !important; }
+      .hcard-media img{ transition:none !important; }
+      .parallax{ transform:none !important; }
     }
 
+    .container{ position:relative; z-index:1; }
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
     body .container{ max-width:none; padding:0; }
 
@@ -61,7 +90,74 @@
       -webkit-backdrop-filter:blur(14px);
       border-bottom:1px solid var(--line);
       padding:14px 0;
-      margin:0;
+    }
+
+    .nav .wide{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand-name{
+      display:flex;
+      flex-direction:column;
+      line-height:1.3;
+    }
+    .brand-name strong{
+      font-size:14px;
+      font-weight:700;
+      color:var(--text);
+      letter-spacing:-.01em;
+    }
+    .brand-name span{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+      list-style:none;
+      padding-left:0;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      font-size:12px;
+      font-weight:500;
+      color:var(--muted);
+      background:rgba(255,255,255,.03);
+      transition:color .18s, border-color .18s, background .18s;
+      cursor:pointer;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+    .pill:hover{
+      color:var(--text);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      text-decoration:none;
+    }
+    .pill.primary{
+      color:var(--accent);
+      border-color:rgba(34,211,238,.25);
+      background:rgba(34,211,238,.06);
+    }
+    .pill.primary:hover{
+      background:rgba(34,211,238,.12);
+      border-color:rgba(34,211,238,.4);
+    }
+    .pill[aria-current="page"]{
+      color:var(--text);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
     }
 
     .chapter{
@@ -102,6 +198,32 @@
       linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
     }
 
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width:980px){
+      .hero-grid{ grid-template-columns:1fr; }
+    }
+
+    .feature{
+      border:1px solid var(--line);
+      border-radius:calc(var(--radius) + 2px);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+      padding:28px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+
+    .feature-left .tags{ margin-top:auto; }
+    .feature-right{ justify-content:space-between; }
+
     .header-eyebrow{
       display:inline-flex;
       align-items:center;
@@ -111,7 +233,8 @@
       letter-spacing:.12em;
       text-transform:uppercase;
       color:var(--accent);
-      margin-bottom:18px;
+      margin-bottom:14px;
+      align-self:flex-start;
     }
     .header-eyebrow::before{
       content:'';
@@ -124,47 +247,95 @@
 
     .super{
       font-family:'DM Serif Display', serif;
-      font-size:clamp(42px, 6.2vw, 78px);
-      line-height:1.02;
-      letter-spacing:-1px;
-      margin:0 0 12px;
+      font-size:clamp(40px, 5.7vw, 72px);
+      line-height:1.03;
+      letter-spacing:-.9px;
+      margin:0 0 14px;
     }
     .super em{ font-style:italic; color:var(--accent2); }
 
     .lede2{
       color:var(--muted);
-      font-size:clamp(15px, 1.45vw, 18px);
-      max-width:78ch;
+      font-size:clamp(14px, 1.45vw, 17.5px);
+      max-width:76ch;
       margin:0 0 18px;
       line-height:1.75;
     }
 
-    .hero-apple{ align-items:stretch; }
-    .hero-apple > .feature{
-      height:100%;
+    .sep{
+      border:none;
+      border-top:1px solid var(--line);
+      margin:20px 0;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+    }
+    .tag{
+      font-size:11.5px;
+      padding:5px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      background:rgba(255,255,255,.025);
+      white-space:nowrap;
+    }
+
+    .profile{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:16px;
+    }
+    .avatar{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      overflow:hidden;
+      flex-shrink:0;
+      border:1.5px solid var(--line);
+    }
+    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .profile-meta{
       display:flex;
       flex-direction:column;
+      gap:2px;
     }
+    .profile-meta strong{ font-size:14px; font-weight:600; color:var(--text); }
+    .profile-meta span{ font-size:11.5px; color:var(--muted); }
 
-    .hero-apple{
-      display:grid;
-      grid-template-columns:1.25fr .75fr;
-      gap:18px;
-      align-items:start;
+    .quicklist{ margin-bottom:14px; }
+    .quicklist:last-child{ margin-bottom:0; }
+    .quicklist h3{
+      font-family:'DM Mono', monospace;
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:8px;
     }
-    @media (max-width:980px){
-      .hero-apple{ grid-template-columns:1fr; }
+    .quicklist ul{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:5px;
     }
-
-    .feature{
-      border:1px solid var(--line);
-      border-radius:calc(var(--radius) + 6px);
-      background:rgba(13,22,42,.70);
-      box-shadow:var(--shadow);
-      padding:28px;
-      overflow:hidden;
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
+    .quicklist ul li{
+      font-size:13px;
+      color:rgba(232,234,242,.78);
+      padding-left:14px;
+      position:relative;
+      line-height:1.55;
+    }
+    .quicklist ul li::before{
+      content:'–';
+      position:absolute;
+      left:0;
+      color:var(--accent);
+      opacity:.45;
     }
 
     .row{
@@ -178,7 +349,7 @@
     .reveal{
       opacity:0;
       transform:translateY(18px);
-      transition:opacity .8s ease, transform .8s ease;
+      transition:opacity .75s ease, transform .75s ease;
       will-change:opacity, transform;
     }
     .reveal.in{
@@ -188,424 +359,471 @@
 
     .parallax{ will-change:transform; transform:translateY(0px); }
 
-    .feature-head{
+    .section-head{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      margin-bottom:12px;
+      margin-bottom:16px;
     }
-    .feature-head h2{
+    .section-head h2{
       margin:0;
       font-family:'DM Serif Display', serif;
       font-size:28px;
       letter-spacing:-.3px;
     }
 
-    .carousel{ margin-top:6px; }
+    .carousel{ margin-top:4px; }
 
     .carousel-track{
       display:flex;
       gap:16px;
       overflow-x:auto;
       overflow-y:hidden;
-      padding:8px 0 8px;
+      padding:10px 0 12px;
       scroll-snap-type:x mandatory;
       scroll-padding:50%;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
+      cursor:grab;
     }
+    .carousel-track:active{ cursor:grabbing; }
     .carousel-track::-webkit-scrollbar{ display:none; }
 
     .carousel-track .hcard{
       scroll-snap-align:center;
-      flex:0 0 78%;
-      max-width:760px;
-      margin:0 auto;
+      flex:0 0 72%;
+      max-width:720px;
     }
     @media (min-width:1100px){
-      .carousel-track .hcard{ flex-basis:62%; max-width:780px; }
+      .carousel-track .hcard{ flex-basis:60%; max-width:760px; }
     }
     @media (max-width:640px){
-      .carousel-track .hcard{ flex-basis:92%; max-width:none; }
+      .carousel-track .hcard{ flex-basis:90%; max-width:none; }
     }
 
     .hcard{
       display:flex;
       flex-direction:column;
       border:1px solid var(--line);
-      border-radius:calc(var(--radius) + 6px);
-      background:rgba(13,22,42,.70);
+      border-radius:calc(var(--radius) + 2px);
+      background:var(--surface);
       box-shadow:var(--shadow);
       overflow:hidden;
       text-decoration:none;
-      transition:transform .18s ease, box-shadow .18s ease;
+      color:var(--text);
+      transition:transform .2s ease, box-shadow .2s ease;
       backdrop-filter:blur(10px);
       -webkit-backdrop-filter:blur(10px);
     }
     .hcard:hover{
-      transform:translateY(-3px);
-      box-shadow:0 18px 60px rgba(0,0,0,.45);
+      transform:translateY(-4px);
+      box-shadow:0 20px 60px rgba(0,0,0,.5);
+      text-decoration:none;
     }
-
     .hcard-media{
-      height:280px;
+      height:260px;
       border-bottom:1px solid var(--line);
       overflow:hidden;
       background:rgba(255,255,255,.03);
+      flex-shrink:0;
     }
     .hcard-media img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
+      transition:transform .4s ease;
     }
+    .hcard:hover .hcard-media img{ transform:scale(1.03); }
 
-    .hcard-body{ padding:18px; }
+    .hcard-body{ padding:20px; }
     .hcard-body h3{
       margin:0 0 8px;
-      font-size:18px;
+      font-size:17px;
       letter-spacing:-.2px;
+      color:var(--text);
     }
     .hcard-body p{
       margin:0;
       color:var(--muted);
-      font-size:14px;
+      font-size:13.5px;
       line-height:1.65;
     }
 
     .carousel-indicator{
       display:flex;
       justify-content:center;
-      margin-top:12px;
+      margin-top:14px;
     }
     .indicator-track{
       display:flex;
       align-items:center;
       gap:10px;
-      padding:8px 12px;
+      padding:8px 14px;
       border:1px solid var(--line);
       background:rgba(255,255,255,.03);
       border-radius:999px;
     }
-
     .ind-dot{
       width:6px;
       height:6px;
       border-radius:999px;
       background:rgba(255,255,255,.18);
-      transition:width .22s ease, background .22s ease, opacity .22s ease;
+      transition:width .22s ease, background .22s ease;
       opacity:.85;
       cursor:pointer;
     }
     .ind-dot.active{
-      width:30px;
-      background:rgba(255,255,255,.35);
+      width:28px;
+      background:rgba(255,255,255,.38);
       opacity:1;
     }
 
-    #research h2{
-      font-family:'DM Serif Display', serif;
-      font-size:28px !important;
-      letter-spacing:-.3px !important;
+    .research-row{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:16px;
+      margin-top:28px;
+    }
+    @media (max-width:820px){
+      .research-row{ grid-template-columns:1fr; }
     }
 
-    .kws{
+    .research-card{
+      border:1px solid var(--line);
+      border-radius:calc(var(--radius) + 2px);
+      background:var(--surface);
+      padding:22px;
       display:flex;
-      flex-wrap:wrap;
+      flex-direction:column;
       gap:12px;
-      margin-top:auto;
+      transition:border-color .2s, transform .2s ease;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
     }
-    .kws .kw{
+    .research-card:hover{
+      border-color:rgba(255,255,255,.16);
+      transform:translateY(-2px);
+    }
+    .research-card h3{
+      font-size:15px;
+      font-weight:600;
+      line-height:1.45;
+      color:var(--text);
+      margin:0;
+    }
+    .research-card p{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.65;
+      margin:0;
+      flex:1;
+    }
+
+    .kws{ display:flex; flex-wrap:wrap; gap:6px; }
+    .kw{
       display:inline-flex;
       align-items:center;
-      padding:6px 10px;
+      padding:4px 9px;
       border:1px solid var(--line);
       border-radius:999px;
-      font-size:12px;
+      font-size:11px;
       color:var(--muted);
-      background:rgba(255,255,255,.03);
+      background:rgba(255,255,255,.025);
       white-space:nowrap;
     }
-    .kws .kw em{ font-style:italic; }
+    .kw em{ font-style:italic; }
 
-    .footer{ margin:0; padding:26px 0 38px; }
+    .footer{
+      padding:28px 0 40px;
+      border-top:1px solid var(--line2);
+    }
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .footer-inner a{ color:var(--muted); }
+    .footer-inner a:hover{ color:var(--text); }
   </style>
 </head>
 
 <body>
   <div class="container">
 
-    <header class="nav" role="navigation">
-      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-        <div class="brand">
-          <div class="brand-name">
-            <strong>Paola Jayme Romaguera</strong>
-            <span>Climate Risk • GIS • Remote Sensing • Python</span>
+    <header role="banner">
+      <nav class="nav" aria-label="Primary navigation">
+        <div class="wide">
+          <div class="brand">
+            <div class="brand-name">
+              <strong>Paola Jayme Romaguera</strong>
+              <span>Climate Risk • GIS • Remote Sensing • Python</span>
+            </div>
           </div>
-        </div>
 
-        <nav class="nav-links" aria-label="Primary">
-          <a class="pill" href="#top">Overview</a>
-          <a class="pill" href="#featured">Featured</a>
-          <a class="pill" href="#research">Research</a>
-          <a class="pill" href="projects.html">All Projects</a>
-          <a class="pill" href="resume.html">Resume</a>
-          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-        </nav>
-      </div>
+          <ul class="nav-links" role="list">
+            <li><a class="pill" href="#top">Overview</a></li>
+            <li><a class="pill" href="#featured">Featured</a></li>
+            <li><a class="pill" href="#research">Research</a></li>
+            <li><a class="pill" href="projects.html">All Projects</a></li>
+            <li><a class="pill" href="resume.html">Resume</a></li>
+            <li><a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a></li>
+          </ul>
+        </div>
+      </nav>
     </header>
 
-    <section class="chapter" id="top">
-      <div class="wide hero-apple">
+    <main>
 
-        <div class="feature reveal">
-          <div class="header-eyebrow">Climate Risk &amp; Geospatial Analytics</div>
+      <section class="chapter" id="top" aria-labelledby="overview-heading">
+        <div class="wide">
+          <div class="hero-grid">
 
-          <h1 class="super">
-            Decision-ready <em>climate risk</em> insights<br />
-            from geospatial data.
-          </h1>
+            <div class="feature feature-left reveal">
+              <div class="header-eyebrow">Climate Risk &amp; Geospatial Analytics</div>
 
-          <p class="lede2">
-            I build asset-level hazard exposure metrics, scenario-driven comparisons, and clear visual narratives by
-            combining spatial analytics, remote sensing, and workflow automation for planning, investment, and policy.
-          </p>
+              <h1 class="super" id="overview-heading">
+                Decision-ready <em>climate risk</em> insights<br />
+                from geospatial data.
+              </h1>
 
-          <div class="row">
-            <a class="pill primary" href="#featured">Explore featured work</a>
-          </div>
+              <p class="lede2">
+                I build asset-level hazard exposure metrics, scenario-driven comparisons, and clear visual narratives by
+                combining spatial analytics, remote sensing, and workflow automation for planning, investment, and policy.
+              </p>
 
-          <hr class="sep" />
+              <div class="row">
+                <a class="pill primary" href="#featured">Explore featured work</a>
+                <a class="pill" href="resume.html">View resume</a>
+              </div>
 
-          <div class="tags">
-            <span class="tag">Physical climate risk</span>
-            <span class="tag">Flood &amp; rainfall analytics</span>
-            <span class="tag">2D flood modelling</span>
-            <span class="tag">Exposure metrics</span>
-            <span class="tag">Remote sensing indices</span>
-            <span class="tag">Python</span>
-            <span class="tag">QGIS/ArcGIS</span>
-            <span class="tag">GEE</span>
-            <span class="tag">SQL</span>
-            <span class="tag">Streamlit</span>
-            <span class="tag">Tableau</span>
-          </div>
-        </div>
+              <hr class="sep" aria-hidden="true" />
 
-        <div class="feature reveal parallax" data-parallax="0.18">
-          <div class="profile" style="margin-bottom:12px;">
-            <div class="avatar">
-              <img src="assets/romaguera-headshot.jpg" alt="Headshot of Paola Romaguera" />
+              <div class="tags" aria-label="Skills and tools">
+                <span class="tag">Physical climate risk</span>
+                <span class="tag">Flood &amp; rainfall analytics</span>
+                <span class="tag">2D flood modelling</span>
+                <span class="tag">Exposure metrics</span>
+                <span class="tag">Remote sensing indices</span>
+                <span class="tag">Python</span>
+                <span class="tag">QGIS / ArcGIS</span>
+                <span class="tag">GEE</span>
+                <span class="tag">SQL</span>
+                <span class="tag">Streamlit</span>
+                <span class="tag">Tableau</span>
+              </div>
             </div>
-            <div class="profile-meta">
-              <strong>Paola Jayme Romaguera</strong>
-              <span>Spatial Analyst • Climate Risk Consultant</span>
+
+            <div class="feature feature-right reveal parallax" data-parallax="0.18">
+              <div class="profile">
+                <div class="avatar">
+                  <img src="assets/romaguera-headshot.jpg" alt="Headshot of Paola Romaguera" width="52" height="52" loading="eager" />
+                </div>
+                <div class="profile-meta">
+                  <strong>Paola Jayme Romaguera</strong>
+                  <span>Spatial Analyst • Climate Risk Consultant</span>
+                </div>
+              </div>
+
+              <div class="quicklist">
+                <h3>About</h3>
+                <ul>
+                  <li>Geospatial analytics specialist with 5+ years delivering asset-level climate risk assessments and hazard modeling.</li>
+                  <li>Builds scalable workflows and standardized methodologies.</li>
+                  <li>Translates complex climate and hazard data into decision-ready insights through spatial analytics, remote sensing, and stakeholder engagement.</li>
+                  <li>B.S. Geology — University of the Philippines (2020).</li>
+                </ul>
+              </div>
+
+              <div class="quicklist">
+                <h3>Capabilities</h3>
+                <ul>
+                  <li>Asset-level hazard exposure metrics and spatial risk maps</li>
+                  <li>Scenario-based comparisons (RCP/SSP pathways)</li>
+                  <li>Remote-sensing indicators and environmental interpretation</li>
+                  <li>Executive-ready dashboards, visuals, and risk narratives</li>
+                </ul>
+              </div>
+
+              <div class="quicklist">
+                <h3>Toolkit</h3>
+                <ul>
+                  <li>Python: pandas, NumPy, xarray, geopandas</li>
+                  <li>GIS: QGIS, ArcGIS · Google Earth Engine</li>
+                  <li>Apps: Streamlit dashboards</li>
+                  <li>Versioning: Git / GitHub</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="featured" aria-labelledby="featured-heading">
+        <div class="wide">
+
+          <div class="section-head reveal">
+            <h2 id="featured-heading">Featured case studies</h2>
+            <a class="pill" href="projects.html">View all</a>
+          </div>
+
+          <div class="carousel reveal" role="region" aria-roledescription="carousel" aria-label="Featured projects">
+            <div class="carousel-track" id="featuredTrack" aria-live="polite">
+
+              <a class="hcard" href="project-dashboard.html">
+                <div class="hcard-media">
+                  <img src="assets/app-cover.png" alt="Hazard Exposure Dashboard cover" width="720" height="260" loading="lazy" />
+                </div>
+                <div class="hcard-body">
+                  <h3>Hazard Exposure Assessment Dashboard</h3>
+                  <p>Personal dashboard to automate exposure metrics and visualization for distributed portfolios.</p>
+                </div>
+              </a>
+
+              <a class="hcard" href="project-methodology.html">
+                <div class="hcard-media">
+                  <img src="assets/method-cover.png" alt="Methodology cover" width="720" height="260" loading="lazy" />
+                </div>
+                <div class="hcard-body">
+                  <h3>Hazard Exposure Assessment Methodology</h3>
+                  <p>Standardized framework integrating local and global datasets for current and future scenarios.</p>
+                </div>
+              </a>
+
+              <a class="hcard" href="project-turbidity.html">
+                <div class="hcard-media">
+                  <img src="assets/turbidity.png" alt="Turbidity cover" width="720" height="260" loading="lazy" />
+                </div>
+                <div class="hcard-body">
+                  <h3>River Turbidity Assessment</h3>
+                  <p>Mapped turbidity patterns in GEE to identify potential siltation zones.</p>
+                </div>
+              </a>
+
+              <a class="hcard" href="project-flo2d.html">
+                <div class="hcard-media">
+                  <img src="assets/Flood Modelling.png" alt="FLO-2D cover" width="720" height="260" loading="lazy" />
+                </div>
+                <div class="hcard-body">
+                  <h3>2D Flood Modeling (FLO-2D)</h3>
+                  <p>Hydrodynamic simulations producing flood depth and extent maps.</p>
+                </div>
+              </a>
+
+              <a class="hcard" href="project-eddies.html">
+                <div class="hcard-media">
+                  <img src="assets/eddies.png" alt="Eddies cover" width="720" height="260" loading="lazy" />
+                </div>
+                <div class="hcard-body">
+                  <h3>Ocean Eddy Detection</h3>
+                  <p>Processed multi-year NetCDF datasets to detect mesoscale eddies and track lifecycle evolution.</p>
+                </div>
+              </a>
+
+            </div>
+
+            <div class="carousel-indicator" aria-hidden="true">
+              <div class="indicator-track" id="indicatorTrack"></div>
             </div>
           </div>
 
-          <div class="quicklist" style="margin-bottom:12px;">
-            <h3>About</h3>
-            <ul>
-              <li>Geospatial analytics specialist with 5+ years of experience delivering asset-level climate risk assessments and hazard modeling.</li>
-              <li>Builds scalable workflows and standardized methodologies.</li>
-              <li>Combines spatial analytics, remote sensing, and stakeholder engagement to translate complex climate and hazard data into decision-ready insights.</li>
-              <li>B.S. Geology — University of the Philippines (2020).</li>
-            </ul>
-          </div>
-
-          <div class="quicklist" style="margin-bottom:12px;">
-            <h3>Capabilities</h3>
-            <ul>
-              <li>Asset-level hazard exposure metrics and spatial risk maps</li>
-              <li>Scenario-based comparisons (RCP/SSP pathways)</li>
-              <li>Remote-sensing indicators and environmental interpretation</li>
-              <li>Executive-ready dashboards, visuals, and risk narratives</li>
-            </ul>
-          </div>
-
-          <div class="quicklist">
-            <h3>Toolkit</h3>
-            <ul>
-              <li>Python: pandas, NumPy, xarray, geopandas</li>
-              <li>GIS: QGIS, ArcGIS • Google Earth Engine</li>
-              <li>Apps: Streamlit dashboards</li>
-              <li>Versioning: Git / GitHub (reproducibility)</li>
-            </ul>
-          </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      <section class="chapter" id="research" aria-labelledby="research-heading">
+        <div class="wide">
 
-    <section class="chapter" id="featured">
-      <div class="wide">
-
-        <div class="feature-head reveal">
-          <h2>Featured case studies</h2>
-          <a class="pill" href="projects.html">View all</a>
-        </div>
-
-        <div class="carousel reveal" aria-label="Featured projects carousel">
-          <div class="carousel-track" id="featuredTrack">
-
-            <a class="hcard" href="project-dashboard.html">
-              <div class="hcard-media"><img src="assets/app-cover.png" alt="Hazard Exposure Dashboard cover" /></div>
-              <div class="hcard-body">
-                <h3>Hazard Exposure Assessment Dashboard</h3>
-                <p>Personal dashboard to automate exposure metrics and visualization for distributed portfolios.</p>
-              </div>
-            </a>
-
-            <a class="hcard" href="project-methodology.html">
-              <div class="hcard-media"><img src="assets/method-cover.png" alt="Methodology cover" /></div>
-              <div class="hcard-body">
-                <h3>Hazard Exposure Assessment Methodology</h3>
-                <p>Standardized framework integrating local and global datasets for current and future scenarios.</p>
-              </div>
-            </a>
-
-            <a class="hcard" href="project-turbidity.html">
-              <div class="hcard-media"><img src="assets/turbidity.png" alt="Turbidity cover" /></div>
-              <div class="hcard-body">
-                <h3>River Turbidity Assessment</h3>
-                <p>Mapped turbidity patterns in GEE to identify potential siltation zones.</p>
-              </div>
-            </a>
-
-            <a class="hcard" href="project-flo2d.html">
-              <div class="hcard-media"><img src="assets/Flood Modelling.png" alt="FLO-2D cover" /></div>
-              <div class="hcard-body">
-                <h3>2D Flood Modeling (FLO-2D)</h3>
-                <p>Hydrodynamic simulations producing flood depth and extent maps.</p>
-              </div>
-            </a>
-
-            <a class="hcard" href="project-eddies.html">
-              <div class="hcard-media"><img src="assets/eddies.png" alt="Eddies cover" /></div>
-              <div class="hcard-body">
-                <h3>Ocean Eddy Detection</h3>
-                <p>Processed multi-year NetCDF datasets to detect mesoscale eddies and track lifecycle evolution.</p>
-              </div>
-            </a>
-
-          </div>
-
-          <div class="carousel-indicator" aria-hidden="true">
-            <div class="indicator-track" id="indicatorTrack"></div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="chapter" id="research">
-      <div class="wide">
-        <div class="reveal">
-          <h2 style="margin:0 0 10px;">Research Works</h2>
-          <p class="lede2" style="margin-bottom:0;">
-            Conference presentations and research supporting multi-hazard and geospatial analytics work.
-          </p>
-        </div>
-
-        <div class="research-row reveal">
-
-          <article class="research-card">
-            <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
-            <p>
-              Geospatial framework analyzing interactions between multiple hazards, including cascading and compounding effects,
-              supporting disaster risk assessment and resilience planning.
+          <div class="reveal">
+            <h2 id="research-heading" style="margin:0 0 6px;">Research Works</h2>
+            <p class="lede2" style="margin-bottom:0;">
+              Conference presentations and research supporting multi-hazard and geospatial analytics work.
             </p>
+          </div>
 
-            <div class="kws">
-              <span class="kw"><em>American Geophysical Union Fall Meeting 2020</em></span>
-              <span class="kw"><em>Multihazards</em></span>
-              <span class="kw"><em>Disaster Resilience</em></span>
-            </div>
+          <div class="research-row reveal">
 
-            <div class="row">
-              <a class="pill primary" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank" rel="noopener">View abstract ↗</a>
-              <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank" rel="noopener">View poster ↗</a>
-            </div>
-          </article>
+            <article class="research-card">
+              <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
+              <p>Geospatial framework analyzing interactions between multiple hazards, including cascading and compounding effects, supporting disaster risk assessment and resilience planning.</p>
+              <div class="kws">
+                <span class="kw"><em>AGU Fall Meeting 2020</em></span>
+                <span class="kw"><em>Multihazards</em></span>
+                <span class="kw"><em>Disaster Resilience</em></span>
+              </div>
+              <div class="row">
+                <a class="pill primary" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank" rel="noopener noreferrer">Abstract ↗</a>
+                <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank" rel="noopener noreferrer">Poster ↗</a>
+              </div>
+            </article>
 
-          <article class="research-card">
-            <h3>Enhancing Vs30 Mapping using HVSR Inversion</h3>
-            <p>
-              Poster presenter at GeoCon 2023 using HVSRInv (MATLAB) to estimate Vs30 for seismic hazard/site amplification,
-              validated against Refraction Microtremor measurements.
-            </p>
+            <article class="research-card">
+              <h3>Enhancing Vs30 Mapping using HVSR Inversion</h3>
+              <p>Poster presenter at GeoCon 2023 using HVSRInv (MATLAB) to estimate Vs30 for seismic hazard and site amplification, validated against Refraction Microtremor measurements.</p>
+              <div class="kws">
+                <span class="kw"><em>GeoCon 2023</em></span>
+                <span class="kw"><em>HVSR inversion</em></span>
+                <span class="kw"><em>Elitist Genetic Algorithm</em></span>
+              </div>
+              <div class="row">
+                <a class="pill primary" href="https://geolsocphil.com/uploads/geocon/GeoCon%202023%20Abstract%20Volume%20-%20Posters.pdf" target="_blank" rel="noopener noreferrer">Abstract ↗</a>
+                <a class="pill primary" href="assets/Geocon 2023_Poster_PJRomaguera.pdf" target="_blank" rel="noopener noreferrer">Poster ↗</a>
+              </div>
+            </article>
 
-            <div class="kws">
-              <span class="kw"><em>GeoCon 2023</em></span>
-              <span class="kw"><em>Poster Presenter</em></span>
-              <span class="kw"><em>HVSR inversion</em></span>
-              <span class="kw"><em>Elitist Genetic Algorithm</em></span>
-            </div>
+            <article class="research-card">
+              <h3>Volcanic Features within the Benham Plateau</h3>
+              <p>Remote sensing and geospatial analysis to characterize volcanic features within Benham Rise, supporting interpretation of submarine structures and regional geologic evolution.</p>
+              <div class="kws">
+                <span class="kw"><em>UP Thesis 2019</em></span>
+                <span class="kw"><em>Remote sensing</em></span>
+                <span class="kw"><em>NETVOLC &amp; MORVOLC</em></span>
+              </div>
+              <div class="row">
+                <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank" rel="noopener noreferrer">Abstract ↗</a>
+              </div>
+            </article>
 
-            <div class="row">
-              <a class="pill primary" href="https://geolsocphil.com/uploads/geocon/GeoCon%202023%20Abstract%20Volume%20-%20Posters.pdf" target="_blank" rel="noopener">View abstract ↗</a>
-              <a class="pill primary" href="assets/Geocon 2023_Poster_PJRomaguera.pdf" target="_blank" rel="noopener">View poster ↗</a>
-            </div>
-          </article>
+            <article class="research-card">
+              <h3>Living with Water: Lost or Forgotten Rivers in Manila and London</h3>
+              <p>Curated 54 cultural and historical records documenting “lost rivers” shaped by urban growth to surface links between buried waterways, flood memory, and community-led regeneration.</p>
+              <div class="kws">
+                <span class="kw"><em>EGU General Assembly 2023</em></span>
+                <span class="kw"><em>Urban hydrology</em></span>
+                <span class="kw"><em>Flood resilience</em></span>
+              </div>
+              <div class="row">
+                <a class="pill primary" href="https://www.researchgate.net/publication/370203296_Living_with_water_Lost_or_Forgotten_Rivers_and_Waterbodies_in_Manila_and_London" target="_blank" rel="noopener noreferrer">Abstract ↗</a>
+                <a class="pill primary" href="assets/LivingwithwaterLostorForgottenRiversandWaterbodiesinManilaandLondon.jpg" target="_blank" rel="noopener noreferrer">Poster ↗</a>
+              </div>
+            </article>
 
-          <article class="research-card">
-            <h3>Volcanic Features within the Benham Plateau</h3>
-            <p>
-              Remote sensing and geospatial analysis to characterize volcanic features within Benham Rise,
-              supporting interpretation of submarine structures and regional geologic evolution.
-            </p>
+          </div>
 
-            <div class="kws">
-              <span class="kw"><em>University of the Philippines 2019</em></span>
-              <span class="kw"><em>Remote sensing</em></span>
-              <span class="kw"><em>NETVOLC &amp; MORVOLC algorithm</em></span>
-            </div>
-
-            <div class="row">
-              <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank" rel="noopener">View abstract ↗</a>
-            </div>
-          </article>
-
-          <article class="research-card">
-            <h3>Living with Water: Lost or Forgotten Rivers and Waterbodies in Manila and London</h3>
-            <p>
-              Compiled cultural and historical records documenting “lost rivers” shaped by urban growth, including artworks,
-              photographs, literature, books, and museum exhibits. Curated 54 resources (London: 31, Manila: 23) and presented
-              them through two virtual Padlet walls to surface links between buried waterways, flood memory, and community-led regeneration.
-            </p>
-
-            <div class="kws">
-              <span class="kw"><em>European Geosciences Union General Assembly 2023</em></span>
-              <span class="kw"><em>Urban hydrology</em></span>
-              <span class="kw"><em>Flood resilience</em></span>
-              <span class="kw"><em>Manila • London</em></span>
-            </div>
-
-            <div class="row">
-              <a class="pill primary" href="https://www.researchgate.net/publication/370203296_Living_with_water_Lost_or_Forgotten_Rivers_and_Waterbodies_in_Manila_and_London" target="_blank" rel="noopener">View abstract ↗</a>
-              <a class="pill primary" href="assets/LivingwithwaterLostorForgottenRiversandWaterbodiesinManilaandLondon.jpg" target="_blank" rel="noopener">View poster ↗</a>
-            </div>
-          </article>
+          <div class="row reveal" style="margin-top:24px;">
+            <a class="pill" href="#top">Back to top ↑</a>
+            <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+          </div>
 
         </div>
+      </section>
 
-        <div class="row reveal" style="margin-top:16px;">
-          <a class="pill" href="#top">Back to top</a>
-          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
-        </div>
-      </div>
-    </section>
+    </main>
 
     <footer class="footer">
-      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <div class="wide footer-inner">
         <span>© <span id="y"></span> Paola Romaguera</span>
-        <span>
-          <a href="projects.html">Projects</a> •
-          <a href="resume.html">Resume</a> •
+        <nav aria-label="Footer navigation">
+          <a href="projects.html">Projects</a> &nbsp;·&nbsp;
+          <a href="resume.html">Resume</a> &nbsp;·&nbsp;
           <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
-        </span>
+        </nav>
       </div>
     </footer>
 
@@ -614,14 +832,15 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
+    const revealIO = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('in');
-        else e.target.classList.remove('in');
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealIO.unobserve(e.target);
+        }
       });
-    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
-    revealEls.forEach(el => io.observe(el));
+    }, { threshold: 0.10, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 
     const parallaxEls = document.querySelectorAll('[data-parallax]');
     function onScroll(){
@@ -634,9 +853,22 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a.pill');
+    const sectionIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        navLinks.forEach(a => {
+          if (a.getAttribute('href') === '#' + e.target.id) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        });
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => sectionIO.observe(s));
+
     (function(){
       const track = document.getElementById('featuredTrack');
-      const ind = document.getElementById('indicatorTrack');
+      const ind   = document.getElementById('indicatorTrack');
       if (!track || !ind) return;
 
       const cards = Array.from(track.querySelectorAll('.hcard'));
@@ -646,11 +878,11 @@
       const dots = cards.map((_, i) => {
         const d = document.createElement('span');
         d.className = 'ind-dot' + (i === 0 ? ' active' : '');
-        d.setAttribute('role', 'button');
-        d.setAttribute('tabindex', '0');
+        d.setAttribute('role','button');
+        d.setAttribute('tabindex','0');
         d.setAttribute('aria-label', `Go to item ${i+1}`);
 
-        const go = () => cards[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        const go = () => cards[i].scrollIntoView({ behavior:'smooth', inline:'center', block:'nearest' });
         d.addEventListener('click', go);
         d.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
@@ -662,11 +894,9 @@
 
       function updateActive(){
         const center = track.scrollLeft + track.clientWidth / 2;
-        let bestIdx = 0;
-        let bestDist = Infinity;
+        let bestIdx = 0, bestDist = Infinity;
         cards.forEach((card, i) => {
-          const cardCenter = card.offsetLeft + card.clientWidth / 2;
-          const dist = Math.abs(cardCenter - center);
+          const dist = Math.abs((card.offsetLeft + card.clientWidth / 2) - center);
           if (dist < bestDist) { bestDist = dist; bestIdx = i; }
         });
         dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
@@ -674,20 +904,40 @@
 
       let ticking = false;
       track.addEventListener('scroll', () => {
-        if (!ticking) {
+        if (!ticking){
           requestAnimationFrame(() => { updateActive(); ticking = false; });
           ticking = true;
         }
-      }, { passive: true });
+      }, { passive:true });
+
+      let isHovered = false;
+      track.addEventListener('mouseenter', () => { isHovered = true; });
+      track.addEventListener('mouseleave', () => { isHovered = false; });
 
       track.addEventListener('wheel', (e) => {
+        if (!isHovered) return;
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          track.scrollLeft += e.deltaY;
           e.preventDefault();
+          track.scrollLeft += e.deltaY;
         }
-      }, { passive: false });
+      }, { passive:false });
 
-      window.addEventListener('load', () => setTimeout(updateActive, 60));
+      let isDragging = false, startX = 0, startScroll = 0;
+      track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - track.offsetLeft;
+        startScroll = track.scrollLeft;
+        track.style.userSelect = 'none';
+      });
+      track.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        track.scrollLeft = startScroll - (e.pageX - track.offsetLeft - startX);
+      });
+      const endDrag = () => { isDragging = false; track.style.userSelect = ''; };
+      track.addEventListener('mouseup', endDrag);
+      track.addEventListener('mouseleave', endDrag);
+
+      window.addEventListener('load',   () => setTimeout(updateActive, 60));
       window.addEventListener('resize', () => setTimeout(updateActive, 60));
     })();
   </script>
