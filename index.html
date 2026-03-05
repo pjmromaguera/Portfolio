@@ -839,6 +839,31 @@
   
 
   <script>
+const sections = document.querySelectorAll("section[id]");
+const navLinks = document.querySelectorAll(".nav-links a.pill");
+
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = entry.target.getAttribute("id");
+
+      navLinks.forEach(link=>{
+        const href = link.getAttribute("href");
+
+        if(href === "#" + id){
+          link.setAttribute("aria-current","page");
+        } else if(href.startsWith("#")){
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+  });
+},{
+  threshold:0.55
+});
+
+sections.forEach(section=>observer.observe(section));
+    
     document.getElementById('y').textContent = new Date().getFullYear();
 
     const revealIO = new IntersectionObserver((entries) => {
