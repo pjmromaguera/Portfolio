@@ -5,374 +5,628 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ocean Eddy Detection and Lifecycle Tracking | Paola Jayme Romaguera</title>
   <meta name="description" content="Processed multi-year NetCDF datasets in Python to detect mesoscale eddies, extract metrics, and track lifecycle evolution (public/sanitized examples only)." />
-  <link rel="stylesheet" href="style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <style>
-    body .container{ max-width:none; padding:0; }
-    .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
+    /* ══════════════════════════════════════════
+       TOKENS
+    ══════════════════════════════════════════ */
+    :root {
+      --bg:      #080e1e;
+      --surface: rgba(15, 26, 43, .55);
+      --line:    rgba(255,255,255,.08);
+      --line2:   rgba(255,255,255,.04);
+      --text:    #e8eaf2;
+      --muted:   #7e8ba8;
+      --accent:  #22d3ee;
+      --accent2: #a78bfa;
+      --accent3: #34d399;
+      --radius:  18px;
+      --shadow:  0 8px 40px rgba(0,0,0,.45);
+    }
 
-    .nav{
+    /* ══════════════════════════════════════════
+       RESET
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse 1100px 600px at 10% 5%,  rgba(34,211,238,.10), transparent 55%),
+        radial-gradient(ellipse  800px 500px at 90% 30%, rgba(167,139,250,.09), transparent 55%),
+        var(--bg);
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .h-media img { transition: none !important; }
+    }
+
+    /* ══════════════════════════════════════════
+       LAYOUT
+    ══════════════════════════════════════════ */
+    .container { position: relative; z-index: 1; }
+
+    .wide {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ══════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════ */
+    .nav {
       position: sticky;
       top: 0;
       z-index: 1000;
       background: rgba(11,16,32,0.72);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
       padding: 14px 0;
-      margin: 0;
     }
 
-    .chapter{
-      padding: 80px 0;
-      position: relative;
-      border-top: 1px solid rgba(255,255,255,.06);
-      overflow: hidden;
+    .nav .wide {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
-    @media (max-width: 860px){ .chapter{ padding: 52px 0; } }
 
-    .chapter::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: var(--scene-bg,
-        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.10), transparent 55%),
-        radial-gradient(900px 520px at 70% 70%, rgba(167,139,250,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0))
-      );
-      pointer-events:none;
-      z-index:0;
+    .brand-name {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3;
     }
-    .chapter > *{ position:relative; z-index:1; }
+    .brand-name strong {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .brand-name span {
+      font-size: 11px;
+      color: var(--muted);
+    }
 
-    .hero-panel{
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
       border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .hero-copy{ padding: 28px; }
-
-    .crumbs{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color: var(--muted);
+      border-radius: 999px;
       font-size: 12px;
-      margin-bottom: 10px;
-    }
-    .crumbs a{ color: var(--text); opacity:.9; }
-    .crumbs span{ opacity:.75; }
-
-    .micro{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      font-size: 12px;
+      font-weight: 500;
       color: var(--muted);
-      border:1px solid var(--line);
-      padding:7px 10px;
-      border-radius:999px;
       background: rgba(255,255,255,.03);
-      margin-bottom: 12px;
+      transition: color .18s, border-color .18s, background .18s;
+      text-decoration: none;
+      cursor: pointer;
     }
-    .micro .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--accent2);
-      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+    .pill:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      text-decoration: none;
+    }
+    .pill.primary {
+      color: var(--accent);
+      border-color: rgba(34,211,238,.25);
+      background: rgba(34,211,238,.06);
+    }
+    .pill.primary:hover {
+      background: rgba(34,211,238,.12);
+      border-color: rgba(34,211,238,.4);
     }
 
-    .super{
-      font-size: clamp(40px, 5.2vw, 68px);
-      line-height: 1.03;
-      letter-spacing: -0.9px;
-      margin: 0 0 12px;
+    /* ══════════════════════════════════════════
+       CHAPTERS
+    ══════════════════════════════════════════ */
+    .chapter {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
     }
-    .lede2{
+    @media (max-width: 860px) { .chapter { padding: 52px 0; } }
+
+    #top {
+      background:
+        radial-gradient(1200px 520px at 30% 20%, rgba(34,211,238,.14), transparent 55%),
+        radial-gradient(900px  520px at 70% 60%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.22), rgba(11,16,32,0));
+    }
+    #details {
+      background:
+        radial-gradient(1100px 520px at 60% 25%, rgba(52,211,153,.10), transparent 55%),
+        radial-gradient(900px  520px at 25% 70%, rgba(125,211,252,.08), transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
+    }
+    .module-chapter {
+      background:
+        radial-gradient(1100px 520px at 35% 25%, rgba(167,139,250,.10), transparent 55%),
+        radial-gradient(900px  520px at 75% 70%, rgba(34,211,238,.08),  transparent 60%),
+        linear-gradient(180deg, rgba(11,16,32,.16), rgba(11,16,32,0));
+    }
+
+    /* ══════════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .75s ease, transform .75s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════════════════════
+       SHARED UTILITIES
+    ══════════════════════════════════════════ */
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .sep {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 20px 0;
+    }
+
+    .small {
+      font-size: 12px;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
-      max-width: 78ch;
+    }
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    .hero-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 36px;
+    }
+
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .crumbs a {
+      color: var(--text);
+      opacity: .8;
+      text-decoration: none;
+    }
+    .crumbs a:hover { opacity: 1; text-decoration: underline; }
+    .crumbs .sep-dot { opacity: .4; }
+
+    .micro {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+      margin-bottom: 14px;
+      align-self: flex-start;
+    }
+    .micro .dot {
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--accent3);
+      box-shadow: 0 0 0 4px rgba(52,211,153,.12);
+    }
+
+    .super {
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.06;
+      letter-spacing: -0.6px;
       margin: 0 0 14px;
     }
 
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top: 12px;
-    }
-
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top: 14px;
-    }
-    .tag{
-      font-size:14px;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
+    .lede2 {
       color: var(--muted);
+      font-size: clamp(14px, 1.4vw, 17px);
+      max-width: 72ch;
+      margin: 0 0 16px;
+      line-height: 1.75;
     }
 
-    /* Highlights grid + mobile fix */
-    .detail-grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 16px;
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 4px;
     }
-    @media (max-width: 980px){
-      .detail-grid{ grid-template-columns: repeat(6, 1fr); }
-    }
-    @media (max-width: 640px){
-      .detail-grid{ grid-template-columns: 1fr; }
-    }
-
-    .detail-card{
-      grid-column: span 6;
+    .tag {
+      font-size: 11.5px;
+      padding: 5px 10px;
       border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      padding: 22px;
-    }
-    .detail-card h3{
-      margin:0 0 12px;
-      font-size: 18px;
-      letter-spacing: -.2px;
-    }
-    .detail-card ul{
-      margin:0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.85;
-    }
-    .detail-card li{ margin: 10px 0; }
-    .detail-wide{ grid-column: span 12; }
-
-    @media (max-width: 640px){
-      .detail-card,
-      .detail-wide{ grid-column: 1 / -1; }
-    }
-
-    /* Modules */
-    .module-wrap{ display:grid; grid-template-columns: 1fr; gap:14px; }
-
-    .highlight{
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      padding: 28px;
-    }
-
-    .highlight-grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 22px;
-      align-items: center;
-    }
-    @media (max-width: 980px){
-      .highlight-grid{ grid-template-columns: 1fr; }
-    }
-
-    .h-eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-size:16px;
-      color: var(--muted);
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      padding:7px 10px;
       border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.025);
+      white-space: nowrap;
+    }
+
+    /* ══════════════════════════════════════════
+       HIGHLIGHTS GRID
+    ══════════════════════════════════════════ */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      letter-spacing: -0.3px;
+      margin: 0 0 6px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+    @media (max-width: 720px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .detail-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      transition: border-color .2s;
+    }
+    .detail-card:hover { border-color: rgba(255,255,255,.16); }
+
+    .detail-wide { grid-column: 1 / -1; }
+
+    .detail-card h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
       margin-bottom: 12px;
     }
-    .h-eyebrow .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--accent2);
-      box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+
+    .detail-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .detail-card ul li {
+      font-size: 13.5px;
+      color: rgba(232,234,242,.80);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .detail-card ul li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      opacity: .45;
     }
 
-    .h-title{
-      margin:0 0 14px;
-      font-size: clamp(24px, 2.4vw, 34px);
+    /* ══════════════════════════════════════════
+       MODULE HIGHLIGHTS
+    ══════════════════════════════════════════ */
+    .highlight {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 32px;
+      transition: border-color .2s;
+    }
+    .highlight:hover { border-color: rgba(255,255,255,.14); }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .highlight-grid { grid-template-columns: 1fr; }
+    }
+
+    .highlight-grid.flipped { direction: rtl; }
+    .highlight-grid.flipped > * { direction: ltr; }
+
+    .module-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 10px;
+    }
+
+    .h-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 3vw, 38px);
       letter-spacing: -.4px;
-      line-height: 1.12;
+      line-height: 1.08;
+      margin: 0 0 12px;
     }
-    .h-desc{
-      margin:0 0 16px;
-      color: var(--muted);
-      font-size: clamp(15px, 1.15vw, 18px);
-      line-height: 1.8;
-      max-width: 66ch;
-    }
-    .h-points{
-      margin:0;
-      padding-left: 20px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.85;
-    }
-    .h-points li{ margin:10px 0; }
 
-    .h-media{
-      border:1px solid var(--line);
-      border-radius:20px;
-      background: rgba(0,0,0,.18);
-      overflow:hidden;
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-      position:relative;
+    .h-desc {
+      color: var(--muted);
+      font-size: clamp(13.5px, 1.2vw, 16px);
+      line-height: 1.75;
+      margin: 0 0 18px;
+      max-width: 60ch;
     }
-    .h-media img{
-      width:100%;
-      height:auto;
-      display:block;
+
+    .h-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .h-points li {
+      font-size: 13.5px;
+      color: rgba(232,234,242,.80);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.6;
+    }
+    .h-points li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--accent3);
+      opacity: .55;
+    }
+
+    /* ── Media panel ── */
+    .h-media {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) - 4px);
+      background: rgba(0,0,0,.22);
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,.35);
+    }
+    .h-media img {
+      width: 100%;
+      height: auto;
+      display: block;
       cursor: zoom-in;
-      transform: scale(1);
-      transition: transform .22s ease, filter .22s ease;
-      will-change: transform;
+      transition: transform .3s ease, filter .3s ease;
     }
-    @media (hover:hover){
-      .h-media:hover img{
-        transform: scale(1.06);
-        filter: saturate(1.05) contrast(1.03);
+    @media (hover: hover) {
+      .h-media img:hover {
+        transform: scale(1.04);
+        filter: saturate(1.05) contrast(1.02);
       }
     }
 
-    /* Lightbox */
-    .lightbox{
+    /* ══════════════════════════════════════════
+       LIGHTBOX
+    ══════════════════════════════════════════ */
+    .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(5,10,20,.85);
-      backdrop-filter: blur(10px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      background: rgba(5,10,20,.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 2000;
-      opacity:0;
-      visibility:hidden;
-      transition: opacity .25s ease;
-      padding: 18px;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
     }
-    .lightbox.show{ opacity:1; visibility:visible; }
-    .lightbox img{
+    .lightbox.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox img {
       max-width: 92vw;
       max-height: 88vh;
-      border-radius: 14px;
+      border-radius: var(--radius);
       border: 1px solid var(--line);
-      box-shadow: 0 40px 120px rgba(0,0,0,.6);
+      box-shadow: 0 40px 120px rgba(0,0,0,.65);
+      display: block;
     }
-    .lightbox-close{
-      position:absolute;
-      top:22px;
-      right:22px;
-      font-size:30px;
-      color:white;
-      cursor:pointer;
-      opacity:.75;
-      transition: opacity .2s;
-      line-height:1;
-      padding:10px 12px;
-      border-radius:999px;
-      border: 1px solid rgba(255,255,255,.20);
-      background: rgba(0,0,0,.25);
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 40px; height: 40px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      font-size: 22px;
+      cursor: pointer;
+      transition: background .18s, transform .18s;
     }
-    .lightbox-close:hover{ opacity:1; }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,.14);
+      transform: scale(1.08);
+    }
 
-    /* Reveal */
-    .reveal{
-      opacity:0;
-      transform: translateY(18px);
-      transition: opacity .8s ease, transform .8s ease;
-      will-change: opacity, transform;
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    .footer {
+      padding: 28px 0 40px;
+      border-top: 1px solid var(--line2);
     }
-    .reveal.in{ opacity:1; transform: translateY(0); }
-
-    .footer{ margin:0; padding:26px 0 38px; }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer-inner a { color: var(--muted); }
+    .footer-inner a:hover { color: var(--text); }
   </style>
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
 
-    <header class="nav" role="navigation">
-      <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+  <!-- ══ NAV ══ -->
+  <header role="banner">
+    <nav class="nav" aria-label="Primary navigation">
+      <div class="wide">
         <div class="brand">
-          <div class="brand-badge" aria-hidden="true"></div>
           <div class="brand-name">
             <strong>Paola Jayme Romaguera</strong>
             <span>Climate Risk • GIS • Remote Sensing • Python</span>
           </div>
         </div>
 
-        <nav class="nav-links" aria-label="Primary">
-          <a class="pill" href="index.html#top">Overview</a>
-          <a class="pill" href="index.html#featured">Featured</a>
-          <a class="pill" href="index.html#research">Research</a>
-          <a class="pill" href="projects.html">All Projects</a>
-          <a class="pill" href="resume.pdf">Resume</a>
-          <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
-        </nav>
+        <ul class="nav-links" role="list">
+          <li><a class="pill" href="index.html#top">Overview</a></li>
+          <li><a class="pill" href="index.html#featured">Featured</a></li>
+          <li><a class="pill" href="index.html#research">Research</a></li>
+          <li><a class="pill" href="projects.html">All Projects</a></li>
+          <li><a class="pill" href="resume.html">Resume</a></li>
+          <li><a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a></li>
+        </ul>
       </div>
-    </header>
+    </nav>
+  </header>
 
-    <!-- HERO -->
-    <section class="chapter" id="top">
+  <main>
+
+    <!-- ══ HERO ══ -->
+    <section class="chapter" id="top" aria-labelledby="project-heading">
       <div class="wide">
         <div class="hero-panel reveal">
-          <div class="hero-copy">
-            <div class="crumbs">
-              <a href="projects.html">Projects</a>
-              <span>•</span>
-              <span>Ocean Eddy Detection</span>
-            </div>
 
-            <div class="micro"><span class="dot"></span> Python • NetCDF • Feature detection & tracking</div>
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="projects.html">Projects</a>
+            <span class="sep-dot" aria-hidden="true">·</span>
+            <span>Ocean Eddy Detection</span>
+          </nav>
 
-            <h1 class="super">Ocean Eddy Detection and Lifecycle Tracking</h1>
-
-            <p class="lede2">
-              Processed multi-year NetCDF datasets to detect mesoscale eddies, extract physical parameters,
-              and track lifecycle evolution across time. This case study uses only public-domain, synthetic, or sanitized examples.
-            </p>
-
-            <div class="tags">
-              <span class="tag">Python</span>
-              <span class="tag">NetCDF</span>
-              <span class="tag">Feature tracking</span>
-              <span class="tag">Time series</span>
-              <span class="tag">Visualization</span>
-            </div>
-
-            <div class="row">
-              <a class="pill" href="projects.html">← Back to Projects</a>
-              <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
-              <span class="small">No proprietary code or client data shared</span>
-            </div>
+          <div class="micro" aria-label="Python · NetCDF · Feature detection and tracking">
+            <span class="dot" aria-hidden="true"></span>
+            Python &nbsp;·&nbsp; NetCDF &nbsp;·&nbsp; Feature detection &amp; tracking
           </div>
+
+          <h1 class="super" id="project-heading">
+            Ocean Eddy Detection and Lifecycle Tracking
+          </h1>
+
+          <p class="lede2">
+            Processed multi-year NetCDF datasets to detect mesoscale eddies, extract physical parameters,
+            and track lifecycle evolution across time. This case study uses only public-domain, synthetic,
+            or sanitized examples.
+          </p>
+
+          <div class="tags" aria-label="Project tags">
+            <span class="tag">Python</span>
+            <span class="tag">NetCDF</span>
+            <span class="tag">xarray</span>
+            <span class="tag">Feature tracking</span>
+            <span class="tag">Time series</span>
+            <span class="tag">Visualization</span>
+          </div>
+
+          <hr class="sep" aria-hidden="true" />
+
+          <div class="row">
+            <a class="pill" href="projects.html">← Back to Projects</a>
+            <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
+            <span class="small">No proprietary code or client data shared</span>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <!-- HIGHLIGHTS -->
-    <section class="chapter" id="details">
+    <!-- ══ HIGHLIGHTS ══ -->
+    <section class="chapter" id="details" aria-labelledby="details-heading">
       <div class="wide">
+
         <div class="reveal">
-          <h2 style="margin:0 0 10px; font-size:28px; letter-spacing:-.3px;">Highlights</h2>
-          <p class="lede2" style="margin:0;">What the pipeline produces and how it’s organized end-to-end.</p>
+          <div class="section-label">Overview</div>
+          <h2 class="section-title" id="details-heading">Highlights</h2>
+          <p class="lede2" style="margin-bottom:0;">
+            What the pipeline produces and how it's organized end-to-end.
+          </p>
         </div>
 
         <div class="detail-grid">
+
           <div class="detail-card reveal">
             <h3>Objective</h3>
             <ul>
@@ -385,177 +639,215 @@
           <div class="detail-card reveal">
             <h3>Approach</h3>
             <ul>
-              <li>Ingest NetCDF data and standardize coordinates/time.</li>
-              <li>Apply detection criteria and label eddy features.</li>
-              <li>Track features through time and compute metrics.</li>
+              <li>Ingest NetCDF data and standardize coordinates and time.</li>
+              <li>Apply detection criteria and label eddy features per timestep.</li>
+              <li>Track features through time and compute lifecycle metrics.</li>
             </ul>
           </div>
 
           <div class="detail-card reveal">
             <h3>Tools</h3>
             <ul>
-              <li>Python: xarray, NumPy, pandas for processing.</li>
-              <li>Geospatial plotting for maps/trajectories.</li>
-              <li>Workflow automation for batch runs.</li>
+              <li>Python: xarray, NumPy, pandas for data processing.</li>
+              <li>Geospatial plotting for trajectory maps and diagnostics.</li>
+              <li>Workflow automation for multi-year batch runs.</li>
             </ul>
           </div>
 
           <div class="detail-card reveal">
-            <h3>My role</h3>
+            <h3>My Role</h3>
             <ul>
-              <li>Built the full pipeline (ingest → detect → track).</li>
-              <li>Defined outputs and diagnostics for QC.</li>
-              <li>Created summary visuals for interpretation.</li>
+              <li>Built the full pipeline from ingest through detection to tracking.</li>
+              <li>Defined outputs and diagnostics for quality control.</li>
+              <li>Created summary visuals for interpretation and reporting.</li>
             </ul>
           </div>
 
           <div class="detail-card detail-wide reveal">
-            <h3>Key takeaways</h3>
+            <h3>Key Takeaways</h3>
             <ul>
-              <li>Consistent preprocessing is essential for stable tracking.</li>
-              <li>Diagnostics help validate detection sensitivity.</li>
-              <li>Trajectory + metric summaries communicate behavior clearly.</li>
+              <li>Consistent preprocessing is essential for stable cross-timestep tracking.</li>
+              <li>Diagnostic outputs help validate detection sensitivity and reduce false positives.</li>
+              <li>Trajectory and metric summaries communicate eddy behavior clearly to interdisciplinary audiences.</li>
             </ul>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- MODULE 1 -->
-    <section class="chapter" id="module-prep">
+    <!-- ══ MODULE 1 — DATA PREPARATION ══ -->
+    <section class="chapter module-chapter" id="module-prep" aria-labelledby="mod1-heading">
       <div class="wide">
-        <div class="module-wrap reveal">
-          <div class="highlight">
-            <div class="highlight-grid">
-              <div>
-                <div class="h-eyebrow"><span class="dot"></span> Module 1</div>
-                <h2 class="h-title">Data preparation</h2>
-                <p class="h-desc">Standardize time, grids, and masks to ensure consistent detection.</p>
-                <ul class="h-points">
-                  <li>Load multi-year NetCDF files and harmonize coordinates.</li>
-                  <li>Subset region/time and apply QC rules.</li>
-                  <li>Prepare variables needed for detection.</li>
-                </ul>
-              </div>
-              <div class="h-media">
-                <img src="assets/eddies.png" alt="Eddy data prep screenshot">
-              </div>
+        <div class="highlight reveal">
+          <div class="highlight-grid">
+
+            <div>
+              <div class="module-eyebrow">Module 01</div>
+              <h2 class="h-title" id="mod1-heading">Data Preparation</h2>
+              <p class="h-desc">
+                Standardize time, grids, and masks across multi-year files to ensure consistent and reproducible detection.
+              </p>
+              <ul class="h-points">
+                <li>Load multi-year NetCDF files and harmonize coordinate systems.</li>
+                <li>Subset region and time range; apply quality-control rules.</li>
+                <li>Prepare and validate variables required for detection.</li>
+              </ul>
             </div>
+
+            <div class="h-media">
+              <img
+                src="assets/eddies.png"
+                alt="Eddy data preparation: NetCDF loading and coordinate harmonization"
+                loading="lazy"
+              />
+            </div>
+
           </div>
         </div>
       </div>
     </section>
 
-    <!-- MODULE 2 -->
-    <section class="chapter" id="module-detect"
-      style="--scene-bg:
-        radial-gradient(1100px 520px at 55% 20%, rgba(52,211,153,.10), transparent 55%),
-        radial-gradient(900px 520px at 25% 70%, rgba(125,211,252,.09), transparent 60%),
-        linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));">
+    <!-- ══ MODULE 2 — DETECTION ══ -->
+    <section class="chapter module-chapter" id="module-detect" aria-labelledby="mod2-heading">
       <div class="wide">
-        <div class="module-wrap reveal">
-          <div class="highlight">
-            <div class="highlight-grid">
-              <div>
-                <div class="h-eyebrow"><span class="dot"></span> Module 2</div>
-                <h2 class="h-title">Detection</h2>
-                <p class="h-desc">Identify candidate eddy structures and label features per timestep.</p>
-                <ul class="h-points">
-                  <li>Apply detection criteria (thresholds/shape constraints).</li>
-                  <li>Label and store per-feature attributes.</li>
-                  <li>Generate diagnostics to verify sensitivity.</li>
-                </ul>
-              </div>
-              <div class="h-media">
-                <img src="assets/eddies-tracks.png" alt="Eddy detection screenshot">
-              </div>
+        <div class="highlight reveal">
+          <div class="highlight-grid flipped">
+
+            <div>
+              <div class="module-eyebrow">Module 02</div>
+              <h2 class="h-title" id="mod2-heading">Detection</h2>
+              <p class="h-desc">
+                Identify candidate eddy structures and label discrete features for each timestep in the dataset.
+              </p>
+              <ul class="h-points">
+                <li>Apply detection criteria using thresholds and shape constraints.</li>
+                <li>Label and store per-feature attributes such as position, size, and polarity.</li>
+                <li>Generate diagnostics to verify and tune detection sensitivity.</li>
+              </ul>
             </div>
+
+            <div class="h-media">
+              <img
+                src="assets/eddies-tracks.png"
+                alt="Eddy detection output: labeled features and diagnostic overlays per timestep"
+                loading="lazy"
+              />
+            </div>
+
           </div>
         </div>
       </div>
     </section>
 
-    <!-- MODULE 3 -->
-    <section class="chapter" id="module-track">
+    <!-- ══ MODULE 3 — TRACKING & OUTPUTS ══ -->
+    <section class="chapter module-chapter" id="module-track" aria-labelledby="mod3-heading">
       <div class="wide">
-        <div class="module-wrap reveal">
-          <div class="highlight">
-            <div class="highlight-grid">
-              <div>
-                <div class="h-eyebrow"><span class="dot"></span> Module 3</div>
-                <h2 class="h-title">Tracking & outputs</h2>
-                <p class="h-desc">Connect features through time and summarize lifecycles.</p>
-                <ul class="h-points">
-                  <li>Associate features across timesteps to build trajectories.</li>
-                  <li>Compute lifecycle metrics (duration, intensity, displacement).</li>
-                  <li>Export maps/plots and summary tables.</li>
-                </ul>
-              </div>
-              <div class="h-media">
-                <img src="assets/eddies-tracks.png" alt="Eddy tracks output screenshot">
-              </div>
+        <div class="highlight reveal">
+          <div class="highlight-grid">
+
+            <div>
+              <div class="module-eyebrow">Module 03</div>
+              <h2 class="h-title" id="mod3-heading">Tracking &amp; Outputs</h2>
+              <p class="h-desc">
+                Connect detected features through time to build complete trajectories and summarize eddy lifecycles.
+              </p>
+              <ul class="h-points">
+                <li>Associate features across timesteps using nearest-neighbor matching.</li>
+                <li>Compute lifecycle metrics: duration, intensity, and displacement.</li>
+                <li>Export trajectory maps, diagnostic plots, and summary tables.</li>
+              </ul>
             </div>
+
+            <div class="h-media">
+              <img
+                src="assets/eddies-tracks.png"
+                alt="Eddy tracking output: trajectory maps and lifecycle metric summaries"
+                loading="lazy"
+              />
+            </div>
+
           </div>
         </div>
 
-        <div class="row reveal" style="margin-top:16px;">
+        <div class="row reveal" style="margin-top:24px;">
           <a class="pill" href="projects.html">← Back to Projects</a>
           <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
         </div>
+
       </div>
     </section>
 
-    <footer class="footer">
-      <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-        <span>© <span id="y"></span> Paola Romaguera</span>
-        <span>
-          <a href="projects.html">Projects</a> •
-          <a href="resume.pdf">Resume</a> •
-          <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
-        </span>
-      </div>
-    </footer>
+  </main>
 
-  </div>
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="wide footer-inner">
+      <span>© <span id="y"></span> Paola Romaguera</span>
+      <nav aria-label="Footer navigation">
+        <a href="projects.html">Projects</a> &nbsp;·&nbsp;
+        <a href="resume.html">Resume</a> &nbsp;·&nbsp;
+        <a href="mailto:romaguera.pj@gmail.com">romaguera.pj@gmail.com</a>
+      </nav>
+    </div>
+  </footer>
 
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">×</button>
-    <img id="lightboxImg" alt="Full-size preview">
-  </div>
+</div><!-- /.container -->
 
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+<!-- ══ LIGHTBOX ══ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Full size image" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+  <img id="lightboxImg" src="" alt="" />
+</div>
 
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('in');
-        else e.target.classList.remove('in');
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
-    revealEls.forEach(el => io.observe(el));
+<script>
+  /* ── Year ── */
+  document.getElementById('y').textContent = new Date().getFullYear();
 
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const closeBtn = document.getElementById("lightboxClose");
-
-    document.querySelectorAll(".h-media img").forEach(img => {
-      img.addEventListener("click", () => {
-        lightboxImg.src = img.currentSrc || img.src;
-        lightbox.classList.add("show");
-        lightbox.setAttribute("aria-hidden", "false");
-      });
+  /* ── Scroll-reveal (fire once, never re-hide) ── */
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealIO.unobserve(e.target);
+      }
     });
+  }, { threshold: 0.10, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 
-    function closeLightbox(){
-      lightbox.classList.remove("show");
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImg.src = "";
-    }
+  /* ── Lightbox ── */
+  const lightbox    = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn    = document.getElementById('lightboxClose');
 
-    closeBtn.addEventListener("click", closeLightbox);
-    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
-  </script>
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('show');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('show');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => { lightboxImg.src = ''; }, 260);
+  }
+
+  document.querySelectorAll('.h-media img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 </body>
 </html>
