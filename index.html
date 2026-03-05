@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- Open Graph (Facebook/LinkedIn/etc) -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Paola Jayme Romaguera">
-<meta property="og:title" content="Paola Jayme Romaguera | Climate Risk • GIS • Remote Sensing • Python">
-<meta property="og:description" content="Portfolio: climate risk analytics, GIS automation, remote sensing, and multi-hazard exposure assessments.">
-<meta property="og:url" content="https://pjmromaguera.github.io/">
-<meta property="og:image" content="https://pjmromaguera.github.io/assets/og-home.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Paola Jayme Romaguera | Climate Risk & Geospatial Analytics</title>
   <meta name="description" content="Portfolio of Paola Romaguera — climate risk modeling, GIS, remote sensing, and geospatial analytics for evidence-based decision-making." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Paola Jayme Romaguera" />
+  <meta property="og:title" content="Paola Jayme Romaguera | Climate Risk • GIS • Remote Sensing • Python" />
+  <meta property="og:description" content="Portfolio: climate risk analytics, GIS automation, remote sensing, and multi-hazard exposure assessments." />
+  <meta property="og:url" content="https://pjmromaguera.github.io/" />
+  <meta property="og:image" content="https://pjmromaguera.github.io/assets/og-home.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
   <link rel="stylesheet" href="style.css" />
 
   <style>
     html{ scroll-behavior: smooth; }
 
-    /* Wrapper */
     .wide{ max-width:1200px; margin:0 auto; padding:0 20px; }
     body .container{ max-width:none; padding:0; }
 
-    /* Sticky nav */
     .nav{
       position: sticky;
       top: 0;
@@ -35,7 +34,6 @@
       margin: 0;
     }
 
-    /* ===== Section theming (different per chapter) ===== */
     .chapter{
       padding: 80px 0;
       position: relative;
@@ -74,7 +72,6 @@
       linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
     }
 
-    /* Hero type */
     .super{
       font-size: clamp(40px, 6vw, 74px);
       line-height: 1.05;
@@ -88,17 +85,13 @@
       margin: 0 0 18px;
     }
 
-    /* Make the two hero panels equal height */
-    .hero-apple{
-      align-items: stretch; /* change from start -> stretch */
-    }
+    .hero-apple{ align-items: stretch; }
     .hero-apple > .feature{
       height: 100%;
       display: flex;
       flex-direction: column;
     }
 
-    /* Hero layout */
     .hero-apple{
       display:grid;
       grid-template-columns: 1.25fr .75fr;
@@ -109,7 +102,6 @@
       .hero-apple{ grid-template-columns: 1fr; }
     }
 
-    /* Feature panels */
     .feature{
       border: 1px solid var(--line);
       border-radius: calc(var(--radius) + 6px);
@@ -145,7 +137,6 @@
       margin-top:10px;
     }
 
-    /* ===== Transitions: always re-trigger ===== */
     .reveal{
       opacity: 0;
       transform: translateY(18px);
@@ -157,10 +148,8 @@
       transform: translateY(0);
     }
 
-    /* Parallax */
     .parallax{ will-change: transform; transform: translateY(0px); }
 
-    /* ===== Featured: larger type ===== */
     .feature-head{
       display:flex;
       align-items:center;
@@ -174,7 +163,6 @@
       letter-spacing: -0.3px;
     }
 
-    /* One-card carousel */
     .carousel{ margin-top: 6px; }
     .carousel-track{
       display:flex;
@@ -245,7 +233,6 @@
     }
     .carousel .small{ font-size: 13px; }
 
-    /* Pagination */
     .carousel-indicator{ display:flex; justify-content:center; margin-top: 12px; }
     .indicator-track{
       display:flex;
@@ -270,49 +257,11 @@
       opacity: 1;
     }
 
-    /* ===== Research: larger type ===== */
     #research h2{
       font-size: 28px !important;
       letter-spacing: -0.3px !important;
     }
-    .tiles{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-    @media (max-width: 980px){ .tiles{ grid-template-columns: repeat(6, 1fr); } }
-    @media (max-width: 640px){ .tiles{ grid-template-columns: 1fr; } }
 
-    .tile{
-      grid-column: span 4;
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 6px);
-      background: rgba(15,26,43,.55);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .tile.wide{ grid-column: span 8; }
-    .tile .body{
-      padding: 18px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      flex: 1;
-    }
-    .tile h3{
-      margin:0;
-      font-size: 18px;
-      letter-spacing:-.2px;
-    }
-    .tile p{
-      margin:0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.65;
-    }
     .kws{
       display:flex;
       flex-wrap:wrap;
@@ -339,11 +288,9 @@
 <body>
   <div class="container">
 
-    <!-- NAV -->
     <header class="nav" role="navigation">
       <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
         <div class="brand">
-            <!--   <div class="brand-badge" aria-hidden="true"></div> -->
           <div class="brand-name">
             <strong>Paola Jayme Romaguera</strong>
             <span>Climate Risk • GIS • Remote Sensing • Python</span>
@@ -362,7 +309,6 @@
       </div>
     </header>
 
-    <!-- CHAPTER 1: HERO -->
     <section class="chapter" id="top">
       <div class="wide hero-apple">
 
@@ -378,7 +324,6 @@
 
           <div class="row">
             <a class="pill primary" href="#featured">Explore featured work</a>
-           
           </div>
 
           <hr class="sep" />
@@ -390,64 +335,59 @@
             <span class="tag">Exposure metrics</span>
             <span class="tag">Remote sensing indices</span>
             <span class="tag">Python</span>
-            <span class="tag">QGIS/ArcGIS </span>
+            <span class="tag">QGIS/ArcGIS</span>
             <span class="tag">GEE</span>
             <span class="tag">SQL</span>
             <span class="tag">Streamlit</span>
-             <span class="tag">Tableau</span>
+            <span class="tag">Tableau</span>
           </div>
         </div>
 
         <div class="feature reveal parallax" data-parallax="0.18">
-          <!-- PROFILE HEADER (keep yours or replace with this cleaner version) -->
-        <div class="profile" style="margin-bottom:12px;">
-          <div class="avatar">
-           <img src="assets/romaguera-headshot.jpg" alt="Headshot of Paola Romaguera">
-          </div>
+          <div class="profile" style="margin-bottom:12px;">
+            <div class="avatar">
+              <img src="assets/romaguera-headshot.jpg" alt="Headshot of Paola Romaguera">
+            </div>
             <div class="profile-meta">
-            <strong>Paola Jayme Romaguera</strong>
-            <span>Spatial Analyst • Climate Risk Consultant</span>
+              <strong>Paola Jayme Romaguera</strong>
+              <span>Spatial Analyst • Climate Risk Consultant</span>
+            </div>
           </div>
-        </div>
-        
-        <!-- ABOUT -->
-        <div class="quicklist" style="margin-bottom:12px;">
-          <h3>About</h3>
-          <ul>
-            <li>Geospatial analytics specialist with 5+ years of experience delivering asset-level climate risk assessments and hazard modeling.</li>
-            <li>Builds scalable workflows and standardized methodologies.</li>
-            <li>Combines spatial analytics, remote sensing, and stakeholder engagement to translate complex climate and hazard data into decision-ready insights.</li>
-            <li>B.S. Geology — University of the Philippines (2020).</li>
-          </ul>
-        </div>
-        
-        <!-- CAPABILITIES -->
-        <div class="quicklist" style="margin-bottom:12px;">
-          <h3>Capabilities</h3>
-          <ul>
-            <li>Asset-level hazard exposure metrics and spatial risk maps</li>
-            <li>Scenario-based comparisons (RCP/SSP pathways)</li>
-            <li>Remote-sensing indicators and environmental interpretation</li>
-            <li>Executive-ready dashboards, visuals, and risk narratives</li>
-          </ul>
-        </div>
-        
-        <!-- TOOLKIT -->
-        <div class="quicklist">
-          <h3>Toolkit</h3>
-          <ul>
-            <li>Python: pandas, NumPy, xarray, geopandas</li>
-            <li>GIS: QGIS, ArcGIS • Google Earth Engine</li>
-            <li>Apps: Streamlit dashboards</li>
-            <li>Versioning: Git / GitHub (reproducibility)</li>
-          </ul>
-        </div>
+
+          <div class="quicklist" style="margin-bottom:12px;">
+            <h3>About</h3>
+            <ul>
+              <li>Geospatial analytics specialist with 5+ years of experience delivering asset-level climate risk assessments and hazard modeling.</li>
+              <li>Builds scalable workflows and standardized methodologies.</li>
+              <li>Combines spatial analytics, remote sensing, and stakeholder engagement to translate complex climate and hazard data into decision-ready insights.</li>
+              <li>B.S. Geology — University of the Philippines (2020).</li>
+            </ul>
+          </div>
+
+          <div class="quicklist" style="margin-bottom:12px;">
+            <h3>Capabilities</h3>
+            <ul>
+              <li>Asset-level hazard exposure metrics and spatial risk maps</li>
+              <li>Scenario-based comparisons (RCP/SSP pathways)</li>
+              <li>Remote-sensing indicators and environmental interpretation</li>
+              <li>Executive-ready dashboards, visuals, and risk narratives</li>
+            </ul>
+          </div>
+
+          <div class="quicklist">
+            <h3>Toolkit</h3>
+            <ul>
+              <li>Python: pandas, NumPy, xarray, geopandas</li>
+              <li>GIS: QGIS, ArcGIS • Google Earth Engine</li>
+              <li>Apps: Streamlit dashboards</li>
+              <li>Versioning: Git / GitHub (reproducibility)</li>
+            </ul>
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- CHAPTER 2: FEATURED -->
     <section class="chapter" id="featured">
       <div class="wide">
 
@@ -509,91 +449,106 @@
       </div>
     </section>
 
-    <!-- CHAPTER 3: RESEARCH -->
-<section class="chapter" id="research">
-  <div class="wide">
-    <div class="reveal">
-      <h2 style="margin:0 0 10px;">Research Works</h2>
-      <p class="lede2" style="margin-bottom:0;">
-        Conference presentations and research supporting multi-hazard and geospatial analytics work.
-      </p>
-    </div>
-
-    <div class="research-row reveal">
-
-      <!-- Card 1 -->
-      <article class="research-card">
-        <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
-        <p>
-          Geospatial framework analyzing interactions between multiple hazards, including cascading and compounding effects,
-          supporting disaster risk assessment and resilience planning.
-        </p>
-
-        <div class="kws">
-          <span class="kw"><em>American Geophysical Union Fall Meeting</em></span>
-          <span class="kw"><em>2020</em></span>
-          <span class="kw"><em>Multihazards</em></span>
-          <span class="kw"><em>Disaster Resilience</em></span>
+    <section class="chapter" id="research">
+      <div class="wide">
+        <div class="reveal">
+          <h2 style="margin:0 0 10px;">Research Works</h2>
+          <p class="lede2" style="margin-bottom:0;">
+            Conference presentations and research supporting multi-hazard and geospatial analytics work.
+          </p>
         </div>
 
-        <div class="row">
-          <a class="pill primary" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank" rel="noopener">View abstract ↗</a>
-          <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank" rel="noopener">View poster ↗</a>
+        <div class="research-row reveal">
+
+          <article class="research-card">
+            <h3>A Multi-Hazard Interactions Framework for the Philippines</h3>
+            <p>
+              Geospatial framework analyzing interactions between multiple hazards, including cascading and compounding effects,
+              supporting disaster risk assessment and resilience planning.
+            </p>
+
+            <div class="kws">
+              <span class="kw"><em>American Geophysical Union Fall Meeting 2020</em></span>
+              <span class="kw"><em>Multihazards</em></span>
+              <span class="kw"><em>Disaster Resilience</em></span>
+            </div>
+
+            <div class="row">
+              <a class="pill primary" href="https://ui.adsabs.harvard.edu/abs/2020AGUFMNH0220002Y/abstract" target="_blank" rel="noopener">View abstract ↗</a>
+              <a class="pill primary" href="https://agu2020fallmeeting-agu.ipostersessions.com/default.aspx?s=BD-3E-22-DD-3F-89-6A-3C-60-9F-6B-02-8A-EE-24-DF" target="_blank" rel="noopener">View poster ↗</a>
+            </div>
+          </article>
+
+          <article class="research-card">
+            <h3>Enhancing Vs30 Mapping using HVSR Inversion</h3>
+            <p>
+              Poster presenter at GeoCon 2023 using HVSRInv (MATLAB) to estimate Vs30 for seismic hazard/site amplification,
+              validated against Refraction Microtremor measurements.
+            </p>
+
+            <div class="kws">
+              <span class="kw"><em>GeoCon 2023</em></span>
+              <span class="kw"><em>Poster Presenter</em></span>
+              <span class="kw"><em>HVSR inversion</em></span>
+              <span class="kw"><em>Elitist Genetic Algorithm</em></span>
+            </div>
+
+            <div class="row">
+              <a class="pill primary" href="https://geolsocphil.com/uploads/geocon/GeoCon%202023%20Abstract%20Volume%20-%20Posters.pdf" target="_blank" rel="noopener">View abstract ↗</a>
+              <a class="pill primary" href="assets/Geocon 2023_Poster_PJRomaguera.pdf" target="_blank" rel="noopener">View poster ↗</a>
+            </div>
+          </article>
+
+          <article class="research-card">
+            <h3>Volcanic Features within the Benham Plateau</h3>
+            <p>
+              Remote sensing and geospatial analysis to characterize volcanic features within Benham Rise,
+              supporting interpretation of submarine structures and regional geologic evolution.
+            </p>
+
+            <div class="kws">
+              <span class="kw"><em>University of the Philippines 2019</em></span>
+              <span class="kw"><em>Remote sensing</em></span>
+              <span class="kw"><em>NETVOLC &amp; MORVOLC algorithm</em></span>
+            </div>
+
+            <div class="row">
+              <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank" rel="noopener">View abstract ↗</a>
+            </div>
+          </article>
+
+          <article class="research-card">
+            <h3>Living with Water: Lost or Forgotten Rivers and Waterbodies in Manila and London</h3>
+            <p>
+              Compiled cultural and historical records documenting “lost rivers” shaped by urban growth, including artworks,
+              photographs, literature, books, and museum exhibits. Curated 54 resources (London: 31, Manila: 23) and presented
+              them through two virtual Padlet walls to surface links between buried waterways, flood memory, and community-led regeneration.
+            </p>
+
+            <div class="kws">
+              <span class="kw"><em>Research grant</em></span>
+              <span class="kw"><em>Urban hydrology</em></span>
+              <span class="kw"><em>Flood resilience</em></span>
+              <span class="kw"><em>Cultural mapping</em></span>
+              <span class="kw"><em>Manila • London</em></span>
+            </div>
+
+            <div class="row">
+              <a class="pill primary" href="assets/living-with-water.pdf" target="_blank" rel="noopener">Download PDF ↗</a>
+              <a class="pill" href="https://padlet.com/YOUR_MANILA_PADLET" target="_blank" rel="noopener">Manila wall ↗</a>
+              <a class="pill" href="https://padlet.com/YOUR_LONDON_PADLET" target="_blank" rel="noopener">London wall ↗</a>
+            </div>
+          </article>
+
         </div>
-      </article>
 
-      <!-- Card 2 -->
-      <article class="research-card">
-        <h3>Enhancing Vs30 Mapping using HVSR Inversion</h3>
-        <p>
-          Poster presenter at GeoCon 2023 using HVSRInv (MATLAB) to estimate Vs30 for seismic hazard/site amplification,
-          validated against Refraction Microtremor measurements.
-        </p>
-
-        <div class="kws">
-          <span class="kw"><em>GeoCon 2023</em></span>
-          <span class="kw"><em>Poster Presenter</em></span>
-          <span class="kw"><em>HVSR inversion</em></span>
-          <span class="kw"><em>Elitist Genetic Algorithm</em></span>
+        <div class="row reveal" style="margin-top:16px;">
+          <a class="pill" href="#top">Back to top</a>
+          <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
         </div>
+      </div>
+    </section>
 
-        <div class="row">
-          <a class="pill primary" href="https://geolsocphil.com/uploads/geocon/GeoCon%202023%20Abstract%20Volume%20-%20Posters.pdf" target="_blank" rel="noopener">View abstract ↗</a>
-          <a class="pill primary" href="assets/Geocon 2023_Poster_PJRomaguera.pdf" target="_blank" rel="noopener">View poster ↗</a>
-
-        </div>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="research-card">
-        <h3>Volcanic Features within the Benham Plateau</h3>
-        <p>
-          Remote sensing and geospatial analysis to characterize volcanic features within Benham Rise,
-          supporting interpretation of submarine structures and regional geologic evolution.
-        </p>
-
-        <div class="kws">
-          <span class="kw"><em>University of the Philippines</em></span>
-          <span class="kw"><em>2019</em></span>
-          <span class="kw"><em>Remote sensing</em></span>
-          <span class="kw"><em>NETVOLC &amp; MORVOLC algorithm</em></span>
-        </div>
-
-        <div class="row">
-          <a class="pill primary" href="https://www.researchgate.net/publication/354760064_Characterization_of_Volcanic_Features_Within_Benham_Plateau_and_its_Implications_on_the_Evolution_of_the_Benham_Rise" target="_blank" rel="noopener">View abstract ↗</a>
-        </div>
-      </article>
-
-    </div>
-
-    <div class="row reveal" style="margin-top:16px;">
-      <a class="pill" href="#top">Back to top</a>
-      <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Contact</a>
-    </div>
-  </div>
-</section>
-
-    <!-- FOOTER -->
     <footer class="footer">
       <div class="wide" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
         <span>© <span id="y"></span> Paola Romaguera</span>
@@ -608,10 +563,8 @@
   </div>
 
   <script>
-    // Footer year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Reveal transitions — ALWAYS re-trigger (enter/exit)
     const revealEls = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -621,7 +574,6 @@
     }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
     revealEls.forEach(el => io.observe(el));
 
-    // Subtle parallax
     const parallaxEls = document.querySelectorAll('[data-parallax]');
     function onScroll(){
       const y = window.scrollY || window.pageYOffset;
@@ -633,7 +585,6 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // Carousel: dots + active pill + wheel-to-horizontal on the track
     (function(){
       const track = document.getElementById('featuredTrack');
       const ind = document.getElementById('indicatorTrack');
