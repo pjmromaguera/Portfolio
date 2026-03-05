@@ -89,14 +89,15 @@
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
       border-bottom:1px solid var(--line);
-      padding:14px 0;
+      padding:14px;
+      margin: 0;
     }
 
     .nav .wide{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:16px;
+      gap:20px;
     }
 
     .brand-name{
@@ -115,13 +116,13 @@
       color:var(--muted);
     }
 
+    html, body{ overflow-x: visible; }
+
     .nav-links{
       display:flex;
       align-items:center;
       gap:6px;
       flex-wrap:wrap;
-      list-style:none;
-      padding-left:0;
     }
 
     .pill{
@@ -556,28 +557,26 @@
 <body>
   <div class="container">
 
-    <header role="banner">
-      <nav class="nav" aria-label="Primary navigation">
-        <div class="wide">
-          <div class="brand">
-            <div class="brand-name">
-              <strong>Paola Jayme Romaguera</strong>
-              <span>Climate Risk • GIS • Remote Sensing • Python</span>
-            </div>
-          </div>
+<header class="nav" role="navigation">
+  <div class="wide" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+    <div class="brand">
+      <div class="brand-name">
+        <strong>Paola Jayme Romaguera</strong>
+        <span>Climate Risk • GIS • Remote Sensing • Python</span>
+      </div>
+    </div>
 
-          <ul class="nav-links" role="list">
-            <li><a class="pill" href="#top">Overview</a></li>
-            <li><a class="pill" href="#featured">Featured</a></li>
-            <li><a class="pill" href="#research">Research</a></li>
-            <li><a class="pill" href="projects.html">All Projects</a></li>
-            <li><a class="pill" href="resume.html">Resume</a></li>
-            <li><a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-            <li><a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="pill" href="index.html#top">Overview</a>
+      <a class="pill" href="index.html#featured">Featured</a>
+      <a class="pill" href="index.html#research">Research</a>
+      <a class="pill" href="projects.html">All Projects</a>
+      <a class="pill" aria-current="page" href="resume.html">Resume</a>
+      <a class="pill" href="https://www.linkedin.com/in/pjromaguera" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="pill primary" href="mailto:romaguera.pj@gmail.com">Email</a>
+    </nav>
+  </div>
+</header>
 
     <main>
 
