@@ -1,17 +1,17 @@
-:root{
-  --bg:#0b1020;          /* page background */
-  --card:#0f1a2b;        /* card background */
-  --muted:#a8b3c7;       /* secondary text */
-  --text:#eef2ff;        /* primary text */
-
-  /* ACCENTS */
-  --accent:#a78bfa;      /* violet */
-  --accent2:#22d3ee;     /* cyan */
-
-  --line:rgba(255,255,255,.10);
-  --shadow: 0 12px 40px rgba(0,0,0,.35);
-  --radius:18px;
-}
+    :root{
+      --bg:#080e1e;
+      --surface:rgba(13,22,42,.70);
+      --surface2:rgba(255,255,255,.03);
+      --line:rgba(255,255,255,.08);
+      --line2:rgba(255,255,255,.04);
+      --text:#e8eaf2;
+      --muted:#7e8ba8;
+      --accent:#22d3ee;
+      --accent2:#a78bfa;
+      --accent3:#34d399;
+      --radius:18px;
+      --shadow:0 8px 40px rgba(0,0,0,.45);
+    }
 
 *{ box-sizing:border-box; }
 html, body { height:100%; }
