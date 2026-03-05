@@ -412,5 +412,16 @@
     }, { threshold: 0.14, rootMargin: "0px 0px -10% 0px" });
     revealEls.forEach(el => io.observe(el));
   </script>
+  <script>
+    const currentPage = location.pathname.split("/").pop();
+
+document.querySelectorAll(".nav-links a.pill").forEach(link=>{
+  const href = link.getAttribute("href");
+
+  if(href === currentPage){
+    link.setAttribute("aria-current","page");
+  }
+});
+  </script>
 </body>
 </html>
