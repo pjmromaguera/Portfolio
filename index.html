@@ -955,6 +955,42 @@
 
     
   </script>
-  
+  <script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-links a.pill");
+
+    if (!sections.length || !navLinks.length) return;
+
+    const setActive = (id) => {
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        const isSectionLink = href.startsWith("#");
+
+        if (!isSectionLink) return; // don't touch Projects/Resume/LinkedIn/Email
+
+        if (href === "#" + id) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      });
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (!visible.length) return;
+
+        // pick the most visible section
+        visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        setActive(visible[0].target.id);
+      },
+      { threshold: [0.25, 0.4, 0.55, 0.7] }
+    );
+
+    sections.forEach((s) => io.observe(s));
+
+    // initial state
+    setActive(sections[0].id);
+  });
+</script>
 </body>
 </html>
