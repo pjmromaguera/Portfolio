@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ISD Weather Stations — Philippines</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #080e1e;
+    --surface: rgba(15,26,43,.90);
+    --line:    rgba(255,255,255,.08);
+    --text:    #e8eaf2;
+    --muted:   #7e8ba8;
+    --accent:  #22d3ee;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --radius:  12px;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  #map {
+    width: 100%;
+    height: 100vh;
+    background: #070d1b;
+  }
+
+
+  /* ── Custom marker ── */
+  .station-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid rgba(34,211,238,.35);
+    box-shadow: 0 0 0 3px rgba(34,211,238,.12), 0 0 8px rgba(34,211,238,.4);
+    transition: transform .15s, box-shadow .15s;
+    cursor: pointer;
+  }
+
+  .station-dot:hover {
+    transform: scale(1.6);
+    box-shadow: 0 0 0 4px rgba(34,211,238,.2), 0 0 14px rgba(34,211,238,.6);
+  }
+
+  /* ── Popup ── */
+  .leaflet-popup-content-wrapper {
+    background: rgba(10,16,32,.96) !important;
+    border: 1px solid rgba(34,211,238,.22) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,.7) !important;
+    backdrop-filter: blur(12px);
+    padding: 0 !important;
+  }
+
+  .leaflet-popup-tip-container { display: none; }
+  .leaflet-popup-close-button { color: var(--muted) !important; top: 10px !important; right: 12px !important; font-size: 16px !important; }
+  .leaflet-popup-close-button:hover { color: var(--text) !important; }
+
+  .popup-inner {
+    padding: 14px 16px;
+    min-width: 200px;
+  }
+
+  .popup-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+
+  .popup-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .popup-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .popup-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .popup-row span:last-child { color: var(--text); }
+
+  /* ── Legend ── */
+  .map-legend {
+    position: absolute;
+    bottom: 20px;
+    left: 14px;
+    z-index: 1000;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    backdrop-filter: blur(14px);
+    pointer-events: none;
+  }
+
+  .legend-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid rgba(34,211,238,.35);
+    box-shadow: 0 0 6px rgba(34,211,238,.4);
+    flex-shrink: 0;
+  }
+
+  /* ── Station count badge ── */
+  .map-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 1000;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    backdrop-filter: blur(14px);
+    pointer-events: none;
+  }
+
+  .badge-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .badge-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .badge-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* ── Leaflet controls ── */
+  .leaflet-control-zoom a {
+    background: rgba(10,16,32,.92) !important;
+    color: var(--muted) !important;
+    border-color: var(--line) !important;
+  }
+  .leaflet-control-zoom a:hover { color: var(--text) !important; background: rgba(34,211,238,.1) !important; }
+  .leaflet-control-attribution { background: rgba(8,14,30,.7) !important; color: #3a4a62 !important; font-size: 9px !important; }
+  .leaflet-control-attribution a { color: #3a5a82 !important; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="map-badge">
+  <div class="badge-eyebrow">NOAA ISD Network</div>
+  <div class="badge-count" id="station-count">—</div>
+  <div class="badge-label">Weather Stations · Philippines</div>
+</div>
+
+<div class="map-legend">
+  <div class="legend-title">Data Sources</div>
+  <div class="legend-item">
+    <div class="legend-dot"></div>
+    <span>ISD Station</span>
+  </div>
+</div>
+
+<script>
+const stations = [
+  {usaf:"691764",name:"Clark Intl",lat:15.183,lon:120.567},
+  {usaf:"691854",name:"Villamor",lat:14.517,lon:121.017},
+  {usaf:"692004",name:"Edwin Andrews AB",lat:6.933,lon:122.067},
+  {usaf:"697054",name:"Tacloban",lat:11.233,lon:125.033},
+  {usaf:"697134",name:"Iloilo",lat:10.717,lon:122.533},
+  {usaf:"697174",name:"Mactan Cebu Intl",lat:10.317,lon:123.95},
+  {usaf:"697194",name:"Ormoc",lat:11.067,lon:124.567},
+  {usaf:"698074",name:"Guiuan",lat:11.033,lon:125.75},
+  {usaf:"749306",name:"Sanga Sanga",lat:5.047,lon:119.743},
+  {usaf:"749315",name:"Guiuan Philippines",lat:11.033,lon:125.716},
+  {usaf:"981320",name:"Itbayat",lat:20.8,lon:121.85},
+  {usaf:"981330",name:"Calayan",lat:19.267,lon:121.467},
+  {usaf:"981340",name:"Basco Radar",lat:20.433,lon:121.967},
+  {usaf:"981350",name:"Basco",lat:20.451,lon:121.98},
+  {usaf:"981360",name:"Basco Radar",lat:20.433,lon:121.95},
+  {usaf:"982220",name:"Vigan",lat:17.555,lon:120.356},
+  {usaf:"982230",name:"Laoag Intl",lat:18.178,lon:120.532},
+  {usaf:"982310",name:"Aparri Radar",lat:18.367,lon:121.617},
+  {usaf:"982320",name:"Aparri",lat:18.367,lon:121.633},
+  {usaf:"982330",name:"Tuguegarao",lat:17.638,lon:121.731},
+  {usaf:"983210",name:"Sto. Tomas",lat:16.35,lon:120.567},
+  {usaf:"983220",name:"Crow Valley Gunnery Range",lat:15.317,lon:120.383},
+  {usaf:"983230",name:"Naula Point",lat:15.7,lon:119.967},
+  {usaf:"983240",name:"Iba / Luzon Island",lat:15.333,lon:119.967},
+  {usaf:"983250",name:"Dagupan",lat:16.083,lon:120.35},
+  {usaf:"983260",name:"Basa AB",lat:14.983,lon:120.483},
+  {usaf:"983275",name:"Clark Intl",lat:15.183,lon:120.55},
+  {usaf:"983280",name:"Baguio",lat:16.375,lon:120.62},
+  {usaf:"983290",name:"Munoz",lat:15.733,lon:120.933},
+  {usaf:"983300",name:"Cabanatuan",lat:15.467,lon:120.95},
+  {usaf:"983330",name:"Baler",lat:15.73,lon:121.5},
+  {usaf:"983340",name:"Baler Radar",lat:15.75,lon:121.633},
+  {usaf:"983360",name:"Casiguran",lat:16.267,lon:122.133},
+  {usaf:"984235",name:"Mamburao",lat:13.217,lon:120.6},
+  {usaf:"984250",name:"Manila",lat:14.583,lon:120.983},
+  {usaf:"984260",name:"Subic Bay Weather",lat:14.8,lon:120.267},
+  {usaf:"984260",name:"Subic Bay Intl",lat:14.794,lon:120.271},
+  {usaf:"984270",name:"Tayabas",lat:14.017,lon:121.6},
+  {usaf:"984280",name:"Sangley Point",lat:14.5,lon:120.9},
+  {usaf:"984280",name:"Sangley Point AB",lat:14.495,lon:120.904},
+  {usaf:"984290",name:"Ninoy Aquino Intl",lat:14.509,lon:121.02},
+  {usaf:"984295",name:"Nichols AB",lat:14.517,lon:121.017},
+  {usaf:"984300",name:"Science Garden",lat:14.65,lon:121.05},
+  {usaf:"984310",name:"Calapan / Mindoro Isl",lat:13.417,lon:121.183},
+  {usaf:"984320",name:"Ambulong",lat:14.083,lon:121.05},
+  {usaf:"984330",name:"Tanay",lat:14.583,lon:121.367},
+  {usaf:"984340",name:"Infanta",lat:14.75,lon:121.65},
+  {usaf:"984350",name:"Alabat",lat:14.1,lon:122.017},
+  {usaf:"984360",name:"Fernando AB",lat:13.955,lon:121.125},
+  {usaf:"984370",name:"San Francisco",lat:13.367,lon:122.517},
+  {usaf:"984375",name:"Marinduque",lat:13.361,lon:121.826},
+  {usaf:"984380",name:"Jomalig / Quezon",lat:14.7,lon:122.333},
+  {usaf:"984390",name:"Daet / Bagasbas",lat:14.117,lon:122.95},
+  {usaf:"984400",name:"Daet",lat:14.129,lon:122.98},
+  {usaf:"984420",name:"Pili",lat:13.583,lon:123.267},
+  {usaf:"984425",name:"Naga",lat:13.585,lon:123.27},
+  {usaf:"984440",name:"Legazpi",lat:13.157,lon:123.746},
+  {usaf:"984460",name:"Virac",lat:13.576,lon:124.206},
+  {usaf:"984470",name:"Catanduanes Radar",lat:13.654,lon:124.341},
+  {usaf:"985260",name:"Coron",lat:12.217,lon:120.2},
+  {usaf:"985310",name:"San Jose",lat:12.362,lon:121.047},
+  {usaf:"985360",name:"Romblon",lat:12.583,lon:122.283},
+  {usaf:"985361",name:"Cubi Point Naval Air Station",lat:14.8,lon:120.267},
+  {usaf:"985370",name:"Kalibo / Aklan",lat:11.683,lon:122.383},
+  {usaf:"985375",name:"Kalibo / Panay Island",lat:11.683,lon:122.367},
+  {usaf:"985380",name:"Roxas",lat:11.598,lon:122.752},
+  {usaf:"985430",name:"Masbate",lat:12.369,lon:123.629},
+  {usaf:"985450",name:"Calbayog / Western",lat:12.067,lon:124.533},
+  {usaf:"985455",name:"Calbayog / Samar Isl",lat:12.083,lon:124.55},
+  {usaf:"985460",name:"Catarman",lat:12.502,lon:124.636},
+  {usaf:"985480",name:"Catbalogan",lat:11.783,lon:124.883},
+  {usaf:"985500",name:"Daniel Z Romualdez",lat:11.228,lon:125.028},
+  {usaf:"985530",name:"Borongan",lat:11.667,lon:125.45},
+  {usaf:"985580",name:"Guiuan",lat:11.036,lon:125.742},
+  {usaf:"986020",name:"Nanshan Island",lat:10.72,lon:115.82},
+  {usaf:"986180",name:"Puerto Princesa",lat:9.742,lon:118.759},
+  {usaf:"986300",name:"Cuyo",lat:10.85,lon:121},
+  {usaf:"986395",name:"Bacolod / Negros Isl",lat:10.65,lon:122.933},
+  {usaf:"986420",name:"Dumaguete",lat:9.334,lon:123.3},
+  {usaf:"986440",name:"Tagbilaran",lat:9.664,lon:123.853},
+  {usaf:"986445",name:"Medillin-Cebu",lat:11.16,lon:123.95},
+  {usaf:"986450",name:"Lahug",lat:10.333,lon:123.9},
+  {usaf:"986460",name:"Mactan Cebu Intl",lat:10.308,lon:123.979},
+  {usaf:"986480",name:"Maasin",lat:10.133,lon:124.867},
+  {usaf:"986530",name:"Surigao",lat:9.783,lon:125.483},
+  {usaf:"986545",name:"Tandag",lat:9.072,lon:126.171},
+  {usaf:"987410",name:"Dipolog",lat:8.601,lon:123.334},
+  {usaf:"987420",name:"Pagadian",lat:7.827,lon:123.458},
+  {usaf:"987425",name:"Pagadian / Mindanao",lat:7.833,lon:123.45},
+  {usaf:"987430",name:"Iligan",lat:8.13,lon:124.215},
+  {usaf:"987445",name:"Ozamis / Misamis",lat:8.167,lon:123.85},
+  {usaf:"987450",name:"Malabang",lat:7.617,lon:124.059},
+  {usaf:"987455",name:"Malabang",lat:7.617,lon:124.05},
+  {usaf:"987460",name:"Cotabato",lat:7.167,lon:124.217},
+  {usaf:"987461",name:"Cotabato / Mindanao",lat:7.233,lon:124.25},
+  {usaf:"987470",name:"Lumbia Airport",lat:8.417,lon:124.617},
+  {usaf:"987480",name:"Cagayan de Oro",lat:8.483,lon:124.65},
+  {usaf:"987495",name:"Del Monte Plantation Airstrip",lat:8.348,lon:124.851},
+  {usaf:"987510",name:"Malaybalay",lat:8.15,lon:125.133},
+  {usaf:"987520",name:"Butuan",lat:8.95,lon:125.483},
+  {usaf:"987530",name:"Francisco Bangoy Intl",lat:7.126,lon:125.646},
+  {usaf:"987540",name:"Davao",lat:7.067,lon:125.6},
+  {usaf:"987550",name:"Hinatuan",lat:8.367,lon:126.333},
+  {usaf:"988300",name:"Jolo",lat:6.05,lon:121},
+  {usaf:"988360",name:"Zamboanga Intl",lat:6.922,lon:122.06},
+  {usaf:"988485",name:"Allah Valley",lat:6.367,lon:124.751},
+  {usaf:"988510",name:"Gen. Santos",lat:6.05,lon:125.1},
+  {usaf:"999999",name:"Sangley Point",lat:14.5,lon:120.917},
+  {usaf:"999999",name:"San Jose",lat:12.6,lon:121},
+  {usaf:"999999",name:"Leyte Gulf NF",lat:11.067,lon:125.033},
+  {usaf:"999999",name:"Manila NF",lat:14.6,lon:121},
+  {usaf:"999999",name:"Manila",lat:14.55,lon:120.983},
+  {usaf:"999999",name:"Olongapo",lat:14.817,lon:120.283},
+  {usaf:"999999",name:"Cubi Point NF",lat:14.8,lon:120.267},
+];
+
+document.getElementById('station-count').textContent = stations.length;
+
+// Init map
+const map = L.map('map', {
+  center: [12.0, 122.5],
+  zoom: 6,
+  zoomControl: true,
+  attributionControl: true,
+});
+
+L.tileLayer(
+  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  {
+    attribution: '&copy; OpenStreetMap &copy; CartoDB',
+    subdomains: 'abcd',
+    maxZoom: 20
+  }
+).addTo(map);
+
+// Custom icon
+function makeIcon() {
+  return L.divIcon({
+    className: '',
+    html: '<div class="station-dot"></div>',
+    iconSize: [10, 10],
+    iconAnchor: [5, 5],
+    popupAnchor: [0, -8],
+  });
+}
+
+// Plot stations
+stations.forEach(s => {
+  const marker = L.marker([s.lat, s.lon], { icon: makeIcon() }).addTo(map);
+  marker.bindPopup(`
+    <div class="popup-inner">
+      <div class="popup-eyebrow">NOAA ISD · USAF ${s.usaf}</div>
+      <div class="popup-name">${s.name}</div>
+      <div class="popup-meta">
+        <div class="popup-row"><span>Latitude</span><span>${s.lat.toFixed(3)}°</span></div>
+        <div class="popup-row"><span>Longitude</span><span>${s.lon.toFixed(3)}°</span></div>
+      </div>
+    </div>
+  `, { maxWidth: 260, className: '' });
+});
+
+// postMessage height after tiles load
+map.whenReady(() => {
+  setTimeout(() => {
+    window.parent.postMessage({ type: 'stationMapHeight', height: document.documentElement.scrollHeight }, '*');
+  }, 400);
+});
+</script>
+</body>
+</html>
