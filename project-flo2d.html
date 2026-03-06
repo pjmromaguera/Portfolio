@@ -724,7 +724,7 @@
 
             <div class="h-media">
               <img
-                src="assets/Flood Modelling.png"
+                src="assets/Model Setup.png"
                 alt="FLO-2D model setup: grid and terrain configuration interface"
                 loading="lazy"
               />
@@ -756,7 +756,7 @@
 
             <div class="h-media">
               <img
-                src="assets/flo2d-depth.png"
+                src="assets/Flood Modelling.png"
                 alt="FLO-2D simulation output: flood depth and velocity results review"
                 loading="lazy"
               />
@@ -884,6 +884,28 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   });
+</script>
+
+<script>
+document.querySelectorAll("img").forEach(img => {
+
+  img.addEventListener("error", function () {
+
+    const wrapper = document.createElement("div")
+    wrapper.className = "img-placeholder"
+
+    wrapper.innerHTML = `
+      <div class="img-placeholder-inner">
+        <div class="img-placeholder-title">Visualization Preview</div>
+        <div class="img-placeholder-sub">Image coming soon</div>
+      </div>
+    `
+
+    img.replaceWith(wrapper)
+
+  })
+
+})
 </script>
 </body>
 </html>

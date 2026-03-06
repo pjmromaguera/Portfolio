@@ -725,7 +725,7 @@
 
             <div class="h-media">
               <img
-                src="assets/eddies.png"
+                src="assets/data-prep.png"
                 alt="Eddy data preparation: NetCDF loading and coordinate harmonization"
                 loading="lazy"
               />
@@ -757,7 +757,7 @@
 
             <div class="h-media">
               <img
-                src="assets/eddies-tracks.png"
+                src="assets/eddies.png"
                 alt="Eddy detection output: labeled features and diagnostic overlays per timestep"
                 loading="lazy"
               />
@@ -885,6 +885,27 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   });
+</script>
+<script>
+document.querySelectorAll("img").forEach(img => {
+
+  img.addEventListener("error", function () {
+
+    const wrapper = document.createElement("div")
+    wrapper.className = "img-placeholder"
+
+    wrapper.innerHTML = `
+      <div class="img-placeholder-inner">
+        <div class="img-placeholder-title">Visualization Preview</div>
+        <div class="img-placeholder-sub">Image coming soon</div>
+      </div>
+    `
+
+    img.replaceWith(wrapper)
+
+  })
+
+})
 </script>
 </body>
 </html>

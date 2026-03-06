@@ -141,6 +141,24 @@
         radial-gradient(900px  520px at 70% 75%, rgba(52,211,153,.09),  transparent 60%),
         linear-gradient(180deg, rgba(11,16,32,.18), rgba(11,16,32,0));
     }
+	
+	/* ── Single-column variant for module 04 ── */
+    .single-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .single-column .h-desc,
+    .single-column .h-points {
+      max-width: 72ch;
+    }
+
+    .single-column .table-card {
+      margin-top: 0;
+      width: 100%;
+    }
 
     /* ── Reveal ── */
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .75s ease, transform .75s ease; will-change: opacity, transform; }
@@ -181,7 +199,7 @@
     }
     .micro .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent3); box-shadow: 0 0 0 4px rgba(52,211,153,.12); }
 
-    .super { font-family: 'DM Serif Display', serif; font-size: clamp(34px, 5vw, 62px); line-height: 1.06; letter-spacing: -0.6px; margin: 0 0 14px; }
+    .super { font-size: clamp(34px, 5vw, 62px); line-height: 1.06; letter-spacing: -0.6px; margin: 0 0 14px; }
     .lede2 { color: var(--muted); font-size: clamp(14px, 1.4vw, 17px); max-width: 72ch; margin: 0 0 16px; line-height: 1.75; }
 
     .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
@@ -241,6 +259,103 @@
       display: block;
       border: none;
       transition: height .2s ease;
+    }
+	
+	    /* ── Outputs summary table ── */
+    .table-card {
+      margin-top: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .table-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
+
+    .table-head h3 {
+      margin: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 0;
+    }
+
+    .summary-table thead th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 16px 20px;
+      background: rgba(255,255,255,.02);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-table tbody td {
+      padding: 18px 20px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line2);
+      color: rgba(232,234,242,.84);
+      line-height: 1.65;
+      font-size: 14.5px;
+    }
+
+    .summary-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .summary-table tbody tr:hover td {
+      background: rgba(255,255,255,.02);
+    }
+
+    .summary-table td:first-child {
+      width: 28%;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .summary-table td:nth-child(2) {
+      width: 22%;
+      color: #d7def0;
+      font-weight: 500;
+    }
+
+    .summary-table td:last-child {
+      width: 50%;
+      color: rgba(232,234,242,.74);
+    }
+
+    @media (max-width: 720px) {
+      .table-head {
+        padding: 16px 16px;
+      }
+
+      .summary-table thead th,
+      .summary-table tbody td {
+        padding: 14px 16px;
+      }
     }
 
     /* ── Privacy note card ── */
@@ -420,6 +535,7 @@
                 <li>Select imagery source and define the analysis time range.</li>
                 <li>Apply cloud, shadow, and water masking appropriate to the sensor.</li>
                 <li>Standardize band naming and resolve spatial resolution handling.</li>
+				<li>Obtain rainfall data from the nearest weather station</li>
               </ul>
             </div>
 
@@ -427,6 +543,7 @@
               <img
                 src="assets/turbidity-map.png"
                 alt="Data assembly and QA: image collection with cloud and shadow masking applied"
+				
                 loading="lazy"
               />
             </div>
@@ -497,37 +614,71 @@
       </div>
     </section>
 
-    <!-- ══ MODULE 4 — OUTPUTS & INTERPRETATION ══ -->
+        <!-- ══ MODULE 4 — OUTPUTS & INTERPRETATION ══ -->
     <section class="chapter module-chapter" id="module-outputs" aria-labelledby="mod4-heading">
       <div class="wide">
-        <div class="highlight reveal">
-          <div class="highlight-grid">
-
-            <div>
-              <div class="module-eyebrow">Process 04</div>
-              <h2 class="h-title" id="mod4-heading">Outputs &amp; Interpretation</h2>
-              <p class="h-desc">
-                Deliver hotspot maps, time-series summaries, and export-ready figures that support interpretation and reporting.
-              </p>
-              <ul class="h-points">
-                <li>Hotspot maps and change detection summaries highlighting siltation risk zones.</li>
-                <li>Time-series plots showing monthly and seasonal turbidity trends.</li>
-                <li>Export maps and summary tables formatted for reporting packs.</li>
-              </ul>
-            </div>
-
-            <div class="h-media">
-              <img
-                src="assets/turbidity-map.png"
-                alt="Turbidity outputs: hotspot map and seasonal time-series summary"
-                loading="lazy"
-              />
-            </div>
-
+        <div class="highlight reveal single-column">
+          
+          <div>
+            <div class="module-eyebrow">Process 04</div>
+            <h2 class="h-title" id="mod4-heading">Outputs &amp; Interpretation</h2>
+            <p class="h-desc">
+              Deliver hotspot maps, time-series summaries, and export-ready figures that support interpretation and reporting.
+            </p>
+            <ul class="h-points">
+              <li>Hotspot maps and change detection summaries highlighting siltation risk zones.</li>
+              <li>Time-series plots showing monthly and seasonal turbidity trends.</li>
+              <li>Export maps and summary tables formatted for reporting packs.</li>
+            </ul>
           </div>
+
+          <div class="table-card reveal" aria-labelledby="mod4-table-heading">
+            <div class="table-head">
+              <h3 id="mod4-table-heading">Sample Output Summary</h3>
+            </div>
+
+            <div class="table-wrap">
+              <table class="summary-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Result</th>
+                    <th>Interpretation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Wettest Month</td>
+                    <td>August</td>
+                    <td>Peak rainfall drives maximum runoff.</td>
+                  </tr>
+                  <tr>
+                    <td>Maximum Monthly Rainfall</td>
+                    <td>420 mm</td>
+                    <td>Indicates strong monsoon influence.</td>
+                  </tr>
+                  <tr>
+                    <td>Average Turbidity (Dry Season)</td>
+                    <td>6–12 NDTI</td>
+                    <td>Background sediment levels.</td>
+                  </tr>
+                  <tr>
+                    <td>Average Turbidity (Wet Season)</td>
+                    <td>18–32 NDTI</td>
+                    <td>Elevated sediment transport.</td>
+                  </tr>
+                  <tr>
+                    <td>Turbidity Hotspot Zones</td>
+                    <td>Lower river bends &amp; tributary confluences</td>
+                    <td>Likely areas of erosion or sediment deposition.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Data privacy note -->
         <div class="note-card reveal" style="margin-top: 24px;">
           <h3>Data Privacy Note</h3>
           <p>
@@ -540,7 +691,6 @@
           <a class="pill" href="projects.html">← Back to Projects</a>
           <a class="pill primary" href="/cdn-cgi/l/email-protection#1765787a76706272657639677d57707a767e7b3974787a">Contact</a>
         </div>
-
       </div>
     </section>
 
@@ -609,6 +759,28 @@
   closeBtn.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+<script>
+document.querySelectorAll("img").forEach(img => {
+
+  img.addEventListener("error", function () {
+
+    const wrapper = document.createElement("div")
+    wrapper.className = "img-placeholder"
+
+    wrapper.innerHTML = `
+      <div class="img-placeholder-inner">
+        <div class="img-placeholder-title">Visualization Preview</div>
+        <div class="img-placeholder-sub">Image coming soon</div>
+      </div>
+    `
+
+    img.replaceWith(wrapper)
+
+  })
+
+})
 </script>
 </body>
 </html>
